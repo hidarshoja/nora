@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header className="px-4 sticky top-0  bg-[#3E4095]" style={{zIndex:999}}>
+    <header className="px-4 sticky border borber-b-2 border-white top-0  bg-[#3E4095]" style={{zIndex:999}}>
       <div className="container mx-auto max-w-screen-xl">
         <div className="flex items-center justify-between gap-4 lg:gap-40 pt-2">
           <div className="lg:hidden leading-none z-10">
