@@ -12,7 +12,9 @@ import Register from './pages/auth/Register';
 import BlogDetail from './pages/SinglePage';
 import Question from './pages/Question';
 import Blocking from './pages/Blocking';
-
+import ProductDetails from './pages/ProductDetails';
+import CheckOut from './pages/CheckOut';
+import { useEffect } from 'react';
 import "./App.css";
 
 const AppContent = () => {
@@ -20,7 +22,10 @@ const AppContent = () => {
   const noHeaderFooterPages = ['/login', '/register'];
 
   const showHeaderFooter = !noHeaderFooterPages.includes(location.pathname);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  
   return (
     <>
       {showHeaderFooter && <Header />}
@@ -29,6 +34,7 @@ const AppContent = () => {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/:productId" element={<ProductDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
@@ -36,6 +42,7 @@ const AppContent = () => {
         <Route path="/blocking" element={<Blocking />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/question" element={<Question />} />
+        <Route path="/checkOut" element={<CheckOut />} />
       </Routes>
       {showHeaderFooter && <Footer />}
     </>

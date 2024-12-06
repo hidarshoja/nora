@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   // States for username and password
@@ -52,12 +53,12 @@ const Login = () => {
                 </button>
               </form>
 
-              <p className="text-center my-4">
+              {/* <p className="text-center my-4">
                 رمز عبور خود را <a href="lost-password.html">فراموش </a>کرده اید؟
-              </p>
+              </p> */}
               <div className="divider my-8">یا</div>
               <p className="text-center my-4">
-                <a href="sign-up.html">حساب کاربری ندارید !!!</a>
+                <Link to="/register">حساب کاربری ندارید !!!</Link>
               </p>
             </div>
 

@@ -17,7 +17,7 @@ export default function HeaderImgSilder() {
           spaceBetween={0} // بدون فاصله بین اسلایدها
           slidesPerView={1} // نمایش یک اسلاید در هر بار
           navigation={false} 
-          pagination={{ clickable: true }} // فعال کردن pagination کلیک‌پذیر
+          pagination={false}
          
         >
           <SwiperSlide>

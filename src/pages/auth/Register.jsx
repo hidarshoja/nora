@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   // States for the registration form fields
@@ -27,7 +28,7 @@ const Register = () => {
   return (
     <section className="h-screen px-4 flex items-center">
       <div className="container mx-auto max-w-screen-lg">
-        <div className="bg-[#3E4095] text-white rounded-2xl overflow-hidden">
+        <div className="bg-[#3E4095] mt-6 text-white rounded-2xl overflow-hidden">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 p-8 md:p-4 lg:p-20 lg:pb-0 text-center">
               <form onSubmit={handleRegister}>
@@ -108,7 +109,7 @@ const Register = () => {
               </form>
 
               <p className="text-center my-4">
-                اگر حساب کاربری دارید <a href="login.html">وارد شوید</a>
+                اگر حساب کاربری دارید <Link to="/login">وارد شوید</Link>
               </p>
             </div>
 

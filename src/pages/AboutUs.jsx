@@ -109,7 +109,7 @@ export default function AboutUs() {
         </div>
         <Swiper
           modules={[Pagination]}
-          pagination={{ clickable: true }}
+          pagination={false}
           spaceBetween={20}
           slidesPerView={1}
           breakpoints={{
@@ -121,7 +121,7 @@ export default function AboutUs() {
         >
               <Swiper
           modules={[Pagination]}
-          pagination={{ clickable: true }}
+          pagination={false}
           spaceBetween={20}
           slidesPerView={1}
           breakpoints={{

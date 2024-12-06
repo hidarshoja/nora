@@ -57,7 +57,7 @@ const BestSellingProducts = () => {
           modules={[Navigation, Pagination, Scrollbar, A11y]}
           spaceBetween={20}
           slidesPerView={4}
-          pagination={{ clickable: true }}
+          pagination={false}
           breakpoints={{
             320: {
               slidesPerView: 1, 

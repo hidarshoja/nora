@@ -80,7 +80,7 @@ export default function Blocking() {
            title: "بوش تعادل تیبا",
            originalPrice: 960000,
            discountedPrice: 425000,
-           image: "/assets/images/new-img/lastik4.jpg",
+           image: "/assets/images/new-img/lastic4.jpg",
            sales: 30,
            popularity: 4,
             prand : "saipa"

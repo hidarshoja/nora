@@ -59,7 +59,7 @@ export default function CategoriesComponent() {
           spaceBetween={20}
           slidesPerView={4}
           navigation={false} 
-          pagination={{ clickable: true }}
+          pagination={false}
           breakpoints={{
             320: {
               slidesPerView: 1, 

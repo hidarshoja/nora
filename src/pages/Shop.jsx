@@ -5,6 +5,7 @@ const FilterComponent = () => {
     const [products, setProducts] = useState(
    [
     {
+      id : 1,
       title: "جلوبندی و سیبک",
       originalPrice: 50000,
       discountedPrice: 45000,
@@ -14,6 +15,7 @@ const FilterComponent = () => {
       prand : "saipa"
     },
     {
+      id:2,
       title: "روغن موتور اسپیدی",
       originalPrice: 1080000,
       discountedPrice: 900000,
@@ -23,6 +25,7 @@ const FilterComponent = () => {
        prand : "saipa"
     },
     {
+      id:3,
       title: "باتری وارنا",
       originalPrice: 630000,
       discountedPrice: 430000,
@@ -32,6 +35,7 @@ const FilterComponent = () => {
        prand : "saipa"
     },
     {
+      id:4,
       title: "دیسک و لنت ترمز",
       originalPrice: 600000,
       discountedPrice: 420000,
@@ -41,6 +45,7 @@ const FilterComponent = () => {
        prand : "chinese"
     },
     {
+      id:5,
       title: "لاستیک بارز",
       originalPrice: 360000,
       discountedPrice: 280000,
@@ -50,6 +55,7 @@ const FilterComponent = () => {
        prand : "other"
     },
     {
+      id:6,
       title: "روغن اسپیدی",
       originalPrice: 140000,
       discountedPrice: 90000,
@@ -59,6 +65,7 @@ const FilterComponent = () => {
        prand : "other"
     },
     {
+      id:7,
       title: "فیلتر دو زمانه",
       originalPrice: 960000,
       discountedPrice: 425000,
@@ -68,6 +75,7 @@ const FilterComponent = () => {
        prand : "saipa"
     },
     {
+      id:8,
       title: "برف پاک کن",
       originalPrice: 50000,
       discountedPrice: 45000,
@@ -77,6 +85,7 @@ const FilterComponent = () => {
        prand : "iranKhodo"
     },
     {
+      id:9,
       title: "فیلتر",
       originalPrice: 960000,
       discountedPrice: 425000,
@@ -187,194 +196,192 @@ const FilterComponent = () => {
           </button>
         </div>
 
-        {/* Mobile Filters */}
-        {isFiltersOpen && (
-          <div className="lg:hidden fixed inset-0 z-50 top-[120px] bg-white transform transition-transform ease-in-out duration-300">
-            <div className="p-4">
-              <div className="flex justify-between items-center border-b pb-2 mb-4">
-                <h3 className="text-lg font-bold">فیلترها</h3>
-                <button
-                  className="text-red-500 font-bold"
-                  onClick={handleCloseFilters}
-                >
-                  بستن
-                </button>
-              </div>
+       {/* Mobile Filters */}
+{isFiltersOpen && (
+  <div className="lg:hidden fixed inset-0 z-50 top-[120px] bg-white transform transition-transform ease-in-out duration-300">
+    <div className="p-4">
+      <div className="flex justify-between items-center border-b pb-2 mb-4">
+        <h3 className="text-lg font-bold">فیلترها</h3>
+        <button
+          className="text-red-500 font-bold"
+          onClick={handleCloseFilters}
+        >
+          بستن
+        </button>
+      </div>
 
-              <div className="flex justify-around border-b pb-2 mb-4">
-                <button
-                  className="text-blue-500 font-bold"
-                  onClick={() => handleChangeFilterSection("priceFilters")}
-                >
-                  فیلتر بر اساس قیمت
-                </button>
-                <button
-                  className="text-blue-500 font-bold"
-                  onClick={() => handleChangeFilterSection("categoryFilters")}
-                >
-                  دسته‌بندی‌ها
-                </button>
-                <button
-                  className="text-blue-500 font-bold"
-                  onClick={() => handleChangeFilterSection("brandFilters")}
-                >
-                  فیلتر بر اساس برند
-                </button>
-              </div>
+      <div className="flex justify-around border-b pb-2 mb-4">
+        <button
+          className="text-blue-500 py-2 px-1 rounded  hover:bg-blue-200"
+          onClick={() => handleChangeFilterSection("priceFilters")}
+        >
+           بر اساس قیمت
+        </button>
+        <button
+          className="text-blue-500 py-2 px-1 rounded  hover:bg-blue-200"
+          onClick={() => handleChangeFilterSection("categoryFilters")}
+        >
+          دسته‌بندی‌ها
+        </button>
+        <button
+          className="text-blue-500 py-2 px-1 rounded  hover:bg-blue-200"
+          onClick={() => handleChangeFilterSection("brandFilters")}
+        >
+           بر اساس برند
+        </button>
+      </div>
 
-              {/* Price Filter */}
-              {activeFilter === "priceFilters" && (
-                <div>
-                  <h4 className="font-bold mb-2">فیلتر بر اساس قیمت</h4>
-                  <div className="space-y-2">
-                    <label className="flex items-center justify-between">
-                      <span>ارزان‌ترین</span>
-                      <input
-                        type="radio"
-                        name="price"
-                        value="cheap"
-                        className="radio radio-warning"
-                        onClick={() => handleFilterChange("cheapest")}
-                      />
-                    </label>
-                    <label className="flex items-center justify-between">
-                      <span>گران‌ترین</span>
-                      <input
-                        type="radio"
-                        name="price"
-                        value="expensive"
-                        className="radio radio-warning"
-                        onClick={() => handleFilterChange("expensive")}
-                      />
-                    </label>
-                    <label className="flex items-center justify-between">
-                      <span>پرفروش‌ترین</span>
-                      <input
-                        type="radio"
-                        name="price"
-                        value="popular"
-                        className="radio radio-warning"
-                        onClick={() => handleFilterChange("bestselling")}
-
-                      />
-                    </label>
-                    <div className="flex items-center gap-1  w-full justify-between">
-                <label htmlFor="popular2">محبوب ترین</label>
-                <input
-                  type="radio"
-                  id="popular2"
-                  name="price"
-                  value="popular"
-                  className="radio radio-warning"
-                  onClick={() => handleFilterChange("popular")}
-                />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Category Filter */}
-              {activeFilter === "categoryFilters" && (
-                <div>
-                  <h4 className="font-bold mb-2">دسته‌بندی‌ها</h4>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link to="/blocking" className="text-blue-500 hover:text-blue-900">
-                        قطعات جلوبندی
-                      </Link>
-                    </li>
-                    <li>
-                    <Link to="#" className="text-gray-900 hover:text-blue-500">
-                        قطعات موتوری
-                      </Link>
-                    </li>
-                    <li>
-                      
-                    <Link to="#" className="text-gray-900 hover:text-blue-500">
-                        قطعات فرمان
-                      </Link>
-                    </li>
-                    <li>
-                    <Link to="#" className="text-gray-900 hover:text-blue-500">
-                        تزیینات
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-
-              {/* Brand Filter */}
-              {activeFilter === "brandFilters" && (
-                <div>
-                  <h4 className="font-bold mb-2">فیلتر بر اساس برند</h4>
-                  <div className="space-y-2">
-                  <div className="flex items-center gap-1  w-full justify-between">
-                  <label htmlFor="saipa">سایپا</label>
-                  <input
-                    type="radio"
-                    id="saipa"
-                    name="brand"
-                    value="saipa"
-                    className="radio radio-warning"
-                    onClick={() => handleBrandFilterChange("saipa")}
-                  />
-                </div>
-                <div className="flex items-center gap-1  w-full justify-between">
-                  <label htmlFor="iranKhodo">ایران خودرو</label>
-                  <input
-                    type="radio"
-                    id="iranKhodo"
-                    name="brand"
-                    value="iranKhodo"
-                    className="radio radio-warning"
-                    onClick={() => handleBrandFilterChange("iranKhodo")}
-                  />
-                </div>
-                <div className="flex items-center gap-1 w-full justify-between">
-
-                <label htmlFor="chinese">چینی</label>
-                <input
-                  type="radio"
-                  id="chinese"
-                  name="brand"
-                  value="chinese"
-                  className="radio radio-warning"
-                  onClick={() => handleBrandFilterChange("chinese")}
-                />
-                </div>
-                <label className="flex items-center justify-between">
-            <span>دیگر</span>
-            <input
-              type="radio"
-              name="brand"
-              value="other"
-              className="radio radio-warning"
-              onClick={() => handleBrandFilterChange("other")}
-            />
-               </label>
-              <label className="flex items-center justify-between">
-            <span>همه</span>
-            <input
-              type="radio"
-              name="brand"
-              value="all"
-              className="radio radio-warning"
-              onClick={() => handleBrandFilterChange("all")}
-            />
-              </label>
-                  </div>
-                </div>
-              )}
-
-              <button
-                className="w-full mt-6 bg-[#3E4095] text-white py-3 rounded-lg font-bold"
-                onClick={handleCloseFilters}
-              >
-                 مشاهده محصولات
-              </button>
+      {/* Price Filter */}
+      {activeFilter === "priceFilters" && (
+        <div>
+          <h4 className="font-bold mb-2 text-blue-600">فیلتر بر اساس قیمت</h4>
+          <div className="space-y-2">
+            <label className="flex items-center justify-between">
+              <span>ارزان‌ترین</span>
+              <input
+                type="radio"
+                name="price"
+                value="cheap"
+                className="radio radio-warning"
+                onClick={() => handleFilterChange("cheapest")}
+              />
+            </label>
+            <label className="flex items-center justify-between">
+              <span>گران‌ترین</span>
+              <input
+                type="radio"
+                name="price"
+                value="expensive"
+                className="radio radio-warning"
+                onClick={() => handleFilterChange("expensive")}
+              />
+            </label>
+            <label className="flex items-center justify-between">
+              <span>پرفروش‌ترین</span>
+              <input
+                type="radio"
+                name="price"
+                value="popular"
+                className="radio radio-warning"
+                onClick={() => handleFilterChange("bestselling")}
+              />
+            </label>
+            <div className="flex items-center gap-1 w-full justify-between">
+              <label htmlFor="popular2">محبوب ترین</label>
+              <input
+                type="radio"
+                id="popular2"
+                name="price"
+                value="popular"
+                className="radio radio-warning"
+                onClick={() => handleFilterChange("popular")}
+              />
             </div>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Category Filter */}
+      {activeFilter === "categoryFilters" && (
+        <div>
+          <h4 className="font-bold mb-2 text-green-600">دسته‌بندی‌ها</h4>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/blocking" className="text-blue-500 hover:text-blue-900">
+                قطعات جلوبندی
+              </Link>
+            </li>
+            <li>
+              <Link to="#" className="text-gray-900 hover:text-blue-500">
+                قطعات موتوری
+              </Link>
+            </li>
+            <li>
+              <Link to="#" className="text-gray-900 hover:text-blue-500">
+                قطعات فرمان
+              </Link>
+            </li>
+            <li>
+              <Link to="#" className="text-gray-900 hover:text-blue-500">
+                تزیینات
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* Brand Filter */}
+      {activeFilter === "brandFilters" && (
+        <div>
+          <h4 className="font-bold mb-2 text-red-600">فیلتر بر اساس برند</h4>
+          <div className="space-y-2">
+            <div className="flex items-center gap-1 w-full justify-between">
+              <label htmlFor="saipa">سایپا</label>
+              <input
+                type="radio"
+                id="saipa"
+                name="brand"
+                value="saipa"
+                className="radio radio-warning"
+                onClick={() => handleBrandFilterChange("saipa")}
+              />
+            </div>
+            <div className="flex items-center gap-1 w-full justify-between">
+              <label htmlFor="iranKhodo">ایران خودرو</label>
+              <input
+                type="radio"
+                id="iranKhodo"
+                name="brand"
+                value="iranKhodo"
+                className="radio radio-warning"
+                onClick={() => handleBrandFilterChange("iranKhodo")}
+              />
+            </div>
+            <div className="flex items-center gap-1 w-full justify-between">
+              <label htmlFor="chinese">چینی</label>
+              <input
+                type="radio"
+                id="chinese"
+                name="brand"
+                value="chinese"
+                className="radio radio-warning"
+                onClick={() => handleBrandFilterChange("chinese")}
+              />
+            </div>
+            <label className="flex items-center justify-between">
+              <span>دیگر</span>
+              <input
+                type="radio"
+                name="brand"
+                value="other"
+                className="radio radio-warning"
+                onClick={() => handleBrandFilterChange("other")}
+              />
+            </label>
+            <label className="flex items-center justify-between">
+              <span>همه</span>
+              <input
+                type="radio"
+                name="brand"
+                value="all"
+                className="radio radio-warning"
+                onClick={() => handleBrandFilterChange("all")}
+              />
+            </label>
+          </div>
+        </div>
+      )}
+
+      <button
+        className="w-full mt-6 bg-[#3E4095] text-white py-3 rounded-lg font-bold"
+        onClick={handleCloseFilters}
+      >
+        مشاهده محصولات
+      </button>
+    </div>
+  </div>
+)}
+
 
         {/* Desktop Filters */}
         <div className="grid grid-cols-12 gap-4">
@@ -540,10 +547,10 @@ const FilterComponent = () => {
                   <img className="mb-4" src={product.image} alt="" />
                 </a>
               <div className="text-center">
-                <a href="#">
+                <Link to={`/shop/${product.id}`}>
                 <h3 className="font-YekanBakh-ExtraBold text-base"> 
                 {product.title}
-                </h3></a>
+                </h3></Link>
                 <div className="flex justify-center gap-4 text-base mt-4">
                   <span className="line-through">
                     {new Intl.NumberFormat('fa-IR').format(product.originalPrice)} تومان

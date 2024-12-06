@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [products, setProducts] = useState([
@@ -212,9 +213,11 @@ const Cart = () => {
                       {new Intl.NumberFormat("fa-IR").format(calculateTotal())}
                     </span>
                   </div>
+                  <Link to="/checkOut">
                   <button className="btn bg-stone-800 hover:bg-stone-900 text-white">
                     پرداخت
                   </button>
+                  </Link>
                 </div>
               </div>
             </div>

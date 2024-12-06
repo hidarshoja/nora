@@ -3133,6 +3133,7 @@ details.collapse summary::-webkit-details-marker{
 .menu-moblie li a {
   color: #1f1f1f !important;
 }
+
 @media (min-width: 640px){
   .sm\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
