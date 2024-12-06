@@ -10,8 +10,9 @@ import Blog from './pages/‌Blog';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import BlogDetail from './pages/SinglePage';
-import BlockingPage from './pages/blockingPage';
 import Question from './pages/Question';
+import Blocking from './pages/Blocking';
+
 import "./App.css";
 
 const AppContent = () => {
@@ -32,7 +33,7 @@ const AppContent = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blocking" element={<BlockingPage />} />
+        <Route path="/blocking" element={<Blocking />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/question" element={<Question />} />
       </Routes>
