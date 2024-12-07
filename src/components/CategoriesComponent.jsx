@@ -11,39 +11,47 @@ import 'swiper/css/scrollbar';
 
 const categories = [
   {
+    id:1 ,
     image: "assets/images/new-img/joloBandi.jpg",
     title: "قطعات جلوبندی",
-    link: "/blocking"
+    link: "/shop"
   },
   {
+    id:2 ,
     image: "assets/images/new-img/motori.jpg",
     title: "سیستم موتوری",
-    link: "#"
+    link: "/shop"
   },
+  
   {
-    image: "assets/images/new-img/lent5.png",
-    title: "گیریبکس",
-    link: "#"
-  },
-  {
-    image: "assets/images/new-img/butri.webp",
-    title: "قطعات برقی",
-    link: "#"
-  },
-  {
+    id:3 ,
     image: "/assets/images/new-img/griboks.jpg",
     title: "قطعات فرمان",
-    link: "#"
+    link: "/shop"
   },
   {
+    id:4 ,
+    image: "assets/images/new-img/butri.webp",
+    title: "قطعات برقی",
+    link: "/shop"
+  },
+  {
+    id:5 ,
+    image: "assets/images/new-img/lent5.png",
+    title: "گیریبکس",
+    link: "/shop"
+  },
+  {
+    id:6 ,
     image: "assets/images/new-img/lent.webp",
     title: "مکانیزم و استاندارد",
-    link: "#"
+    link: "/shop"
   },
   {
+    id:7 ,
     image: "assets/images/new-img/ring.webp",
     title: "تزیینات",
-    link: "#"
+    link: "/shop"
   }
 ];
 
@@ -78,7 +86,7 @@ export default function CategoriesComponent() {
             <SwiperSlide key={index}>
               <div className="border border-slate-200 bg-white rounded-3xl leading-10">
                 <Link
-                  to={category.link}
+                   to={`/shop?category=${category.id}`}
                   className="flex flex-col items-center justify-center p-4"
                 >
                   <img
