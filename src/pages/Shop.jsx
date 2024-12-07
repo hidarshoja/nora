@@ -271,6 +271,7 @@ const FilterComponent = () => {
   const handleFilter = (category) => {
     if (category === "") {
       setFilteredProducts(products);
+      setActiveCategory(category);
     } else {
       const filtered = products.filter(
         (product) => product.category === category
