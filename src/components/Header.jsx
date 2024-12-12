@@ -48,6 +48,7 @@ const Header = () => {
                   <li><Link to="/blog">وبلاگ</Link></li>
                   <li><Link to="/contact">درباره ما</Link></li>
                   <li><Link to="/about">تماس با ما</Link></li>
+                  <li><Link to="/dashboord">پنل مدیریت</Link></li>
                 </ul>
               </div> 
             </div>
