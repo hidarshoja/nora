@@ -5,6 +5,7 @@ function App() {
 
   return (
     <div  dir='rtl' className='font-YekanBakh-Regular text-sm'>
+      
        <AppRoutes />
     </div>
   )
