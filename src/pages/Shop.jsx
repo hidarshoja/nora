@@ -14,7 +14,7 @@ const FilterComponent = () => {
       sales: 30,
       popularity: 4.8,
       prand: "saipa",
-      category: "steering", // فرمان
+      category: "steering", 
     },
     {
       id: 2,

@@ -17,6 +17,7 @@ import Blocking from './pages/Blocking';
 import CheckOut from './pages/CheckOut';
 import Dashboord from './pages/Admin/Dashboord';
 import Orders from './pages/Admin/Orders';
+import Products from './pages/Admin/Products';
 
 
 export const router = createBrowserRouter([
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: 'orders',
         element: <Orders />,
+      },
+      {
+        path: 'products',
+        element: <Products />,
       }
     ]
   }
