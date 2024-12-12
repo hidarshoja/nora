@@ -77,7 +77,7 @@ export default function ChartComponent() {
 
   // داده‌های چارت
   const data = {
-    labels: dailyVisits.map((data) => `روز ${data.day}`), // روزها به عنوان برچسب محور X
+    labels: dailyVisits.map((data) => ` ${data.day}`), // روزها به عنوان برچسب محور X
     datasets: [
       {
         label: "بازدید روزانه",

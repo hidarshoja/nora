@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MobileSidebar from "../components/MobileSidbar";
 import DesktopSidebar from "../components/DesktopSidebar";
-import Header from "../components/HeaderAdmin";
+import Header from "../components/Admin/HeaderAdmin";
 import { Outlet } from "react-router-dom";
 
 function classNames(...classes) {

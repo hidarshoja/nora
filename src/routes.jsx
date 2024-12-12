@@ -15,8 +15,8 @@ import BlogDetail from './pages/SinglePage';
 import Question from './pages/Question';
 import Blocking from './pages/Blocking';
 import CheckOut from './pages/CheckOut';
-import Dashboord from './pages/Dashboord';
-import Orders from './pages/Orders';
+import Dashboord from './pages/Admin/Dashboord';
+import Orders from './pages/Admin/Orders';
 
 
 export const router = createBrowserRouter([

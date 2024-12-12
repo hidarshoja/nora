@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import ChartLineComponent from '../components/ChartLineComponent';
+import ChartLineComponent from '../../components/Admin/ChartLineComponent';
 
 const clients = [
   {
