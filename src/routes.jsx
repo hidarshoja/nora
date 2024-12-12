@@ -1,89 +1,3 @@
-// import Home from './pages/Home';
-// import AboutUs from './pages/AboutUs';
-// import ContactUs from './pages/ContactUs';
-// import Shop from './pages/Shop';
-// import ProductDetails from './pages/ProductDetails';
-// import Login from './pages/auth/Login';
-// import Register from './pages/auth/Register';
-// import CartPage from './pages/Cart';
-// import BlogPage from './pages/‌Blog';
-// import BlogDetail from './pages/SinglePage';
-// import Question from './pages/Question';
-// import Blocking from './pages/Blocking';
-// import CheckOut from './pages/CheckOut';
-// import { createBrowserRouter } from 'react-router-dom';
-
-// export const routes = 
-//  createBrowserRouter([
-//     {
-//         path: '/',
-//         element: <Home />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/about',
-//         element: <AboutUs />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/contact',
-//         element: <ContactUs />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/shop',
-//         element: <Shop />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/shop/:productId',
-//         element: <ProductDetails />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/cart',
-//         element: <CartPage />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/blog',
-//         element: <BlogPage />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/blog/:id',
-//         element: <BlogDetail />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/login',
-//         element: <Login />,
-//         layout: 'auth',
-//       },
-//       {
-//         path: '/register',
-//         element: <Register />,
-//         layout: 'auth',
-//       },
-//       {
-//         path: '/question',
-//         element: <Question />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/blocking',
-//         element: <Blocking />,
-//         layout: 'main',
-//       },
-//       {
-//         path: '/checkOut',
-//         element: <CheckOut />,
-//         layout: 'main',
-//       },
-//  ])
-// ;
-
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthLayout from './layout/AuthLayout';
 import MainLayout from './layout/MainLayout';
@@ -102,6 +16,7 @@ import Question from './pages/Question';
 import Blocking from './pages/Blocking';
 import CheckOut from './pages/CheckOut';
 import Dashboord from './pages/Dashboord';
+import Orders from './pages/Orders';
 
 const AppRoutes = () => {
   return (
@@ -220,6 +135,14 @@ const AppRoutes = () => {
           element={
             <AdminLayout>
               <Dashboord />
+            </AdminLayout>
+          } 
+        />
+         <Route 
+          path='/orders' 
+          element={
+            <AdminLayout>
+              <Orders />
             </AdminLayout>
           } 
         />
