@@ -2,12 +2,13 @@ import { useState } from "react";
 import MobileSidebar from "../components/MobileSidbar";
 import DesktopSidebar from "../components/DesktopSidebar";
 import Header from "../components/HeaderAdmin";
+import { Outlet } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
 
@@ -41,7 +42,7 @@ const AdminLayout = ({ children }) => {
             <main>
               <div className="px-2">
                 <div className="w-full min-h-[90vh] bg-white rounded-2xl p-4">
-                  {children}
+                  <Outlet />
                 </div>
               </div>
             </main>

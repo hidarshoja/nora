@@ -1,12 +1,11 @@
 import './App.css'
-import AppRoutes from './routes.jsx'
+import MainLayout from './layout/MainLayout.jsx'
+
 function App() {
-
-
   return (
-    <div  dir='rtl' className='font-YekanBakh-Regular text-sm'>
-      
-       <AppRoutes />
+    <div dir='rtl' className='font-YekanBakh-Regular text-sm'>
+
+      <MainLayout />
     </div>
   )
 }

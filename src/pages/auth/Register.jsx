@@ -109,7 +109,7 @@ const Register = () => {
               </form>
 
               <p className="text-center my-4">
-                اگر حساب کاربری دارید <Link to="/login">وارد شوید</Link>
+                اگر حساب کاربری دارید <Link to="/auth/login">وارد شوید</Link>
               </p>
             </div>
 

@@ -30,7 +30,7 @@ const Header = () => {
                   <li><Link to="/blog">وبلاگ</Link></li>
                   <li><Link to="/contact">درباره ما</Link></li>
                   <li><Link to="/about">تماس با ما</Link></li>
-                  <li><Link to="/login">ورود</Link></li>
+                  <li><Link to="/auth/login">ورود</Link></li>
                   <li><Link to="/register">ثبت نام </Link></li>
                   <li><Link to="/Question">سوالات متداول</Link></li>
                 </ul>
@@ -48,14 +48,14 @@ const Header = () => {
                   <li><Link to="/blog">وبلاگ</Link></li>
                   <li><Link to="/contact">درباره ما</Link></li>
                   <li><Link to="/about">تماس با ما</Link></li>
-                  <li><Link to="/dashboord">پنل مدیریت</Link></li>
+                  <li><Link to="/admin/dashboard">پنل مدیریت</Link></li>
                 </ul>
               </div> 
             </div>
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="hidden lg:block text-white"><Link to="/login">ورود / ثبت نام</Link></div>
+            <div className="hidden lg:block text-white"><Link to="/auth/login">ورود / ثبت نام</Link></div>
            
 
             <div className="indicator">

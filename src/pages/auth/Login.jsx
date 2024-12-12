@@ -58,7 +58,7 @@ const Login = () => {
               </p> */}
               <div className="divider my-8">یا</div>
               <p className="text-center my-4">
-                <Link to="/register">حساب کاربری ندارید !!!</Link>
+                <Link to="/auth/register">حساب کاربری ندارید !!!</Link>
               </p>
             </div>
 
