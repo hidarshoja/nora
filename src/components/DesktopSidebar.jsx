@@ -50,7 +50,7 @@ export default function DesktopSidebar({
                 {navigation.map((item) => (
                                 <li
                                   key={item.name}
-                                  className="flex items-start gap-3  w-full border-b-2 border-gray-400"
+                                  className="flex items-start py-2 cursor-pointer gap-3 text-white  w-full border-b-2 border-gray-400 hover:bg-white hover:text-black"
                                 >
                                  
                                   {!item.children ? (
@@ -61,7 +61,7 @@ export default function DesktopSidebar({
                                         item.current
                                           ? "bg-gray-50"
                                           : "",
-                                        "block rounded-md  pr-2 pl-10 text-sm leading-6 font-semibold text-gray-100"
+                                        "block rounded-md  pr-2 pl-10 text-sm leading-6 font-semibold "
                                       )}
                                     >
                                       {item.name}
