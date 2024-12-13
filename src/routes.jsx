@@ -25,6 +25,12 @@ import CommentsAdmin from './pages/Admin/CommentsAdmin';
 import Profile from './pages/Admin/Profile';
 import Settings from './pages/Admin/Settings';
 import QuestionsAdmin from './pages/Admin/Questions';
+import UserLayout from './layout/UserLayout';
+import HomeUser from './pages/User/HomeUser';
+import OrderUser from './pages/User/OrderUser';
+import CommentUser from './pages/User/CommentUser';
+import TicketUser from './pages/User/TicketUser';
+import ProfileUser from './pages/User/ProfileUser';
 
 export const router = createBrowserRouter([
   {
@@ -104,6 +110,33 @@ export const router = createBrowserRouter([
         path: 'questionsAdmin',
         element: <QuestionsAdmin />,
       }
+    ]
+  },
+  {
+    path: 'user/home',
+    element: <UserLayout />,
+    children: [
+      {
+        path: '',
+        element: <HomeUser />,
+      },
+      {
+        path: 'orders',
+        element: <OrderUser />,
+      },
+      {
+        path: 'comment',
+        element: <CommentUser />,
+      },
+      {
+        path: 'ticket',
+        element: <TicketUser />,
+      },
+      {
+        path: 'profile',
+        element: <ProfileUser />,
+      },
+     
     ]
   }
 ])

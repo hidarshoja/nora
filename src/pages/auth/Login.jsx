@@ -44,18 +44,17 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-
+                <Link to="/user/home">
                 <button
-                  type="submit"
+                  type=""
                   className="btn bg-green-500 hover:bg-green-800 text-white w-full my-4"
                 >
                   ورود
                 </button>
+                </Link>
               </form>
 
-              {/* <p className="text-center my-4">
-                رمز عبور خود را <a href="lost-password.html">فراموش </a>کرده اید؟
-              </p> */}
+             
               <div className="divider my-8">یا</div>
               <p className="text-center my-4">
                 <Link to="/auth/register">حساب کاربری ندارید !!!</Link>
