@@ -18,7 +18,13 @@ import CheckOut from './pages/CheckOut';
 import Dashboord from './pages/Admin/Dashboord';
 import Orders from './pages/Admin/Orders';
 import Products from './pages/Admin/Products';
-
+import Users from './pages/Admin/Users';
+import Category from './pages/Admin/Category';
+import BlogAdmin from './pages/Admin/BlogAdmin';
+import CommentsAdmin from './pages/Admin/CommentsAdmin';
+import Profile from './pages/Admin/Profile';
+import Settings from './pages/Admin/Settings';
+import QuestionsAdmin from './pages/Admin/Questions';
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +75,34 @@ export const router = createBrowserRouter([
       {
         path: 'products',
         element: <Products />,
+      },
+      {
+        path: 'users',
+        element: <Users />,
+      },
+      {
+        path: 'category',
+        element: <Category />,
+      },
+      {
+        path: 'blogAdmin',
+        element: <BlogAdmin />,
+      },
+      {
+        path: 'commentsAdmin',
+        element: <CommentsAdmin />,
+      },
+      {
+        path: 'profile',
+        element: <Profile />,
+      },
+      {
+        path: 'settings',
+        element: <Settings />,
+      },
+      {
+        path: 'questionsAdmin',
+        element: <QuestionsAdmin />,
       }
     ]
   }

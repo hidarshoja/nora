@@ -8,8 +8,8 @@ const Products = () => {
   const [activeTab, setActiveTab] = useState("list");
 
   return (
-    <div className="p-4">
-      {/* Tabs */}
+    <div className="md:p-4">
+          <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه محصولات</h1>
       <div className="flex border-b mb-4">
         <button
           onClick={() => setActiveTab("list")}

@@ -32,8 +32,9 @@ const clients = [
 
 export default function Dashboord() {
   return (
-   <>
-   <h3 className='text-base font-semibold px-3 py-6 mt-6'>میزان درآمد و تعداد کاربران</h3>
+   <div className="md:p-4">
+   <h3  className="text-xl font-YekanBakh-Regular  mb-5">میزان درآمد و تعداد کاربران</h3>
+ 
    <ul
       role="list"
       className="flex flex-wrap items-center justify-center gap-6"
@@ -71,6 +72,6 @@ export default function Dashboord() {
     </ul>
     <h3 className='text-base font-semibold px-3 py-6 mt-6'>نمودار بازدید</h3>
     <ChartLineComponent />
-   </>
+   </div>
   );
 }

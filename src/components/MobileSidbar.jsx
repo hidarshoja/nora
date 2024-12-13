@@ -67,7 +67,7 @@ export default function MobileSidebar({ sidebarOpen, setSidebarOpen }) {
                 <div className="flex h-16 shrink-0 items-center">
                   <img
                     className="h-16 w-auto"
-                    src="/assets/images/new-img/logo2.jpg"
+                    src="/assets/images/new-img/logo.png"
                     alt="Your Copany"
                   />
                 </div>
@@ -80,7 +80,7 @@ export default function MobileSidebar({ sidebarOpen, setSidebarOpen }) {
                             key={item.name}
                             className={classNames(
                               location.pathname === item.href
-                                ? "bg-green-200"
+                                ? "bg-green-800"
                                 : "hover:bg-gray-100",
                               "flex items-start gap-3 py-2 border border-gray-100 rounded-md"
                             )}

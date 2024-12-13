@@ -28,8 +28,8 @@ const Header = () => {
                   <li><Link to="/">صفحه اصلی</Link></li>
                   <li><Link to="/shop">فروشگاه</Link></li>
                   <li><Link to="/blog">وبلاگ</Link></li>
-                  <li><Link to="/contact">درباره ما</Link></li>
-                  <li><Link to="/about">تماس با ما</Link></li>
+                  <li><Link to="/about">درباره ما</Link></li>
+                  <li><Link to="/contact">تماس با ما</Link></li>
                   <li><Link to="/auth/login">ورود</Link></li>
                   <li><Link to="/register">ثبت نام </Link></li>
                   <li><Link to="/Question">سوالات متداول</Link></li>
@@ -46,8 +46,8 @@ const Header = () => {
                   <li><Link to="/">صفحه اصلی</Link></li>
                   <li><Link to="/shop">فروشگاه</Link></li>
                   <li><Link to="/blog">وبلاگ</Link></li>
-                  <li><Link to="/contact">درباره ما</Link></li>
-                  <li><Link to="/about">تماس با ما</Link></li>
+                  <li><Link to="/about">درباره ما</Link></li>
+                  <li><Link to="/contact">تماس با ما</Link></li>
                   <li><Link to="/admin/dashboard">پنل مدیریت</Link></li>
                 </ul>
               </div> 

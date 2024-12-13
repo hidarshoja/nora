@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MdFollowTheSigns } from "react-icons/md";
 
 export default function AdminOrders() {
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -57,8 +58,8 @@ export default function AdminOrders() {
   };
 
   return (
-    <div className="p-5">
-      <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه سفارشات</h1>
+    <div className="md:p-4">
+     <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه سفارشات</h1> 
      <div className="overflow-x-auto">
      <table className="min-w-full divide-y divide-gray-300 border ">
         <thead className="bg-gray-100">
@@ -103,10 +104,10 @@ export default function AdminOrders() {
                 </td>
                 <td className="px-3 py-4 text-sm text-gray-500 text-center font-YekanBakh-Regular">
                   <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-YekanBakh-Regular"
+                    className=" p-2  text-2xl rounded "
                     onClick={() => openModal(order.id)}
                   >
-                      شماره پیگیری
+                    <MdFollowTheSigns />
                   </button>
                 </td>
               </tr>

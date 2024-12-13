@@ -1,21 +1,21 @@
 import  { useState } from "react"; 
-import EditProductModal from "./EditProductModal";
+import EditCategoryModal from "./EditCategoryModal";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 
-const ProductTable = () => {
-  const [products, setProducts] = useState([
+export default function CategoryTable() {
+ const [products, setProducts] = useState([
   
-    { id: 1, title: "سیبک فرمان پراید", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak12.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
-    { id: 2, title: "سیبک فرمان ساینا", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak7.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
-    { id: 3, title: "سیبک فرمان سمند", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak8.jpg", sales: 30, popularity: 4.8, prand: "iranKhodo", category: "steering" },
-    { id: 4, title: "سیبک فرمان پژو 206", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak9.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
-    { id: 5, title: "سیبک فرمان تیبا", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak10.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
-    { id: 6, title: "سیبک فرمان دنا", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak11.jpg", sales: 30, popularity: 4.8, prand: "iranKhodo", category: "steering" },
-    { id: 7, title: "سیبک فرمان رانا", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak13.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
-    { id: 8, title: "سیبک فرمان 405", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak12.jpg", sales: 30, popularity: 4.8, prand: "iranKhodo", category: "steering" },
-    { id: 9, title: "سیبک فرمان پژو پارس", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak12.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
-    { id: 10, title: "سیبک فرمان آریسان", originalPrice: 500000, discountedPrice: 450000, image: "/assets/images/new-img/sipak12.jpg", sales: 30, popularity: 4.8, prand: "saipa", category: "steering" },
+    { id: 1,  image: "/assets/images/new-img/sipak7.jpg", category: "steering" },
+    { id: 2, image: "/assets/images/new-img/sipak8.jpg", category: "steering" },
+    { id: 3, image: "/assets/images/new-img/sipak9.jpg",   category: "steering" },
+    { id: 4,  image: "/assets/images/new-img/sipak10.jpg", category: "steering" },
+    { id: 5,  image: "/assets/images/new-img/sipak11.jpg", category: "steering" },
+    { id: 6,  image: "/assets/images/new-img/sipak12.jpg",   category: "steering" },
+    { id: 7,  image: "/assets/images/new-img/sipak13.jpg", category: "steering" },
+    { id: 8,  image: "/assets/images/new-img/sipak12.jpg",   category: "steering" },
+    { id: 9,  image: "/assets/images/new-img/sipak11.jpg", category: "steering" },
+    { id: 10,  image: "/assets/images/new-img/sipak10.jpg", category: "steering" },
     
   ]);
 
@@ -35,15 +35,6 @@ const ProductTable = () => {
   };
 
 
-  const getBrandName = (brand) => {
-    const brands = {
-      iranKhodo: "ایران خودرو",
-      saipa: "سایپا",
-      other: "متفرقه",
-      chinese: "وارداتی",
-    };
-    return brands[brand] || brand;
-  };
 
  
   const getCategoryName = (category) => {
@@ -74,12 +65,7 @@ const ProductTable = () => {
           <tr>
             <th className="py-3">آیدی</th>
             <th>عکس</th>
-            <th>نام محصول</th>
-            <th>قیمت اصلی</th>
-            <th>قیمت تخفیف‌دار</th>
-            <th>تعداد فروش</th>
-            <th>برند</th>
-            <th>دسته‌بندی</th>
+            <th>نام دسته بندی</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -87,19 +73,12 @@ const ProductTable = () => {
           {currentProducts.map((product) => (
             <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white">
               <td className="py-2">{product.id}</td>
-              <td className="flex items-center justify-center w-full">
+                 <td className="flex items-center justify-center w-full">
                 <img src={product.image} className="w-10 h-10" alt="" />
               </td>
-              <td>{product.title}</td>
-              <td>
-                {new Intl.NumberFormat("fa-IR").format(product.originalPrice)} تومان
-              </td>
-              <td>
-                {new Intl.NumberFormat("fa-IR").format(product.discountedPrice)} تومان
-              </td>
-              <td>{product.sales}</td>
-              <td>{getBrandName(product.prand)}</td>
+              
               <td>{getCategoryName(product.category)}</td>
+             
               <td>
                 <button onClick={() => handleEdit(product)}>
                   <CiEdit />
@@ -131,7 +110,7 @@ const ProductTable = () => {
       )}
 
       {isModalOpen && (
-        <EditProductModal
+        <EditCategoryModal
           product={selectedProduct}
           onClose={() => setIsModalOpen(false)}
           onSave={(updatedProduct) => {
@@ -147,5 +126,3 @@ const ProductTable = () => {
     </div>
   );
 };
-
-export default ProductTable;
