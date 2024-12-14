@@ -177,14 +177,15 @@ export default function OrderUser() {
 
   return (
     <div>
+       <div className="p-3 bg-stone-200 rounded-xl my-4">
+                  <h1 className="text-sm font-YekanBakh-Bold">سفارش ها</h1>
+                </div>
       <section className="lg:px-4 my-16">
         <div className="container mx-auto max-w-screen-xl">
           <div className="flex gap-4">
             <div className="lg:px-4 w-full">
               <div className="bg-white rounded-3xl p-4">
-                <div className="p-3 bg-stone-200 rounded-xl my-4">
-                  <h1 className="text-sm font-YekanBakh-Bold">سفارش ها</h1>
-                </div>
+               
 
                 <div className="leading-8 mb-12">
                   <div className="lg:p-2 mb-4">

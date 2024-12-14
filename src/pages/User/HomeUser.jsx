@@ -162,7 +162,10 @@ export default function HomeUser() {
     
 
   return (
-    <div>
+    <div className='p-1'>
+      <div className="p-3 bg-stone-200 rounded-xl my-4">
+                  <h1 className="text-sm font-YekanBakh-Bold">صفحه اصلی</h1>
+                </div>
          <section className="lg:px-4 my-16">
         <div className="container mx-auto max-w-screen-xl">
             <div className="flex gap-4">
