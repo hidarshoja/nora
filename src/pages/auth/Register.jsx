@@ -10,9 +10,8 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Handle form submission
   const handleRegister = (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     if (password !== confirmPassword) {
       console.log('پسوردها یکسان نیستند!');
       return;
@@ -22,19 +21,20 @@ const Register = () => {
     console.log('شماره تماس:', phone);
     console.log('ایمیل:', email);
     console.log('پسورد:', password);
-    // می‌توانید اینجا درخواست به سرور را انجام دهید
   };
 
   return (
-    <section className="h-screen px-4 flex items-center">
-      <div className="container mx-auto max-w-screen-lg">
+    <section className="h-screen px-4">
+      <div>
         <div className=" mt-6 text-black rounded-2xl overflow-hidden">
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="flex-1 p-8 md:p-4 lg:p-20 lg:pb-0 text-center">
+          <div className="flex flex-row items-center justify-center gap-8">
+            <div className="w-full md:w-1/2 p-8 md:p-4 lg:p-20 lg:pb-0 text-center">
               <form onSubmit={handleRegister}>
                 <h2 className="text-3xl font-YekanBakh-ExtraBlack my-4">ثبت نام</h2>
 
-                <label className="label">
+               <div className='flex gap-2'>
+               <div className='w-1/2'>
+               <label className="label">
                   <span className="label-text-alt text-black">نام:</span>
                 </label>
                 <input
@@ -44,7 +44,9 @@ const Register = () => {
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                 />
+               </div>
 
+                <div className='w-1/2'>
                 <label className="label">
                   <span className="label-text-alt text-black">نام خانوادگی:</span>
                 </label>
@@ -55,8 +57,11 @@ const Register = () => {
                   onChange={(e) => setLastName(e.target.value)}
                   required
                 />
-
-                <label className="label">
+                </div>
+               </div>
+               <div className='flex gap-2'>
+                  <div className='w-1/2'>
+                  <label className="label">
                   <span className="label-text-alt text-black">شماره تماس:</span>
                 </label>
                 <input
@@ -66,8 +71,9 @@ const Register = () => {
                   onChange={(e) => setPhone(e.target.value)}
                   required
                 />
-
-                <label className="label">
+                  </div>
+                  <div className='w-1/2'>
+                  <label className="label">
                   <span className="label-text-alt text-black">ایمیل:</span>
                 </label>
                 <input
@@ -77,8 +83,11 @@ const Register = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-
-                <label className="label">
+                  </div>
+               </div>
+               <div className='flex gap-2'>
+               <div className='w-1/2'>
+               <label className="label">
                   <span className="label-text-alt text-black">پسورد:</span>
                 </label>
                 <input
@@ -88,8 +97,9 @@ const Register = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-
-                <label className="label">
+               </div>
+               <div className='w-1/2'>
+               <label className="label">
                   <span className="label-text-alt text-black">تکرار پسورد:</span>
                 </label>
                 <input
@@ -99,6 +109,14 @@ const Register = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
+               </div>  
+               </div>
+
+              
+
+          
+
+               
 
                 <button
                   type="submit"
@@ -112,7 +130,9 @@ const Register = () => {
                 اگر حساب کاربری دارید <Link to="/auth/login">وارد شوید</Link>
               </p>
             </div>
-
+            <div className="hidden md:block w-1/2">
+              <img className="register-img" src="/assets/images/login/auth.png" alt="Background" />
+            </div>
           </div>
         </div>
       </div>
