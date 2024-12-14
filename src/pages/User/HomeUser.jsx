@@ -163,7 +163,7 @@ export default function HomeUser() {
 
   return (
     <div>
-         <section className="px-4 my-16">
+         <section className="lg:px-4 my-16">
         <div className="container mx-auto max-w-screen-xl">
             <div className="flex gap-4">
               
@@ -220,7 +220,7 @@ export default function HomeUser() {
                             </div>
                         </div>
                       </div>
-                      <div className="bg-white rounded-3xl p-4">
+                      <div className="bg-white rounded-3xl">
                         <div className="p-3 bg-stone-200 rounded-xl my-4">
                             <h1 className="text-sm font-YekanBakh-Bold">اطلاعیه مهم</h1>
                           </div>
@@ -241,11 +241,11 @@ export default function HomeUser() {
     
                         </div>
                         <div>
-      <section className="px-4 my-16">
+      <section className="lg:px-4 my-16">
         <div className="container mx-auto max-w-screen-xl">
           <div className="flex gap-4">
-            <div className="px-4 w-full">
-              <div className="bg-white rounded-3xl p-4">
+            <div className="lg:px-4 w-full">
+              <div className="bg-white rounded-3xl p-0 lg:p-4">
                 <div className="p-3 bg-stone-200 rounded-xl my-4">
                   <h1 className="text-sm font-YekanBakh-Bold">سفارش های اخیر شما</h1>
                 </div>
@@ -274,11 +274,7 @@ export default function HomeUser() {
                         </div>
                       </div>
                       <div className="flex flex-col sm:flex-row justify-between items-center">
-                        <div className="flex mb-6">
-                          {order.products.map((product, index) => (
-                            <img key={index} className="w-24" src={product.img} alt={`product-${index}`} />
-                          ))}
-                        </div>
+                      
                         <div>
                           <button 
                           onClick={() => openModal(order)}

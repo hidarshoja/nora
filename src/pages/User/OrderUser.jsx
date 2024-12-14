@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 
 export default function OrderUser() {
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState('ok');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invoiceData, setInvoiceData] = useState(null);
 
@@ -52,6 +52,7 @@ export default function OrderUser() {
   };
 
   const handleTabClick = (tab) => {
+    console.log(`tab`, tab);
     setActiveTab(tab);
   };
 
@@ -176,40 +177,40 @@ export default function OrderUser() {
 
   return (
     <div>
-      <section className="px-4 my-16">
+      <section className="lg:px-4 my-16">
         <div className="container mx-auto max-w-screen-xl">
           <div className="flex gap-4">
-            <div className="px-4 w-full">
+            <div className="lg:px-4 w-full">
               <div className="bg-white rounded-3xl p-4">
                 <div className="p-3 bg-stone-200 rounded-xl my-4">
                   <h1 className="text-sm font-YekanBakh-Bold">سفارش ها</h1>
                 </div>
 
                 <div className="leading-8 mb-12">
-                  <div className="p-2 mb-4">
+                  <div className="lg:p-2 mb-4">
                     <div className="flex flex-col sm:flex-row gap-4 justify-start">
                       <button
-                        className={`px-10 py-1 bg-stone-800 rounded-xl text-white ${activeTab === 'tab1' ? 'bg-green-600' : ''}`}
-                        onClick={() => handleTabClick('tab1')}
+                        className={`px-10 py-1 border-2 rounded-xl text-black ${activeTab == 'ok' ? 'bg-green-600' : ''}`}
+                        onClick={() => handleTabClick('ok')}
                       >
                         پرداخت شده
                       </button>
                       <button
-                        className={`px-8 py-1 bg-stone-800 rounded-xl text-white ${activeTab === 'tab2' ? 'bg-red-600' : ''}`}
-                        onClick={() => handleTabClick('tab2')}
+                        className={`px-8 py-1 border-2 rounded-xl text-black ${activeTab == 'cancel' ? 'bg-red-600' : ''}`}
+                        onClick={() => handleTabClick('cancel')}
                       >
                         لغو شده
                       </button>
                       <button
-                        className={`px-8 py-1 bg-stone-800 rounded-xl text-white ${activeTab === 'tab3' ? 'bg-yellow-600' : ''}`}
-                        onClick={() => handleTabClick('tab3')}
+                        className={`px-8 py-1 border-2 rounded-xl text-black ${activeTab == 'back' ? 'bg-yellow-600' : ''}`}
+                        onClick={() => handleTabClick('back')}
                       >
                         مرجوع محصول
                       </button>
                     </div>
                   </div>
 
-                  <div className={`p-4 tab-content rounded-lg ${activeTab === 'tab1' ? '' : 'hidden'}`}>
+                  <div className={`lg:p-4 tab-content rounded-lg ${activeTab === 'ok' ? '' : 'hidden'}`}>
                     {orders.tab1.map((order, index) => (
                       <div key={index} className="p-6 border rounded-2xl relative">
                         <div className={`bg-green-500 rounded-tl-2xl text-xs text-white py-3 px-6 rounded-br-2xl absolute top-0 left-0`}>
@@ -251,7 +252,7 @@ export default function OrderUser() {
                     ))}
                   </div>
 
-                  <div className={`p-4 tab-content rounded-lg ${activeTab === 'tab2' ? '' : 'hidden'}`}>
+                  <div className={`lg:p-4 tab-content rounded-lg ${activeTab === 'cancel' ? '' : 'hidden'}`}>
                     {orders.tab2.map((order, index) => (
                       <div key={index} className="p-6 border rounded-2xl relative">
                         <div className={`bg-red-500 rounded-tl-2xl text-xs text-white py-3 px-6 rounded-br-2xl absolute top-0 left-0`}>
@@ -293,7 +294,7 @@ export default function OrderUser() {
                     ))}
                   </div>
 
-                  <div className={`p-4 tab-content rounded-lg ${activeTab === 'tab3' ? '' : 'hidden'}`}>
+                  <div className={`lg:p-4 tab-content rounded-lg ${activeTab === 'back' ? '' : 'hidden'}`}>
                     {orders.tab3.map((order, index) => (
                       <div key={index} className="p-6 border rounded-2xl relative">
                         <div className={`bg-yellow-500 rounded-tl-2xl text-xs text-white py-3 px-6 rounded-br-2xl absolute top-0 left-0`}>

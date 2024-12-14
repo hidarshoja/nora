@@ -22,7 +22,7 @@ const Login = () => {
                   <span className="label-text-alt">پسورد:</span>
                 </label>
                 <input type="password" className="input input-bordered w-full my-2" />
-               <Link to="/user/home">
+               <Link to="/user/home/main">
                 <button className="btn bg-stone-800 hover:bg-stone-900 text-white w-full my-4">
                   ورود
                 </button>

@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
     element: <UserLayout />,
     children: [
       {
-        path: '',
+        path: 'main',
         element: <HomeUser />,
       },
       {

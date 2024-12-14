@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MobileSidebar from "../components/MobileSidbar";
+import MobileSidbarUser from "../components/User/MobileSidbarUser";
 import DesktopSidebar from "../components/User/DesktopSidebarUser";
 import Header from "../components/User/HeaderUser";
 import { Outlet } from "react-router-dom";
@@ -15,7 +15,7 @@ export default function UserLayout() {
   return (
     <>
       <div className="lg:flex lg:h-screen ">
-        <MobileSidebar
+        <MobileSidbarUser
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
         />
@@ -40,8 +40,8 @@ export default function UserLayout() {
 
           <div>
             <main>
-              <div className="px-2">
-                <div className="w-full min-h-[90vh] bg-white rounded-2xl p-4">
+              <div>
+                <div className="w-full min-h-[90vh] bg-white rounded-2xl lg:p-4">
                   <Outlet />
                 </div>
               </div>
