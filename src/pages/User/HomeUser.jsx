@@ -303,7 +303,7 @@ export default function HomeUser() {
     {isModalOpen && invoiceData && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-8 w-96">
-            <h2 className="text-xl font-bold mb-4">فاکتور</h2>
+            <h2 className="text-sm lg:text-xl font-bold mb-4">فاکتور</h2>
             <p><strong>کد سفارش:</strong> {invoiceData.id}</p>
             <p><strong>تاریخ:</strong> {invoiceData.date}</p>
             <p><strong>تخفیف:</strong> {invoiceData.discount}</p>

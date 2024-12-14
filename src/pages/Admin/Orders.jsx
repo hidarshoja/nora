@@ -59,7 +59,7 @@ export default function AdminOrders() {
 
   return (
     <div className="md:p-4">
-     <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه سفارشات</h1> 
+     <h1 className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">صفحه سفارشات</h1> 
      <div className="overflow-x-auto">
      <table className="min-w-full divide-y divide-gray-300 border ">
         <thead className="bg-gray-100">

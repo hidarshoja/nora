@@ -33,7 +33,7 @@ const clients = [
 export default function Dashboord() {
   return (
    <div className="md:p-4">
-   <h3  className="text-xl font-YekanBakh-Regular  mb-5">میزان درآمد و تعداد کاربران</h3>
+   <h3  className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">میزان درآمد و تعداد کاربران</h3>
  
    <ul
       role="list"

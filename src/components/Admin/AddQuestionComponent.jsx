@@ -98,7 +98,7 @@ export default function AddQuestionComponent() {
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-center border">
           <thead className="border-b bg-blue-700 text-white">
-            <tr>
+            <tr className="text-sm md:text-md">
               <th>آیدی</th>
               <th>موضوع</th>
               <th>نام طراح</th>
@@ -109,7 +109,7 @@ export default function AddQuestionComponent() {
           </thead>
           <tbody>
             {questions.map((q) => (
-              <tr key={q.id} className="hover:bg-gray-200 text-sm">
+              <tr key={q.id} className="hover:bg-gray-200 text-sm md:text-md">
                 <td>{q.id}</td>
                 <td>{q.topic}</td>
                 <td>{q.author}</td>

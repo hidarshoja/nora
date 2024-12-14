@@ -31,6 +31,7 @@ import OrderUser from './pages/User/OrderUser';
 import CommentUser from './pages/User/CommentUser';
 import TicketUser from './pages/User/TicketUser';
 import ProfileUser from './pages/User/ProfileUser';
+import PasswordRecovery from './pages/auth/PasswordRecovery';
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
         path: 'register',
         element: <Register />
       },
+      {
+        path: 'forget',
+        element: <PasswordRecovery />
+      },
     ]
   },
 
@@ -71,7 +76,7 @@ export const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       {
-        path: '',
+        path: 'home',
         element: <Dashboord />,
       },
       {

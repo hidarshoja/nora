@@ -28,14 +28,14 @@ const Register = () => {
   return (
     <section className="h-screen px-4 flex items-center">
       <div className="container mx-auto max-w-screen-lg">
-        <div className="bg-[#3E4095] mt-6 text-white rounded-2xl overflow-hidden">
+        <div className=" mt-6 text-black rounded-2xl overflow-hidden">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 p-8 md:p-4 lg:p-20 lg:pb-0 text-center">
               <form onSubmit={handleRegister}>
                 <h2 className="text-3xl font-YekanBakh-ExtraBlack my-4">ثبت نام</h2>
 
                 <label className="label">
-                  <span className="label-text-alt text-white">نام:</span>
+                  <span className="label-text-alt text-black">نام:</span>
                 </label>
                 <input
                   type="text"
@@ -46,7 +46,7 @@ const Register = () => {
                 />
 
                 <label className="label">
-                  <span className="label-text-alt text-white">نام خانوادگی:</span>
+                  <span className="label-text-alt text-black">نام خانوادگی:</span>
                 </label>
                 <input
                   type="text"
@@ -57,7 +57,7 @@ const Register = () => {
                 />
 
                 <label className="label">
-                  <span className="label-text-alt text-white">شماره تماس:</span>
+                  <span className="label-text-alt text-black">شماره تماس:</span>
                 </label>
                 <input
                   type="tel"
@@ -68,7 +68,7 @@ const Register = () => {
                 />
 
                 <label className="label">
-                  <span className="label-text-alt text-white">ایمیل:</span>
+                  <span className="label-text-alt text-black">ایمیل:</span>
                 </label>
                 <input
                   type="email"
@@ -79,7 +79,7 @@ const Register = () => {
                 />
 
                 <label className="label">
-                  <span className="label-text-alt text-white">پسورد:</span>
+                  <span className="label-text-alt text-black">پسورد:</span>
                 </label>
                 <input
                   type="password"
@@ -90,7 +90,7 @@ const Register = () => {
                 />
 
                 <label className="label">
-                  <span className="label-text-alt text-white">تکرار پسورد:</span>
+                  <span className="label-text-alt text-black">تکرار پسورد:</span>
                 </label>
                 <input
                   type="password"
@@ -102,7 +102,7 @@ const Register = () => {
 
                 <button
                   type="submit"
-                  className="btn bg-green-500 hover:bg-green-800 text-white w-full my-4"
+                  className="btn bg-green-500 hover:bg-green-800 text-black w-full my-4"
                 >
                   ثبت نام
                 </button>

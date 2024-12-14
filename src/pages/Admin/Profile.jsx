@@ -62,7 +62,7 @@ export default function Profile() {
 
   return (
     <div className="md:p-4 ">
-       <h2 className="text-xl font-bold mb-4">پرفایل </h2>
+       <h2 className="text-sm lg:text-xl font-bold mb-4">پرفایل </h2>
       <div className="mt-8 flow-root">
         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
           <div className="bg-white p-3">

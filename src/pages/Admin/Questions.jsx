@@ -7,7 +7,7 @@ export default function Questions() {
     const [activeTab, setActiveTab] = useState("list");
   return (
     <div className='md:p-4'>
-                <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه سوالات</h1>
+                <h1 className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">صفحه سوالات</h1>
       <div className="flex border-b mb-4">
         <button
           onClick={() => setActiveTab("list")}

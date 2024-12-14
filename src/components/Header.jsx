@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -25,14 +26,14 @@ const Header = () => {
                       </svg>
                     </label> 
                   </div> 
-                  <li><Link to="/">صفحه اصلی</Link></li>
-                  <li><Link to="/shop">فروشگاه</Link></li>
-                  <li><Link to="/blog">وبلاگ</Link></li>
-                  <li><Link to="/about">درباره ما</Link></li>
-                  <li><Link to="/contact">تماس با ما</Link></li>
-                  <li><Link to="/auth/login">ورود</Link></li>
-                  <li><Link to="/register">ثبت نام </Link></li>
-                  <li><Link to="/Question">سوالات متداول</Link></li>
+                  <li className="mobile_menu"><NavLink to="/">صفحه اصلی</NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/shop">فروشگاه</NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/blog">وبلاگ</NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/about">درباره ما</NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/contact">تماس با ما</NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/auth/login">ورود</NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/register">ثبت نام </NavLink></li>
+                  <li className="mobile_menu"><NavLink to="/Question">سوالات متداول</NavLink></li>
                 </ul>
               </div>
             </div>
@@ -43,12 +44,12 @@ const Header = () => {
             <div className="hidden lg:block form-control w-full">
               <div className="flex items-center gap-8">
                 <ul className="flex menu lg:menu-horizontal !p-0">
-                  <li><Link to="/">صفحه اصلی</Link></li>
-                  <li><Link to="/shop">فروشگاه</Link></li>
-                  <li><Link to="/blog">وبلاگ</Link></li>
-                  <li><Link to="/about">درباره ما</Link></li>
-                  <li><Link to="/contact">تماس با ما</Link></li>
-                  <li><Link to="/admin/dashboard">پنل مدیریت</Link></li>
+                  <li className='desktop_menu'><NavLink to="/">صفحه اصلی</NavLink></li>
+                  <li className='desktop_menu'><NavLink to="/shop">فروشگاه</NavLink></li>
+                  <li className='desktop_menu'><NavLink to="/blog">وبلاگ</NavLink></li>
+                  <li className='desktop_menu'><NavLink to="/about">درباره ما</NavLink></li>
+                  <li className='desktop_menu'><NavLink to="/contact">تماس با ما</NavLink></li>
+                  <li className='desktop_menu'><NavLink to="/admin/dashboard">پنل مدیریت</NavLink></li>
                 </ul>
               </div> 
             </div>

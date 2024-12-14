@@ -8,11 +8,11 @@ export default function CommentsAdmin() {
     const [activeTab, setActiveTab] = useState("commentProduct");
   return (
     <div className='md:p-4'>
-         <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه کامنت ها</h1>
-         <div className="flex border-b mb-4">
+         <h1 className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">صفحه کامنت ها</h1>
+         <div className="text-sm md:text-lg flex border-b mb-4">
         <button
           onClick={() => setActiveTab("commentProduct")}
-          className={`px-4 py-2 ${
+          className={`p-2 ${
             activeTab === "commentProduct" ? "border-b-2 border-blue-500 text-blue-500" : ""
           }`}
         >
@@ -20,7 +20,7 @@ export default function CommentsAdmin() {
         </button>
         <button
           onClick={() => setActiveTab("commentBlog")}
-          className={`px-4 py-2 ${
+          className={`p-2 ${
             activeTab === "commentBlog" ? "border-b-2 border-blue-500 text-blue-500" : ""
           }`}
         >

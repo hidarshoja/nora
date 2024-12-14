@@ -71,7 +71,7 @@ const ProductTable = () => {
     <div className="overflow-x-auto">
       <table className="table-auto w-full text-center border ">
         <thead className="border-b-2 bg-[#090580] text-white">
-          <tr>
+          <tr className="text-sm lg:text-md">
             <th className="py-3">آیدی</th>
             <th>عکس</th>
             <th>نام محصول</th>
@@ -85,7 +85,7 @@ const ProductTable = () => {
         </thead>
         <tbody>
           {currentProducts.map((product) => (
-            <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white">
+            <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
               <td className="py-2">{product.id}</td>
               <td className="flex items-center justify-center w-full">
                 <img src={product.image} className="w-10 h-10" alt="" />

@@ -33,10 +33,9 @@ const EditCategoryModal = ({ product, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded shadow-lg w-1/2">
+      <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/2">
         <h2 className="text-xl mb-4">ویرایش دسته بندی</h2>
 
-        {/* Image upload input */}
         <input
           type="file"
           name="image"
@@ -44,7 +43,6 @@ const EditCategoryModal = ({ product, onClose, onSave }) => {
           className="block w-full p-2 mb-2 border"
         />
 
-        {/* Category select input */}
         <select
           name="category"
           value={editedProduct.category}

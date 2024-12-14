@@ -14,7 +14,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded shadow-lg w-1/2">
+      <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/2">
         <h2 className="text-xl mb-4">ویرایش محصول</h2>
         <input
           type="text"
@@ -42,7 +42,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         />
         <select
           name="prand"
-          value={editedProduct.prand} 
+          value={editedProduct.prand}
           onChange={handleChange}
           className="block w-full p-2 mb-2 border"
         >
@@ -53,7 +53,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         </select>
         <select
           name="category"
-          value={editedProduct.category}  
+          value={editedProduct.category}
           onChange={handleChange}
           className="block w-full p-2 mb-2 border"
         >
@@ -66,10 +66,16 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           <option value="gearbox">گیریبکس</option>
         </select>
         <div className="flex justify-end">
-          <button onClick={onClose} className="bg-gray-300 px-4 py-2 rounded mx-2">
+          <button
+            onClick={onClose}
+            className="bg-gray-300 px-4 py-2 rounded mx-2"
+          >
             لغو
           </button>
-          <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-2 rounded">
+          <button
+            onClick={handleSave}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
             ذخیره
           </button>
         </div>

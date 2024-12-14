@@ -3,6 +3,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronRightIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { navigation } from "../constant/Menu";
+import { NavLink } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -50,11 +51,11 @@ export default function DesktopSidebar({
                 {navigation.map((item) => (
                                 <li
                                   key={item.name}
-                                  className="flex items-start py-2 cursor-pointer gap-3 text-white  w-full border-b-2 border-gray-400 hover:bg-white hover:text-black"
+                                  className="admin-link flex items-start py-2 cursor-pointer gap-3 text-white  w-full border-b-2 border-gray-400 hover:bg-white hover:text-black"
                                 >
                                  
                                   {!item.children ? (
-                                    <Link
+                                    <NavLink
                                       to={item.href}
                                      
                                       className={classNames(
@@ -65,7 +66,7 @@ export default function DesktopSidebar({
                                       )}
                                     >
                                       {item.name}
-                                    </Link>
+                                    </NavLink>
                                   ) : (
                                     <Disclosure as="div" dir="ltr" className="w-full">
                                       {({ open }) => (

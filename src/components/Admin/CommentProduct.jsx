@@ -48,11 +48,11 @@ export default function CommentProduct() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">کامنت محصولات</h2>
+      <h2 className="text-sm lg:text-xl font-bold mb-4">کامنت محصولات</h2>
       <div className="overflow-x-auto">
       <table className="table-auto w-full text-center border">
         <thead className="border-b bg-blue-700 text-white">
-          <tr>
+          <tr className="text-sm lg:text-md">
             <th className="py-3">آیدی</th>
             <th>تاریخ</th>
             <th>ساعت</th>
@@ -64,7 +64,7 @@ export default function CommentProduct() {
         </thead>
         <tbody>
           {comments.map((comment) => (
-            <tr key={comment.id} className="hover:bg-gray-200">
+            <tr key={comment.id} className="hover:bg-gray-200 text-sm lg:text-md">
               <td className="py-2">{comment.id}</td>
               <td>{comment.date}</td>
               <td>{comment.time}</td>
@@ -94,7 +94,7 @@ export default function CommentProduct() {
 
       {isModalOpen && selectedComment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-1/3">
+          <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/3">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold"> 
                   {selectedComment.title}

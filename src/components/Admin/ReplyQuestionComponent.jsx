@@ -28,7 +28,7 @@ export default function ReplyQuestionComponent() {
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-center border">
           <thead className="border-b bg-blue-700 text-white">
-            <tr>
+            <tr className="text-sm lg:text-md">
               <th>آیدی</th>
               <th>نام کاربر</th>
               <th>شماره تماس/ایمیل</th>
@@ -38,7 +38,7 @@ export default function ReplyQuestionComponent() {
           </thead>
           <tbody>
             {comments.map((comment) => (
-              <tr key={comment.id} className="hover:bg-gray-200 text-sm">
+              <tr key={comment.id} className="hover:bg-gray-200 text-sm lg:text-md">
                 <td>{comment.id}</td>
                 <td>{comment.userName}</td>
                 <td>{comment.contact}</td>
@@ -58,7 +58,7 @@ export default function ReplyQuestionComponent() {
   
         {selectedComment && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-lg w-1/3">
+            <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/3">
               <h2 className="text-lg font-bold mb-4">پاسخ به: {selectedComment.title}</h2>
               <textarea
                 className="w-full border p-2 rounded mb-4"

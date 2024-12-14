@@ -109,7 +109,7 @@ import { MdDelete } from "react-icons/md";
   
     return (
      <div className="md:p-4">
-      <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه کاربران</h1>
+      <h1 className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">صفحه کاربران</h1>
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-center border">
           <thead className="border-b-2 bg-[#090580] text-white">

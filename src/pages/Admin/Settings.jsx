@@ -6,11 +6,11 @@ export default function Settings() {
       const [activeTab, setActiveTab] = useState("list");
   return (
     <div className='md:p-4'>
-              <h1 className="text-xl font-YekanBakh-Regular  mb-5">صفحه تنظیمات</h1>
+              <h1 className="text-md md:text-xl font-YekanBakh-Regular  mb-5">صفحه تنظیمات</h1>
       <div className="flex border-b mb-4">
         <button
           onClick={() => setActiveTab("list")}
-          className={`px-4 py-2 ${
+          className={`p-2 ${
             activeTab === "list" ? "border-b-2 border-blue-500 text-blue-500" : ""
           }`}
         >
@@ -18,7 +18,7 @@ export default function Settings() {
         </button>
         <button
           onClick={() => setActiveTab("add")}
-          className={`px-4 py-2 ${
+          className={` p-2 ${
             activeTab === "add" ? "border-b-2 border-blue-500 text-blue-500" : ""
           }`}
         >
