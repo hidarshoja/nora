@@ -40,11 +40,11 @@ export default function TicketUser() {
       : tickets.filter((ticket) => ticket.status === filter);
 
   return (
-    <div className="p-1">
+    <div className="p-2">
     <div className="p-3 bg-stone-200 rounded-xl my-4">
                   <h1 className="text-sm font-YekanBakh-Bold">تیکت ها</h1>
                 </div>
-    <div className="w-full text-black p-6">
+    <div className="w-full text-black py-6">
       <div className="flex flex-col md:flex-row gap-2 py-4 items-center justify-between">
         <div className="w-full md:w-[250px] flex items-center justify-between gap-2  border border-gray-400 rounded-md p-3 bg-gray-100">
              <div>

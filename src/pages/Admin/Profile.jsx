@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import axios from 'axios';
-import { CiUser } from "react-icons/ci";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("personalInfo");

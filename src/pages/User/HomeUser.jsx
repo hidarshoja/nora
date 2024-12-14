@@ -162,16 +162,16 @@ export default function HomeUser() {
     
 
   return (
-    <div className='p-1'>
+    <div className='px-1 md:px-3'>
       <div className="p-3 bg-stone-200 rounded-xl my-4">
                   <h1 className="text-sm font-YekanBakh-Bold">صفحه اصلی</h1>
                 </div>
-         <section className="lg:px-4 my-16">
+         <section className=" my-16">
         <div className="container mx-auto max-w-screen-xl">
             <div className="flex gap-4">
               
 
-                <div className="px-4 w-full">
+                <div className="w-full">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 rounded-s-3xl">
                         <div className="flex items-center justify-between bg-green-500 rounded-3xl p-8">
                             
@@ -244,10 +244,10 @@ export default function HomeUser() {
     
                         </div>
                         <div>
-      <section className="lg:px-4 my-16">
+      <section className="my-16">
         <div className="container mx-auto max-w-screen-xl">
           <div className="flex gap-4">
-            <div className="lg:px-4 w-full">
+            <div className="w-full">
               <div className="bg-white rounded-3xl p-0 lg:p-4">
                 <div className="p-3 bg-stone-200 rounded-xl my-4">
                   <h1 className="text-sm font-YekanBakh-Bold">سفارش های اخیر شما</h1>

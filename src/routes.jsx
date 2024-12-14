@@ -2,13 +2,14 @@ import { createBrowserRouter } from 'react-router-dom';
 import AuthLayout from './layout/AuthLayout';
 import MainLayout from './layout/MainLayout';
 import AdminLayout from './layout/AdminLayout';
+import PasswordRecovery from './pages/auth/PasswordRecovery';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
 import CartPage from './pages/Cart';
 import BlogPage from './pages/‌Blog';
 import BlogDetail from './pages/SinglePage';
@@ -31,7 +32,7 @@ import OrderUser from './pages/User/OrderUser';
 import CommentUser from './pages/User/CommentUser';
 import TicketUser from './pages/User/TicketUser';
 import ProfileUser from './pages/User/ProfileUser';
-import PasswordRecovery from './pages/auth/PasswordRecovery';
+import Notifications from './pages/Admin/Notifications';
 
 export const router = createBrowserRouter([
   {
@@ -114,7 +115,12 @@ export const router = createBrowserRouter([
       {
         path: 'questionsAdmin',
         element: <QuestionsAdmin />,
+      },
+      {
+        path: 'notification',
+        element: <Notifications />,
       }
+
     ]
   },
   {
