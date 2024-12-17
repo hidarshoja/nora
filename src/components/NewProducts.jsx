@@ -70,7 +70,7 @@ const NewProducts = () => {
             <SwiperSlide key={index}>
               <div className="bg-white rounded-3xl leading-10 p-4">
                 <a href={product.link} className="flex flex-col items-center justify-center">
-                  <img className="mb-4" src={product.image} alt={product.name} />
+                  <img className="mb-4 h-64"  src={product.image} alt={product.name} />
                 </a>
                 <div className="text-center">
                   <a href={product.link}>
