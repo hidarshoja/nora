@@ -5,17 +5,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 const NewProducts = () => {
   const newProducts = [
     {
-      name: "لاستیک بارز",
-      oldPrice: "360.000 تومان",
-      newPrice: "280.000 تومان",
-      image: "assets/images/new-img/tire.webp",
+      name: "بوش پیستون پژو 405", 
+      oldPrice: "2.360.000 تومان",
+      newPrice: "2.280.000 تومان",
+      image: "assets/images/new-img/bosh.jpg",
       link: "#",
     },
     {
-      name: "روغن اسپیدی",
+      name: "شیلنگ طول بنزین",
       oldPrice: "140.000 تومان",
       newPrice: "90.000 تومان",
-      image: "assets/images/new-img/oil.webp",
+      image: "assets/images/new-img/hose2.jpg",
       link: "#",
     },
     {

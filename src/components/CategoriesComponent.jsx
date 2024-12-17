@@ -31,7 +31,7 @@ const categories = [
   },
   {
     id:4 ,
-    image: "assets/images/new-img/butri.webp",
+    image: "assets/images/new-img/butri.jpg",
     title: "قطعات برقی",
     link: "/shop"
   },
@@ -43,13 +43,13 @@ const categories = [
   },
   {
     id:6 ,
-    image: "assets/images/new-img/lent.webp",
-    title: "مکانیزم و استاندارد",
+    image: "assets/images/new-img/hose.jpg",
+    title: "شیلنگ ها",
     link: "/shop"
   },
   {
     id:7 ,
-    image: "assets/images/new-img/ring.webp",
+    image: "assets/images/new-img/decorations.jpg",
     title: "تزیینات",
     link: "/shop"
   }

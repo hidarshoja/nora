@@ -12,11 +12,11 @@ const bestSellingProducts = [
     progressValue: 70,
   },
   {
-    name: "سیبک",
-    originalPrice: "50.000 تومان",
-    discountedPrice: "45.000 تومان",
+    name: "دیسک",
+    originalPrice: "950.000 تومان",
+    discountedPrice: "845.000 تومان",
     stock: "7 از 20",
-    imgSrc: "assets/images/new-img/sipak.webp",
+    imgSrc: "assets/images/new-img/disc5.jpg",
     progressValue: 70,
   },
   {

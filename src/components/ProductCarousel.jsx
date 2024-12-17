@@ -9,11 +9,11 @@ import 'swiper/css/scrollbar';
 const ProductCarousel = () => {
   const productList = [
     {
-      imgSrc: "assets/images/product-5.jpg",
-      title: "کیف کمری ابزار",
-      originalPrice: "360.000 تومان",
-      discountedPrice: "280.000 تومان",
-      link: "#",  // برای لینک محصول
+      imgSrc: "assets/images/new-img/harrington.jpg",
+      title: "پمپ روغن",
+      originalPrice: "2,140,000 تومان",
+      discountedPrice: "2,100,000 تومان",
+      link: "#", 
     },
     {
       imgSrc: "assets/images/new-img/manual.webp",
