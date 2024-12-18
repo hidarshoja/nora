@@ -102,7 +102,7 @@ const Cart = () => {
                     >
                       x 
                     </button>
-                  <div className="flex gap-1 items-center w-full lg:w-1/2">
+                  <div className="flex gap-1 items-center w-full lg:w-1/2 ">
                     <div>
                       <img
                         className="w-32 border rounded-2xl"
@@ -115,36 +115,25 @@ const Cart = () => {
                         {product.name}
                       </h1>
                       <p>دسته بندی: {product.category}</p>
-                      <div className="priceTagMobile flex gap-4 text-base mt-4">
-                      <span className="line-through">
-                        {new Intl.NumberFormat("fa-IR").format(
-                          product.originalPrice
-                        )}{" "}
-                      </span>
-                      <span className="text-yellow-500">
-                        {new Intl.NumberFormat("fa-IR").format(
-                          product.discountPrice
-                        )}{" "}
-                      </span>
-                     </div>
+                    
                     </div>
                   </div>
-                  <div  className="flex gap-1 items-center w-full lg:w-1/2">
-                    <div className="priceTag flex gap-4 text-base mt-4">
+                  <div  className="flex gap-1 items-center w-full lg:w-1/2 justify-between">
+                    <div className=" flex flex-col gap-4 text-base mt-4">
                       <span className="line-through">
                         {new Intl.NumberFormat("fa-IR").format(
                           product.originalPrice
-                        )}{" "}
+                        )}{" "}ت
                       </span>
                       <span className="text-yellow-500">
                         {new Intl.NumberFormat("fa-IR").format(
                           product.discountPrice
-                        )}{" "}
+                        )}{" "}ت
                       </span>
                     </div>
                     <div>
-                      <div className="number flex">
-                        <span className="minus p-4">تعداد:</span>
+                      <div className="number flex flex-col items-center md:flex-row">
+                        <span className="minus pl-4">تعداد:</span>
                         <div className="flex border border-gray-700 rounded-md bg-white">
                           <button
                             onClick={() => handleQuantityChange(product.id, -1)}
@@ -152,10 +141,11 @@ const Cart = () => {
                           >
                             -
                           </button>
+                          
                           <input
                             type="text"
                             value={product.quantity}
-                            className="input text-center w-20"
+                            className="input text-center w-12"
                             readOnly
                           />
                           <button
