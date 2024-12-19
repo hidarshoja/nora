@@ -2,7 +2,9 @@ import { useState } from "react";
 import MobileSidbarUser from "../components/User/MobileSidbarUser";
 import DesktopSidebar from "../components/User/DesktopSidebarUser";
 import Header from "../components/User/HeaderUser";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAtomValue } from "jotai";
+import { userProfile } from "../stores/store";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +13,11 @@ function classNames(...classes) {
 export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
+  const profile = useAtomValue(userProfile)
+
+  if (!profile || profile?.role !== "user") {
+    return <Navigate to='/auth/login' />
+  }
 
   return (
     <>

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MobileSidebar from "../components/MobileSidbar";
 import DesktopSidebar from "../components/DesktopSidebar";
 import Header from "../components/Admin/HeaderAdmin";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { userProfile } from "../stores/store";
+import { useAtomValue, useSetAtom } from 'jotai'
+import { checkAuth } from "../utils/auth";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +14,21 @@ function classNames(...classes) {
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
+  const profile = useAtomValue(userProfile)
+  const setUser = useSetAtom(userProfile);
+
+  useEffect(() => {
+    const fetchAuth = async () => {
+      console.log("second")
+     if(!profile) await checkAuth(setUser); // Call the checkAuth function
+    };
+    fetchAuth();
+  }, [profile]);
+
+  if (!profile || profile?.role !== "admin") {
+    console.log("Redirecting to login...");
+    return <Navigate to="/auth/login" replace />;
+  }
 
   return (
     <>

@@ -1,48 +1,41 @@
 import axios from "axios";
-
-
+import { refreshToken } from "./utils/auth";
 
 const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
-  withCredentials: true
-})
-
-axiosClient.interceptors.request.use((config) => {
-  if (config.method === 'post') {
-    config.headers['Content-Type'] = 'multipart/form-data';
-  } else if (['put', 'patch', 'delete'].includes(config.method) && config.data instanceof FormData) {
-    config.headers['Content-Type'] = 'multipart/form-data';
-  } else {
-    delete config.headers['Content-Type'];
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
+  withCredentials: true, // Enable sending cookies with requests
 });
 
-axiosClient.interceptors.response.use((response) => {
-  return response
-}, (error) => {
-  const {response} = error;
-  if(!response.status){
-    alert('اینترنت شما قطع میباشد')
-    return
-  }
-  if (response.status === 401) {
-    localStorage.removeItem('ACCESS_TOKEN')
-    if(window.location.pathname != '/auth'){
-        window.location.href= '/auth';
-    }
-    
-  } else if (response.status === 404) {
-    //Show not found
-  }else if (response.status === 403) {
-    localStorage.removeItem('ACCESS_TOKEN')
-    window.location.href= '/login';
-  }
+let refreshPromise = null;
 
-  throw error;
-})
+axiosClient.interceptors.response.use(
+	(response) => response,
+	async (error) => {
+		const originalRequest = error.config;
+		if (error.response?.status === 401 && !originalRequest._retry) {
+			originalRequest._retry = true;
 
-export default axiosClient
+			try {
+				// If a refresh is already in progress, wait for it to complete
+				if (refreshPromise) {
+					await refreshPromise;
+					return axios(originalRequest);
+				}
+
+				// Start a new refresh process
+				refreshPromise = refreshToken();
+				await refreshPromise;
+				refreshPromise = null;
+
+				return axios(originalRequest);
+			} catch (refreshError) {
+				// If refresh fails, redirect to login or handle as needed
+				useUserStore.getState().logout();
+				return Promise.reject(refreshError);
+			}
+		}
+		return Promise.reject(error);
+	}
+);
+
+export default axiosClient;

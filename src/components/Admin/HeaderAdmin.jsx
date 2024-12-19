@@ -3,6 +3,8 @@ import React from "react";
 import { Menu } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { useAtomValue } from "jotai";
+import { userProfile } from "../../stores/store";
 
 
 export default function HeaderAdmin({
@@ -10,6 +12,9 @@ export default function HeaderAdmin({
   desktopSidebarOpen,
   setDesktopSidebarOpen,
 }) {
+
+  const user = useAtomValue(userProfile)
+
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 bg-[#090580] border-b-2 border-gray-700 px-4 sm:gap-x-6 sm:px-6 lg:px-8">
       <button
@@ -54,7 +59,7 @@ export default function HeaderAdmin({
                   />
                 </div>
                 <div className="text-color3 text-sm md:text-[16px]">
-                  سام درخشانی 
+                  {user?.first_name + " " + user?.last_name}
                 </div>
               </div>
             </div>
