@@ -1,94 +1,212 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { handleToast } from "../../utils/message";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosClient from "../../axios-client";
+import { getFormData } from '../../utils/form-data'
+import { transformedErrors } from "../../utils";
+import useGet from "../../hooks/useGet";
+import usePost from "../../hooks/usePost";
+
 
 const AddProduct = () => {
-  const [newProduct, setNewProduct] = useState({
-    title: "",
-    originalPrice: "",
-    discountedPrice: "",
-    prand: "",
-    category: "",
-    image: null,
-  });
+  const [images, setImages] = useState([])
+  const [newImages, setNewImages] = useState([])
+  const [errors, setErrors] = useState(null)
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct((prev) => ({ ...prev, [name]: value }));
-  };
+  const { data: categories, isLoading } = useGet(['category'], '/category')
+  const { mutateAsync, isPending } = usePost('/product', 'product')
 
+  // ! select multy image
   const handleImageUpload = (e) => {
-    setNewProduct((prev) => ({ ...prev, image: e.target.files[0] }));
+    const files = e.target.files[0];
+
+    if (images?.length > 5) {
+      handleToast("error", "حداکثر می‌توانید 5 عکس اضافه کنید.");
+      return;
+    }
+
+    setImages((prev) => ([
+      ...prev,
+      files,
+    ]));
   };
 
-  const handleSubmit = () => {
-    console.log("New Product:", newProduct);
-    // ارسال داده به سرور...
+  // ! remove image
+  const handleRemoveImage = (index) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
+
+  // ! change image to link
+  const handleImageChange = () => {
+
+    if (images?.length === 0) {
+      handleToast("error", "لطفا حداقل یک عکس وارد کنید");
+      return;
+    }
+
+    for (const image of images) {
+      // return if file is not image
+      if (!image.type.startsWith("image/")) {
+        handleToast("error", "لطفا یک تصویر انتخاب کنید.");
+        return;
+      }
+
+      if (image) {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          setNewImages(prev => ([...prev, reader.result]));
+        };
+
+        reader.readAsDataURL(image);
+      }
+    }
+  };
+
+
+  // ! add new product
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    handleImageChange()
+
+    try {
+      let body = {
+        ...getFormData(e.target),
+        images: newImages
+      }
+
+      console.log(body)
+      await mutateAsync(body)
+
+      handleToast('success', 'محصول با موفقیت اضافه شد')
+      document.querySelector('form').reset();
+
+    } catch (error) {
+      console.log(error)
+      if (error.response.data?.errors) setErrors(transformedErrors(error?.response?.data?.errors))
+    }
+
+
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
 
   return (
-    <div>
+    <form encType="multipart/form-data" onSubmit={handleSubmit}>
       <input
         type="file"
-        name="image"
+        multiple
+        accept="image/*"
         onChange={handleImageUpload}
         className="block w-full p-2 mb-2 border"
       />
+
+
+      <div className="flex flex-wrap gap-2 mb-2">
+        {images?.map((image, index) => (
+          <div key={index} className="relative">
+            <img
+              src={URL.createObjectURL(image)}
+              alt={`Uploaded ${index + 1}`}
+              className="w-20 h-20 object-cover rounded border"
+            />
+            <button
+              onClick={() => handleRemoveImage(index)}
+              className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
       <input
         type="text"
-        name="title"
-        value={newProduct.title}
-        onChange={handleChange}
+        name="name"
         placeholder="نام محصول"
         className="block w-full p-2 mb-2 border"
       />
-      <input
-        type="number"
-        name="originalPrice"
-        value={newProduct.originalPrice}
-        onChange={handleChange}
-        placeholder="قیمت اصلی"
-        className="block w-full p-2 mb-2 border"
-      />
-      <input
-        type="number"
-        name="discountedPrice"
-        value={newProduct.discountedPrice}
-        onChange={handleChange}
-        placeholder="قیمت تخفیف‌دار"
-        className="block w-full p-2 mb-2 border"
-      />
+      <p className="text-red-600 mb-3">{errors?.name ? errors?.name[0] : ""}</p>
 
-      <select
-        name="prand"
-        value={newProduct.prand}
-        onChange={handleChange}
-        className="block w-full p-2 mb-2 border"
-      >
-        <option value="iranKhodo">ایران خودرو</option>
-        <option value="saipa">سایپا</option>
-        <option value="other">متفرقه</option>
-        <option value="chinese">وارداتی</option>
-      </select>
-      <select
-        name="category"
-        value={newProduct.category}
-        onChange={handleChange}
-        className="block w-full p-2 mb-2 border"
-      >
-        <option value="steering">فرمان</option>
-        <option value="suspension">جلوبندی</option>
-        <option value="engine">موتور</option>
-        <option value="electrical">برقی</option>
-        <option value="standard">مکانیزم و استاندارد</option>
-        <option value="decoration">تزئینی</option>
-        <option value="gearbox">گیریبکس</option>
-      </select>
+      <div className="flex sm:flex-row flex-col gap-2">
+        <div className="w-full sm:w-1/2">
+          <input
+            type="number"
+            name="price"
+            placeholder="قیمت اصلی"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3">{errors?.price ? errors?.price[0] : ""}</p>
+        </div>
+        <div className="w-full sm:w-1/2">
+          <input
+            type="number"
+            name="price_with_off"
+            placeholder="قیمت تخفیف‌دار"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3">{errors?.price_with_off ? errors?.price_with_off[0] : ""}</p>
+        </div>
+
+      </div>
+
+      <div className="flex sm:flex-row flex-col gap-2">
+        <div className="w-full sm:w-1/2">
+          <select
+            name="category_id"
+            className="block w-full p-2 mb-2 border"
+          >
+            {categories?.data && categories?.data.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-full sm:w-1/2">
+          <input
+            type="text"
+            name="machine"
+            placeholder="نوع خودرو"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3">{errors?.machine ? errors?.machine[0] : ""}</p>
+        </div>
+      </div>
+
+
+      <div className="flex sm:flex-row flex-col gap-2">
+        <div className="w-full sm:w-1/2">
+          <input
+            type="text"
+            name="brand"
+            placeholder="برند محصول"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3">{errors?.brand ? errors?.brand[0] : ""}</p>
+        </div>
+        <div className="w-full sm:w-1/2">
+          <input
+            type="text"
+            name="material"
+            placeholder="جنس محصول"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3">{errors?.material ? errors?.material[0] : ""}</p>
+        </div>
+      </div>
+
+
+
       <button
-        onClick={handleSubmit}
         className="bg-green-500 text-white px-4 py-2 rounded"
+        disabled={isPending}
       >
-        افزودن محصول
+        {isPending ? 'در حال اضافه کردن...' : 'اضافه کردن'}
       </button>
-    </div>
+    </form>
   );
 };
 

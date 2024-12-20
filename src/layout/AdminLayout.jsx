@@ -6,6 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { userProfile } from "../stores/store";
 import { useAtomValue, useSetAtom } from 'jotai'
 import { checkAuth } from "../utils/auth";
+import { Toaster } from "react-hot-toast";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -19,14 +20,12 @@ const AdminLayout = () => {
 
   useEffect(() => {
     const fetchAuth = async () => {
-      console.log("second")
-     if(!profile) await checkAuth(setUser); // Call the checkAuth function
+      if (!profile) await checkAuth(setUser); // Call the checkAuth function
     };
     fetchAuth();
   }, [profile]);
 
   if (!profile || profile?.role !== "admin") {
-    console.log("Redirecting to login...");
     return <Navigate to="/auth/login" replace />;
   }
 
@@ -67,6 +66,10 @@ const AdminLayout = () => {
           </div>
         </div>
       </div>
+      <Toaster
+        position="top-left"
+        reverseOrder={false}
+      />
     </>
   );
 };
