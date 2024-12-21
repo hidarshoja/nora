@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from "react-router-dom"
+import  useGet  from '../hooks/useGet';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -9,53 +10,12 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-const categories = [
-  {
-    id:1 ,
-    image: "assets/images/new-img/joloBandi.jpg",
-    title: "قطعات جلوبندی",
-    link: "/shop"
-  },
-  {
-    id:2 ,
-    image: "assets/images/new-img/motori.jpg",
-    title: "سیستم موتوری",
-    link: "/shop"
-  },
-  
-  {
-    id:3 ,
-    image: "/assets/images/new-img/griboks.jpg",
-    title: "قطعات فرمان",
-    link: "/shop"
-  },
-  {
-    id:4 ,
-    image: "assets/images/new-img/butri.jpg",
-    title: "قطعات برقی",
-    link: "/shop"
-  },
-  {
-    id:5 ,
-    image: "assets/images/new-img/lent5.png",
-    title: "گیریبکس",
-    link: "/shop"
-  },
-  {
-    id:6 ,
-    image: "assets/images/new-img/hose.jpg",
-    title: "شیلنگ ها",
-    link: "/shop"
-  },
-  {
-    id:7 ,
-    image: "assets/images/new-img/decorations.jpg",
-    title: "تزیینات",
-    link: "/shop"
-  }
-];
+
 
 export default function CategoriesComponent() {
+  const {data:categories,isLoading } = useGet(['category'], '/category')
+
+
   return (
     <section className="my-14 px-4">
       <div className="container mx-auto max-w-screen-xl">
@@ -82,7 +42,7 @@ export default function CategoriesComponent() {
        
           
         >
-          {categories.map((category, index) => (
+          {categories?.data && categories?.data.map((category, index) => (
             <SwiperSlide key={index}>
               <div className="border border-slate-200 bg-white rounded-3xl leading-10">
                 <Link
@@ -92,11 +52,11 @@ export default function CategoriesComponent() {
                   <img
                     className="mb-4"
                     style={{ width: "150px", height: "150px" }}
-                    src={category.image}
-                    alt={category.title}
+                    src={category.image_url}
+                    alt={category.name}
                   />
                   <h3 className="font-YekanBakh-ExtraBold text-base">
-                    {category.title}
+                    {category.name}
                   </h3>
                 </Link>
               </div>

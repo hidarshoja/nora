@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
       { path: '/about', element: <AboutUs /> },
       { path: '/contact', element: <ContactUs /> },
       { path: '/shop', element: <Shop /> },
-      { path: '/shop/:productId', element: <ProductDetails /> },
+      { path: '/shop/:slug', element: <ProductDetails /> },
       { path: '/cart', element: <CartPage /> },
       { path: '/blog', element: <BlogPage /> },
       { path: '/blog/:id', element: <BlogDetail /> },

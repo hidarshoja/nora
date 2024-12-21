@@ -75,11 +75,22 @@ const AddProduct = () => {
         images: newImages
       }
 
+      if (Number(body?.price) < Number(body?.price_with_off)) {
+        handleToast('error', 'قیمت تخفیف‌دار نباید بیشتر از قیمت اصلی باشد')
+        return
+      }
+
       console.log(body)
       await mutateAsync(body)
 
       handleToast('success', 'محصول با موفقیت اضافه شد')
       document.querySelector('form').reset();
+
+      setInterval(() => {
+        setImages([])
+        setErrors(null)
+      },2000)
+      
 
     } catch (error) {
       console.log(error)

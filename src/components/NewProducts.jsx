@@ -1,46 +1,12 @@
 import React from 'react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import useGet from '../hooks/useGet';
+import { Link } from 'react-router-dom';
 
 const NewProducts = () => {
-  const newProducts = [
-    {
-      name: "بوش پیستون پژو 405", 
-      oldPrice: "2.360.000 تومان",
-      newPrice: "2.280.000 تومان",
-      image: "assets/images/new-img/bosh.jpg",
-      link: "#",
-    },
-    {
-      name: "شیلنگ طول بنزین",
-      oldPrice: "140.000 تومان",
-      newPrice: "90.000 تومان",
-      image: "assets/images/new-img/hose2.jpg",
-      link: "#",
-    },
-    {
-      name: "فیلتر دو زمانه",
-      oldPrice: "960.000 تومان",
-      newPrice: "425.000 تومان",
-      image: "assets/images/new-img/filter2.webp",
-      link: "#",
-    },
-    {
-      name: "برف پاک کن",
-      oldPrice: "50.000 تومان",
-      newPrice: "45.000 تومان",
-      image: "assets/images/new-img/ezam.webp",
-      link: "#",
-    },
-    {
-      name: "فیلتر",
-      oldPrice: "960.000 تومان",
-      newPrice: "425.000 تومان",
-      image: "assets/images/new-img/filter.webp",
-      link: "#",
-    },
-  ];
-
+  const { data: products, isLoading } = useGet(['product'], '/product?limit=3')
+ 
   return (
     <section className="my-14 px-4">
       <div className="container mx-auto max-w-screen-xl">
@@ -49,37 +15,44 @@ const NewProducts = () => {
         </div>
 
         <Swiper
-              navigation={false} 
-              modules={[Navigation, Pagination, Scrollbar, A11y]}
-              spaceBetween={20}
-              slidesPerView={4}
-              pagination={false}
-              breakpoints={{
-                320: {
-                  slidesPerView: 1, 
-                },
-                768: {
-                  slidesPerView: 2, 
-                },
-                1024: {
-                  slidesPerView: 3, 
-                },
-              }}
+          navigation={false}
+          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          spaceBetween={20}
+          slidesPerView={4}
+          pagination={false}
+          breakpoints={{
+            320: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
         >
-          {newProducts.map((product, index) => (
+          {products?.data.products.length > 0 ? products.data.products.map((product, index) => (
             <SwiperSlide key={index}>
               <div className="bg-white rounded-3xl leading-10 p-4">
-                <a href={product.link} className="flex flex-col items-center justify-center">
-                  <img className="mb-4 h-64"  src={product.image} alt={product.name} />
-                </a>
+                <Link to={`/shop/${product.slug}`} className="flex flex-col items-center justify-center">
+                  <img className="mb-4 h-64" src={product.images[0]?.image_url} alt={product.name} />
+                </Link>
                 <div className="text-center">
-                  <a href={product.link}>
+                  <Link to={`/shop/${product.slug}`}>
                     <h3 className="font-YekanBakh-ExtraBold text-base">{product.name}</h3>
-                  </a>
-                  <div className="flex justify-center gap-4 text-base mt-4">
-                    <span className="line-through">{product.oldPrice}</span>
-                    <span className="text-yellow-500">{product.newPrice}</span>
-                  </div>
+                  </Link>
+                  {product?.price_with_off ? (
+                    <div className="flex justify-center gap-4 text-base mt-4">
+                      <span className="line-through">{new Intl.NumberFormat('fa-IR').format(product.price) + ' تومان'}</span>
+                      <span className="text-yellow-500">{new Intl.NumberFormat('fa-IR').format(product.price_with_off) + ' تومان'}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center gap-4 text-base mt-4">
+                      <span>{new Intl.NumberFormat('fa-IR').format(product.price) + ' تومان'}</span>
+                    </div>
+                  )}
+
                   <div className="flex justify-center gap-2 items-center mt-4">
                     <a className="bg-yellow-500 p-2 text-white rounded-lg" href="#">
                       <svg
@@ -97,12 +70,13 @@ const NewProducts = () => {
                         />
                       </svg>
                     </a>
-                 
+
                   </div>
                 </div>
               </div>
             </SwiperSlide>
-          ))}
+          )) : (
+            <h3 className='text-center font-bold'>محصولی  جهت نمایش وجود ندارد</h3>)}
         </Swiper>
       </div>
     </section>
