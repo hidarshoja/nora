@@ -8,7 +8,10 @@ export default function ProductDetails() {
 
   const [selectedImage, setSelectedImage] = useState(product?.data.images[0].image_url || "");
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading){ 
+    setSelectedImage(product?.data.images[0].image_url)
+    return <p>Loading...</p>
+  };
 
 
 
