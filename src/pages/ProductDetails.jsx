@@ -6,13 +6,17 @@ export default function ProductDetails() {
   const { slug } = useParams();
   const { data: product, isLoading } = useGet(['product', slug], `/product/show/${slug}`)
 
-  const [selectedImage, setSelectedImage] = useState(product?.data.images[0].image_url || "");
+  const [selectedImage, setSelectedImage] = useState("");
 
-  if (isLoading){ 
-    setSelectedImage(product?.data.images[0].image_url)
-    return <p>Loading...</p>
-  };
+  useEffect(() => {
+    if (!isLoading && product?.data.images?.length > 0) {
+      setSelectedImage(product.data.images[0].image_url);
+    }
+  }, [isLoading, product]); // Runs only when `isLoading` or `product` changes
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
 
   const features = [
