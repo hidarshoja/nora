@@ -6,10 +6,11 @@ import { userProfile } from '../stores/store';
 
 const AuthLayout = () => {
   const profile = useAtomValue(userProfile)
+  const token = localStorage.getItem('ACCESS_TOKEN')
 
-  if (profile && profile?.role === "user") {
+  if (profile && profile?.role === "user" && token) {
     return <Navigate to='/user/home/main' />
-  }else if(profile && profile?.role === "admin"){
+  }else if(profile && profile?.role === "admin" && token) {
     return <Navigate to='/admin/dashboard/home' />
   }
 

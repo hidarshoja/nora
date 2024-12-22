@@ -24,6 +24,7 @@ const Login = () => {
     try {
       const response = await axiosClient.post('/auth/login',body)
       setProfile(response.data.user)
+      localStorage.setItem('ACCESS_TOKEN',response.data.token)
       handleToast('success',response.data.message)
 
       setTimeout(() => {

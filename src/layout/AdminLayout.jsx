@@ -25,7 +25,9 @@ const AdminLayout = () => {
     fetchAuth();
   }, [profile]);
 
-  if (!profile || profile?.role !== "admin") {
+  const token = localStorage.getItem('ACCESS_TOKEN')
+
+  if (!profile || profile?.role !== "admin" || !token) {
     return <Navigate to="/auth/login" replace />;
   }
 
