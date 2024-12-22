@@ -49,10 +49,11 @@ export default function CategoriesComponent() {
                    to={`/shop?category=${category.id}`}
                   className="flex flex-col items-center justify-center p-4"
                 >
+                 
                   <img
                     className="mb-4"
                     style={{ width: "150px", height: "150px" }}
-                    src={category.image_url}
+                    src={category.image_url ? `${import.meta.env.VITE_API_BASE_URL}${category.image_url}` : ''}
                     alt={category.name}
                   />
                   <h3 className="font-YekanBakh-ExtraBold text-base">

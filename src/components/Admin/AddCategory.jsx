@@ -8,8 +8,8 @@ import usePost from "../../hooks/usePost";
 const AddCategory = () => {
   const [newProduct, setNewProduct] = useState(null);
   const [error, setError] = useState(null);
-  const { mutateAsync, isPending, error:errors } = usePost('/category', 'category')
-console.log(errors)
+  const { mutateAsync, isPending} = usePost('/category', 'category')
+
   // ! change image to link
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];

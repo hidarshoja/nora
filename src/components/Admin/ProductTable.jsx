@@ -27,7 +27,6 @@ const ProductTable = () => {
 
 
 
-
   // const indexOfLastProduct = currentPage * itemsPerPage;
   // const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
   // const currentProducts = products.data.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -59,14 +58,15 @@ const ProductTable = () => {
             <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
               <td className="py-2">{index + 1}</td>
               <td className="flex items-center justify-center w-full">
-                <img src={product.images[0].image_url} className="w-10 h-10" alt="" />
+              <img src={product?.images[0]?.image_url ? `${import.meta.env.VITE_API_BASE_URL}${product.images[0].image_url}` : ''} className="w-10 h-10" alt="" />
+               
               </td>
               <td>{product.name}</td>
               <td>
                 {new Intl.NumberFormat("fa-IR").format(product.price)} تومان
               </td>
               <td>
-                {product.price_with_off ? new Intl.NumberFormat("fa-IR").format(product.price_with_off) : '-'} تومان
+                {product.price_with_off ? new Intl.NumberFormat("fa-IR").format(product.price_with_off) : 0} تومان
               </td>
               <td>{product.brand}</td>
               <td>{product.categories.name}</td>

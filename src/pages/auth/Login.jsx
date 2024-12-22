@@ -67,7 +67,7 @@ const Login = () => {
                 <p className="text-red-600 mb-3">{error?.password ? error?.password[0] : ""}</p>
               
                 <button 
-                  className={`btn bg-stone-800 hover:bg-stone-900 text-white w-full my-4 disabled:bg-stone-700 `}
+                  className={`btn bg-stone-800 hover:bg-stone-900 text-white w-full my-4 disabled:bg-stone-700 disabled:text-white`}
                   disabled={loading}
                 >
                   {loading ? "در حال ورود ..." : "ورود"}

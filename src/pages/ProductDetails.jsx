@@ -75,7 +75,7 @@ export default function ProductDetails() {
             {/* Main Image */}
             <div className="mb-4">
               <img
-                src={selectedImage}
+                src={selectedImage ? `${import.meta.env.VITE_API_BASE_URL}${selectedImage}` : ""}
                 alt="Product"
                 className="w-full h-[300px] rounded-lg shadow-md"
               />
@@ -86,7 +86,7 @@ export default function ProductDetails() {
               {product?.data?.images.map((image, index) => (
                 <img
                   key={index}
-                  src={image.image_url}
+                  src={image.image_url ? `${import.meta.env.VITE_API_BASE_URL}${image.image_url}` : ""}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-20 h-20 cursor-pointer rounded-lg border-2 ${selectedImage === image.image_url
                     ? "border-yellow-500"

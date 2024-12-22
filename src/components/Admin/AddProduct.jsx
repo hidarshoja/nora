@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { handleToast } from "../../utils/message";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axiosClient from "../../axios-client";
 import { getFormData } from '../../utils/form-data'
 import { transformedErrors } from "../../utils";
 import useGet from "../../hooks/useGet";
 import usePost from "../../hooks/usePost";
+import { handleImageChange } from "../../utils/image-lib";
 
 
 const AddProduct = () => {
   const [images, setImages] = useState([])
-  const [newImages, setNewImages] = useState([])
   const [errors, setErrors] = useState(null)
 
   const { data: categories, isLoading } = useGet(['category'], '/category')
@@ -36,43 +34,15 @@ const AddProduct = () => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // ! change image to link
-  const handleImageChange = () => {
-
-    if (images?.length === 0) {
-      handleToast("error", "لطفا حداقل یک عکس وارد کنید");
-      return;
-    }
-
-    for (const image of images) {
-      // return if file is not image
-      if (!image.type.startsWith("image/")) {
-        handleToast("error", "لطفا یک تصویر انتخاب کنید.");
-        return;
-      }
-
-      if (image) {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-          setNewImages(prev => ([...prev, reader.result]));
-        };
-
-        reader.readAsDataURL(image);
-      }
-    }
-  };
-
-
   // ! add new product
   const handleSubmit = async (e) => {
     e.preventDefault();
-    handleImageChange()
+    const hashedImaged = await handleImageChange(images)
 
     try {
       let body = {
         ...getFormData(e.target),
-        images: newImages
+        images: hashedImaged
       }
 
       if (Number(body?.price) < Number(body?.price_with_off)) {
@@ -80,16 +50,15 @@ const AddProduct = () => {
         return
       }
 
-      console.log(body)
       await mutateAsync(body)
 
       handleToast('success', 'محصول با موفقیت اضافه شد')
       document.querySelector('form').reset();
 
-      setInterval(() => {
-        setImages([])
-        setErrors(null)
-      },2000)
+      // setInterval(() => {
+      //   setImages([])
+      //   setErrors(null)
+      // },2000)
       
 
     } catch (error) {
@@ -105,12 +74,13 @@ const AddProduct = () => {
   }
 
   return (
-    <form encType="multipart/form-data" onSubmit={handleSubmit}>
+    <form  onSubmit={handleSubmit}>
       <input
         type="file"
         multiple
         accept="image/*"
         onChange={handleImageUpload}
+        name="images"
         className="block w-full p-2 mb-2 border"
       />
 

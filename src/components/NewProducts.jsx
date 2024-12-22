@@ -6,6 +6,10 @@ import { Link } from 'react-router-dom';
 
 const NewProducts = () => {
   const { data: products, isLoading } = useGet(['product'], '/product?limit=3')
+
+  if(isLoading){
+    return <div>Loading ...</div>
+  }
  
   return (
     <section className="my-14 px-4">
@@ -36,7 +40,8 @@ const NewProducts = () => {
             <SwiperSlide key={index}>
               <div className="bg-white rounded-3xl leading-10 p-4">
                 <Link to={`/shop/${product.slug}`} className="flex flex-col items-center justify-center">
-                  <img className="mb-4 h-64" src={product.images[0]?.image_url} alt={product.name} />
+                <img src={product.images[0] ? `${import.meta.env.VITE_API_BASE_URL}${product.images[0].image_url}` : ''} className="mb-4 h-64" alt="" />
+                  
                 </Link>
                 <div className="text-center">
                   <Link to={`/shop/${product.slug}`}>
