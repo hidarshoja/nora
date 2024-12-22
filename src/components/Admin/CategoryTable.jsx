@@ -37,7 +37,7 @@ export default function CategoryTable() {
             <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
               <td className="py-2">{index + 1}</td>
               <td className="flex items-center justify-center w-full">
-                <img src={product.image_url} className="w-10 h-10" alt="" />
+              <img src={product.image_url ? `${import.meta.env.VITE_API_BASE_URL}${product.image_url}` : ''} className="w-10 h-10" alt="" />
               </td>
 
               <td>{product.name}</td>

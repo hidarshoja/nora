@@ -4,12 +4,12 @@ import axiosClient from '../axios-client'
 const usePost = (url, keys) => {
     const queryClient = useQueryClient()
 
-    const { mutateAsync, isPending } = useMutation({
+    const mutate = useMutation({
         mutationFn: (body) => axiosClient.post(url, body),
         onSuccess: () => queryClient.invalidateQueries(keys),
     })
 
-    return { mutateAsync, isPending }
+    return mutate
 }
 
 export default usePost
