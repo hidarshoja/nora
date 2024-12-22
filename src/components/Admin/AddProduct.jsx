@@ -5,6 +5,7 @@ import { transformedErrors } from "../../utils";
 import useGet from "../../hooks/useGet";
 import usePost from "../../hooks/usePost";
 import { handleImageChange } from "../../utils/image-lib";
+import { carManufacturers, carPartsMaterials, iranianCars } from "../../constant/cars-data";
 
 
 const AddProduct = () => {
@@ -12,7 +13,7 @@ const AddProduct = () => {
   const [errors, setErrors] = useState(null)
 
   const { data: categories, isLoading } = useGet(['category'], '/category')
-  const { mutateAsync, isPending } = usePost('/product', 'product')
+  const { mutateAsync, isPending, isError } = usePost('/product', 'product')
 
   // ! select multy image
   const handleImageUpload = (e) => {
@@ -55,15 +56,20 @@ const AddProduct = () => {
       handleToast('success', 'محصول با موفقیت اضافه شد')
       document.querySelector('form').reset();
 
-      // setInterval(() => {
-      //   setImages([])
-      //   setErrors(null)
-      // },2000)
-      
+      setInterval(() => {
+       // setImages([])
+        setErrors(null)
+      },2000)
+
 
     } catch (error) {
       console.log(error)
       if (error.response.data?.errors) setErrors(transformedErrors(error?.response?.data?.errors))
+    } finally {
+      // if (!isError) {
+      //   setImages([])
+      //   setErrors(null)
+      // }
     }
 
 
@@ -74,7 +80,7 @@ const AddProduct = () => {
   }
 
   return (
-    <form  onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <input
         type="file"
         multiple
@@ -108,7 +114,7 @@ const AddProduct = () => {
         placeholder="نام محصول"
         className="block w-full p-2 mb-2 border"
       />
-      <p className="text-red-600 mb-3">{errors?.name ? errors?.name[0] : ""}</p>
+      <p className="text-red-600 mb-3 text-sm">{errors?.name ? errors?.name[0] : ""}</p>
 
       <div className="flex sm:flex-row flex-col gap-2">
         <div className="w-full sm:w-1/2">
@@ -118,7 +124,7 @@ const AddProduct = () => {
             placeholder="قیمت اصلی"
             className="block w-full p-2 mb-2 border"
           />
-          <p className="text-red-600 mb-3">{errors?.price ? errors?.price[0] : ""}</p>
+          <p className="text-red-600 mb-3 text-sm">{errors?.price ? errors?.price[0] : ""}</p>
         </div>
         <div className="w-full sm:w-1/2">
           <input
@@ -127,7 +133,7 @@ const AddProduct = () => {
             placeholder="قیمت تخفیف‌دار"
             className="block w-full p-2 mb-2 border"
           />
-          <p className="text-red-600 mb-3">{errors?.price_with_off ? errors?.price_with_off[0] : ""}</p>
+          <p className="text-red-600 mb-3 text-sm">{errors?.price_with_off ? errors?.price_with_off[0] : ""}</p>
         </div>
 
       </div>
@@ -138,44 +144,61 @@ const AddProduct = () => {
             name="category_id"
             className="block w-full p-2 mb-2 border"
           >
+            <option value="">انتخاب دسته بندی</option>
             {categories?.data && categories?.data.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
             ))}
           </select>
+          <p className="text-red-600 mb-3 text-sm">{errors?.category_id ? errors?.category_id[0] : ""}</p>
         </div>
 
         <div className="w-full sm:w-1/2">
-          <input
-            type="text"
+          <select
             name="machine"
-            placeholder="نوع خودرو"
             className="block w-full p-2 mb-2 border"
-          />
-          <p className="text-red-600 mb-3">{errors?.machine ? errors?.machine[0] : ""}</p>
+          >
+            <option value="">انتخاب نوع خودرو</option>
+            {iranianCars && iranianCars.map((cars) => (
+              <option key={cars} value={cars}>
+                {cars}
+              </option>
+            ))}
+          </select>
+          <p className="text-red-600 mb-3 text-sm">{errors?.machine ? errors?.machine[0] : ""}</p>
         </div>
       </div>
 
 
       <div className="flex sm:flex-row flex-col gap-2">
         <div className="w-full sm:w-1/2">
-          <input
-            type="text"
+        <select
             name="brand"
-            placeholder="برند محصول"
             className="block w-full p-2 mb-2 border"
-          />
-          <p className="text-red-600 mb-3">{errors?.brand ? errors?.brand[0] : ""}</p>
+          >
+            <option value="">برند محصول</option>
+            {carManufacturers && carManufacturers.map((cars) => (
+              <option key={cars} value={cars}>
+                {cars}
+              </option>
+            ))}
+          </select>
+          <p className="text-red-600 mb-3 text-sm">{errors?.brand ? errors?.brand[0] : ""}</p>
         </div>
         <div className="w-full sm:w-1/2">
-          <input
-            type="text"
+        <select
             name="material"
-            placeholder="جنس محصول"
             className="block w-full p-2 mb-2 border"
-          />
-          <p className="text-red-600 mb-3">{errors?.material ? errors?.material[0] : ""}</p>
+          >
+            <option value="">جنس محصول</option>
+            {carPartsMaterials && carPartsMaterials.map((cars) => (
+              <option key={cars} value={cars}>
+                {cars}
+              </option>
+            ))}
+          </select>
+          <p className="text-red-600 mb-3 text-sm">{errors?.material ? errors?.material[0] : ""}</p>
         </div>
       </div>
 
