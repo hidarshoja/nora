@@ -142,7 +142,7 @@ const AddProduct = () => {
         <div className="w-full sm:w-1/2">
           <select
             name="category_id"
-            className="block w-full p-2 mb-2 border"
+            className="block w-full p-2 mb-2 border text-gray-400"
           >
             <option value="">انتخاب دسته بندی</option>
             {categories?.data && categories?.data.map((category) => (
@@ -157,7 +157,7 @@ const AddProduct = () => {
         <div className="w-full sm:w-1/2">
           <select
             name="machine"
-            className="block w-full p-2 mb-2 border"
+            className="block w-full p-2 mb-2 border text-gray-400"
           >
             <option value="">انتخاب نوع خودرو</option>
             {iranianCars && iranianCars.map((cars) => (
@@ -175,7 +175,7 @@ const AddProduct = () => {
         <div className="w-full sm:w-1/2">
         <select
             name="brand"
-            className="block w-full p-2 mb-2 border"
+            className="block w-full p-2 mb-2 border text-gray-400"
           >
             <option value="">برند محصول</option>
             {carManufacturers && carManufacturers.map((cars) => (
@@ -189,7 +189,7 @@ const AddProduct = () => {
         <div className="w-full sm:w-1/2">
         <select
             name="material"
-            className="block w-full p-2 mb-2 border"
+            className="block w-full p-2 mb-2 border text-gray-400"
           >
             <option value="">جنس محصول</option>
             {carPartsMaterials && carPartsMaterials.map((cars) => (
