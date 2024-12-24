@@ -2,18 +2,21 @@ import useUpdate from "../../hooks/useUpdate";
 import { handleToast } from "../../utils/message";
 import useGet from "../../hooks/useGet";
 import { getFormData } from "../../utils/form-data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const EditCategoryModal = ({ category, onClose, refetch }) => {
   const [image, setImage] = useState(null)
-  const { data, isLoading } = useGet(['category'], `/category/show/${category}`)
-  const { mutateAsync, isPending } = useUpdate('/category',['category'])
+  const { data, isLoading, refetch: getCategory } = useGet(['categories'], `/category/show/${category}`)
+  const { mutateAsync, isPending } = useUpdate('/category', ['category'])
 
+  useEffect(() => {
+    getCategory()
+  }, [])
 
-    // ! change image to link
-	const handleImageChange = (e) => {
+  // ! change image to link
+  const handleImageChange = (e) => {
 
-		const file =  e.target.files[0];
+    const file = e.target.files[0];
     // return if file is not image
     if (!file.type.startsWith("image/")) {
       handleToast("error", "لطفا یک تصویر انتخاب کنید.");
@@ -21,28 +24,28 @@ const EditCategoryModal = ({ category, onClose, refetch }) => {
       return;
     }
 
-		if (file) {
-			const reader = new FileReader();
+    if (file) {
+      const reader = new FileReader();
 
-			reader.onloadend = () => {
-				setImage(reader.result)
-			};
+      reader.onloadend = () => {
+        setImage(reader.result)
+      };
 
-			reader.readAsDataURL(file); // base64
-		}
-	};
+      reader.readAsDataURL(file); // base64
+    }
+  };
 
 
   const handleEdit = async (e) => {
     e.preventDefault();
     const body = {
-      name:getFormData(e.target).name,
-      image_url : image
+      name: getFormData(e.target).name,
+      image_url: image
     };
     console.log(body)
-   
+
     try {
-      const response = await mutateAsync({slug:category, body})
+      const response = await mutateAsync({ slug: category, body })
       console.log(response.data)
       handleToast('success', 'دسته بندی با موفقیت ویرایش شد')
       refetch()
@@ -65,7 +68,7 @@ const EditCategoryModal = ({ category, onClose, refetch }) => {
             <img
               src={data?.data[0]?.image_url ? `${import.meta.env.VITE_API_BASE_URL}${data?.data[0].image_url}` : ''} alt={data?.data[0].name}
               className="size-44 object-cover " />
-        
+
           </div>
 
 
@@ -80,7 +83,7 @@ const EditCategoryModal = ({ category, onClose, refetch }) => {
           <input
             type="file"
             name="image"
-            onChange={(e)=>handleImageChange(e)}
+            onChange={(e) => handleImageChange(e)}
             className="block w-full p-2 mb-2 border"
           />
 
@@ -98,7 +101,7 @@ const EditCategoryModal = ({ category, onClose, refetch }) => {
         </div>
       </form>
 
-     
+
     </>
   );
 };
