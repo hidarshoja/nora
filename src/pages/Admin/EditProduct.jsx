@@ -27,7 +27,7 @@ const EditProduct = () => {
     const { slug } = useParams()
 
     const { data: categories } = useGet(['category'], '/category')
-    const { data, isLoading:loading } = useGet(['product-single'], `/product/show/${slug}`)
+    const { data, isLoading:loading } = useGet(['product-single',slug], `/product/show/${slug}`)
     const { mutateAsync,isPending } = useDelete(`/product/image/delete`,['product-single'])
     const { mutateAsync:mutate,isPending:isLoading } = useUpdate(`/product`,['product-single','product'])
    
