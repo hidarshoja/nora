@@ -2,6 +2,7 @@ import React from "react";
 import { Menu } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { logout } from "../../utils/logout";
 
 export default function HeaderUser({
     setSidebarOpen,
@@ -66,7 +67,7 @@ export default function HeaderUser({
                   />
                 </div>
                 <div className="text-white text-[12px]">
-                    <Link to="/auth/login">خروج</Link>
+                    <button onClick={logout}>خروج</button>
                 </div>
               </div>
              

@@ -4,17 +4,29 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 
 import useGet from "../../hooks/useGet";
+import useDelete from "../../hooks/useDelete";
+import { handleToast } from "../../utils/message";
 
 export default function CategoryTable() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: category, isLoading } = useGet(['category'], '/category')
- 
 
-  const handleEdit = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
+  const { data: category, isLoading,refetch } = useGet(['category'], '/category')
+  const { mutateAsync, isPending } = useDelete('/category',['category'])
+  
+
+
+
+  const handleDelete = async (id) => {
+    try {
+      await mutateAsync(id)
+      handleToast('success', 'دسته بندی با موفقیت حذف شد')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+ 
 
   if (isLoading) {
     return <p>Loading...</p>
@@ -33,20 +45,23 @@ export default function CategoryTable() {
           </tr>
         </thead>
         <tbody>
-          {category?.data && category?.data.map((product,index) => (
-            <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
+          {category?.data.length > 0 && category?.data?.map((category, index) => (
+            <tr key={category.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
               <td className="py-2">{index + 1}</td>
               <td className="flex items-center justify-center w-full">
-              <img src={product.image_url ? `${import.meta.env.VITE_API_BASE_URL}${product.image_url}` : ''} className="w-10 h-10" alt="" />
+                <img src={category.image_url ? `${import.meta.env.VITE_API_BASE_URL}${category.image_url}` : ''} className="w-10 h-10" alt="" />
               </td>
 
-              <td>{product.name}</td>
+              <td>{category.name}</td>
 
               <td>
-                <button onClick={() => handleEdit(product)}>
+                <button onClick={() => {
+                  setSelectedCategory(category.id)
+                  setIsModalOpen(true)
+                }}>
                   <CiEdit />
                 </button>
-                <button onClick={() => handleDelete(product.id)}>
+                <button onClick={() => handleDelete(category.id)}>
                   <MdDelete />
                 </button>
               </td>
@@ -60,16 +75,9 @@ export default function CategoryTable() {
 
       {isModalOpen && (
         <EditCategoryModal
-          product={selectedProduct}
+          category={selectedCategory}
           onClose={() => setIsModalOpen(false)}
-          onSave={(updatedProduct) => {
-            setProducts((prevProducts) =>
-              prevProducts.map((p) =>
-                p.id === updatedProduct.id ? updatedProduct : p
-              )
-            );
-            setIsModalOpen(false);
-          }}
+          refetch={refetch}
         />
       )}
     </div>

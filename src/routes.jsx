@@ -33,6 +33,7 @@ import CommentUser from './pages/User/CommentUser';
 import TicketUser from './pages/User/TicketUser';
 import ProfileUser from './pages/User/ProfileUser';
 import Notifications from './pages/Admin/Notifications';
+import EditProduct from './pages/Admin/EditProduct';
 
 export const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
       {
         path: 'products',
         element: <Products />,
+      },
+      {
+        path: 'edit-product/:slug',
+        element: <EditProduct />,
       },
       {
         path: 'users',

@@ -1,74 +1,105 @@
+import useUpdate from "../../hooks/useUpdate";
+import { handleToast } from "../../utils/message";
+import useGet from "../../hooks/useGet";
+import { getFormData } from "../../utils/form-data";
 import { useState } from "react";
 
-const EditCategoryModal = ({ product, onClose, onSave }) => {
-  const [editedProduct, setEditedProduct] = useState({ ...product });
-  const [image, setImage] = useState(null);
+const EditCategoryModal = ({ category, onClose, refetch }) => {
+  const [image, setImage] = useState(null)
+  const { data, isLoading } = useGet(['category'], `/category/show/${category}`)
+  const { mutateAsync, isPending } = useUpdate('/category',['category'])
 
-  // Handle input field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedProduct((prev) => ({ ...prev, [name]: value }));
-  };
 
-  // Handle image upload
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-  };
+    // ! change image to link
+	const handleImageChange = (e) => {
 
-  // Handle save button click
-  const handleSave = () => {
-    // Create an object with image and category value
-    const productData = {
-      ...editedProduct,
-      image: image ? image.name : product.image, // If there's a new image, take the file name, otherwise keep the old image
+		const file =  e.target.files[0];
+    // return if file is not image
+    if (!file.type.startsWith("image/")) {
+      handleToast("error", "لطفا یک تصویر انتخاب کنید.");
+      document.querySelector('#images').reset();
+      return;
+    }
+
+		if (file) {
+			const reader = new FileReader();
+
+			reader.onloadend = () => {
+				setImage(reader.result)
+			};
+
+			reader.readAsDataURL(file); // base64
+		}
+	};
+
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    const body = {
+      name:getFormData(e.target).name,
+      image_url : image
     };
-
-    // Log the object
-    console.log("Saved Product:", productData);
-
-    // Call the onSave function to pass the updated product
-    onSave(productData);
+    console.log(body)
+   
+    try {
+      const response = await mutateAsync({slug:category, body})
+      console.log(response.data)
+      handleToast('success', 'دسته بندی با موفقیت ویرایش شد')
+      refetch()
+      onClose()
+    } catch (error) {
+      console.log(error)
+    }
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/2">
-        <h2 className="text-xl mb-4">ویرایش دسته بندی</h2>
+    <>
+      <form onSubmit={handleEdit} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/2">
+          <h2 className="text-xl mb-4">ویرایش دسته بندی</h2>
+          <div className="flex justify-center ">
+            <img
+              src={data?.data[0]?.image_url ? `${import.meta.env.VITE_API_BASE_URL}${data?.data[0].image_url}` : ''} alt={data?.data[0].name}
+              className="size-44 object-cover " />
+        
+          </div>
 
-        <input
-          type="file"
-          name="image"
-          onChange={handleImageUpload}
-          className="block w-full p-2 mb-2 border"
-        />
 
-        <select
-          name="category"
-          value={editedProduct.category}
-          onChange={handleChange}
-          className="block w-full p-2 mb-2 border"
-        >
-          <option value="steering">فرمان</option>
-          <option value="suspension">جلوبندی</option>
-          <option value="engine">موتور</option>
-          <option value="electrical">برقی</option>
-          <option value="standard">مکانیزم و استاندارد</option>
-          <option value="decoration">تزئینی</option>
-          <option value="gearbox">گیریبکس</option>
-        </select>
+          <input
+            type="text"
+            name="name"
+            defaultValue={data?.data[0].name}
+            placeholder="نام دسته بندی"
+            className="block w-full p-2 mb-2 border"
+          />
 
-        {/* Buttons */}
-        <div className="flex justify-end">
-          <button onClick={onClose} className="bg-gray-300 px-4 py-2 rounded mx-2">
-            لغو
-          </button>
-          <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-2 rounded">
-            ذخیره
-          </button>
+          <input
+            type="file"
+            name="image"
+            onChange={(e)=>handleImageChange(e)}
+            className="block w-full p-2 mb-2 border"
+          />
+
+
+
+          {/* Buttons */}
+          <div className="flex justify-end">
+            <button onClick={onClose} className="bg-gray-300 px-4 py-2 rounded mx-2">
+              لغو
+            </button>
+            <button className={`bg-blue-500 text-white px-4 py-2 rounded disabled:bg-blue-300 disabled:text-gray-800 disabled:cursor-not-allowed`} disabled={isPending}>
+              {isPending ? 'در حال ارسال...' : 'ذخیره '}
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+      </form>
+
+     
+    </>
   );
 };
 

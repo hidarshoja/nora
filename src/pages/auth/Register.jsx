@@ -1,26 +1,48 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getFormData } from '../../utils/form-data';
+import { handleToast } from '../../utils/message';
+import axiosClient  from '../../axios-client';
+import { useSetAtom } from 'jotai';
+import { userProfile } from '../../stores/store';
+import { transformedErrors } from '../../utils';
 
 const Register = () => {
-  // States for the registration form fields
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState([])
+  const [loading, setLoading] = useState(false)
+  const setProfile = useSetAtom(userProfile)
+  const navigate = useNavigate()
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      console.log('پسوردها یکسان نیستند!');
-      return;
+    const body = getFormData(e.target);
+
+    setLoading(true)
+    setError(null)
+
+    if (body.password !== body.confirm_password) {
+      handleToast("error", "پسورد و تکرار پسورد مطابقت ندارند.");
+      setLoading(false)
+      return
     }
-    console.log('نام:', firstName);
-    console.log('نام خانوادگی:', lastName);
-    console.log('شماره تماس:', phone);
-    console.log('ایمیل:', email);
-    console.log('پسورد:', password);
+    try {
+      const response = await axiosClient.post('/auth/signup', body);
+
+      setProfile(response.data.user);
+      localStorage.setItem('ACCESS_TOKEN', response.data.token)
+
+      handleToast("success", "ثبت نام با موفقیت انجام شد");
+
+      setTimeout(() => {
+        navigate('/admin/dashboard/home')
+      }, 2500);
+    } catch (error) {
+      console.log(error)
+      setError(transformedErrors(error?.response?.data?.errors))
+      if (error?.response?.data?.message) handleToast('error', error?.response?.data?.message)
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (
@@ -32,97 +54,86 @@ const Register = () => {
               <form onSubmit={handleRegister}>
                 <h2 className="text-3xl font-YekanBakh-ExtraBlack my-4">ثبت نام</h2>
 
-               <div className='flex gap-2'>
-               <div className='w-1/2'>
-               <label className="label">
-                  <span className="label-text-alt text-black">نام:</span>
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full my-2"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                />
-               </div>
+                <div className='flex gap-2'>
+                  <div className='w-1/2'>
+                    <label className="label">
+                      <span className="label-text-alt text-black">نام:</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="input input-bordered w-full my-2"
+                      name='first_name'
+                    />
+                    <p className="text-red-600 mb-3 text-[13px]">{error?.first_name ? error?.first_name[0] : ""}</p>
 
-                <div className='w-1/2'>
-                <label className="label">
-                  <span className="label-text-alt text-black">نام خانوادگی:</span>
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full my-2"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                />
+                  </div>
+
+                  <div className='w-1/2'>
+                    <label className="label">
+                      <span className="label-text-alt text-black">نام خانوادگی:</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="input input-bordered w-full my-2"
+                      name='last_name'
+                    />
+                    <p className="text-red-600 mb-3 text-[13px]">{error?.last_name ? error?.last_name[0] : ""}</p>
+                  </div>
                 </div>
-               </div>
-               <div className='flex gap-2'>
+                <div className='flex gap-2'>
                   <div className='w-1/2'>
-                  <label className="label">
-                  <span className="label-text-alt text-black">شماره تماس:</span>
-                </label>
-                <input
-                  type="tel"
-                  className="input input-bordered w-full my-2"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
+                    <label className="label">
+                      <span className="label-text-alt text-black">شماره تماس:</span>
+                    </label>
+                    <input
+                      type="number"
+                      className="input input-bordered w-full my-2"
+                      name='phone'
+                    />
+                    <p className="text-red-600 mb-3 text-[13px]">{error?.phone ? error?.phone[0] : ""}</p>
                   </div>
                   <div className='w-1/2'>
-                  <label className="label">
-                  <span className="label-text-alt text-black">ایمیل:</span>
-                </label>
-                <input
-                  type="email"
-                  className="input input-bordered w-full my-2"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                    <label className="label">
+                      <span className="label-text-alt text-black">ایمیل:</span>
+                    </label>
+                    <input
+                      type="email"
+                      className="input input-bordered w-full my-2"
+                      name='email'
+                    />
+                    <p className="text-red-600 mb-3 text-[13px]">{error?.email ? error?.email[0] : ""}</p>
                   </div>
-               </div>
-               <div className='flex gap-2'>
-               <div className='w-1/2'>
-               <label className="label">
-                  <span className="label-text-alt text-black">پسورد:</span>
-                </label>
-                <input
-                  type="password"
-                  className="input input-bordered w-full my-2"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-               </div>
-               <div className='w-1/2'>
-               <label className="label">
-                  <span className="label-text-alt text-black">تکرار پسورد:</span>
-                </label>
-                <input
-                  type="password"
-                  className="input input-bordered w-full my-2"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-               </div>  
-               </div>
-
-              
-
-          
-
-               
+                </div>
+                <div className='flex gap-2'>
+                  <div className='w-1/2'>
+                    <label className="label">
+                      <span className="label-text-alt text-black">پسورد:</span>
+                    </label>
+                    <input
+                      type="password"
+                      className="input input-bordered w-full my-2"
+                      name='password'
+                    />
+                    <p className="text-red-600 mb-3 text-[13px]">{error?.password ? error?.password[0] : ""}</p>
+                  </div>
+                  <div className='w-1/2'>
+                    <label className="label">
+                      <span className="label-text-alt text-black">تکرار پسورد:</span>
+                    </label>
+                    <input
+                      type="password"
+                      className="input input-bordered w-full my-2"
+                      name={`confirm_password`}
+                    />
+                  </div>
+                </div>
 
                 <button
                   type="submit"
-                  className="btn bg-green-500 hover:bg-green-800 text-black w-full my-4"
+                  className={`btn bg-green-500 hover:bg-green-800 text-black w-full my-4 disabled:bg-green-500 disabled:text-gray-600 disabled:cursor-not-allowed`}
+                  disabled={loading}
                 >
-                  ثبت نام
+                  {loading ? "لطفا صبر کنید..." : "ثبت نام"}
                 </button>
               </form>
 

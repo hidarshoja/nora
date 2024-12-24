@@ -5,6 +5,7 @@ import Header from "../components/User/HeaderUser";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { userProfile } from "../stores/store";
+import { Toaster } from "react-hot-toast";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -56,6 +57,10 @@ export default function UserLayout() {
           </div>
         </div>
       </div>
+      <Toaster
+        position="top-left"
+        reverseOrder={false}
+      />
     </>
   );
 };

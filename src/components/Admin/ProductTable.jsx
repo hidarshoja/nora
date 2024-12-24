@@ -3,9 +3,13 @@ import EditProductModal from "./EditProductModal";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import useGet from "../../hooks/useGet";
+import useDelete from "../../hooks/useDelete";
+import { handleToast } from "../../utils/message";
+import { Link } from "react-router-dom";
 
 const ProductTable = () => {
   const { data: products, isLoading } = useGet(['product'], '/product')
+  const { mutateAsync, isPending } = useDelete(['product'], '/product')
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,8 +17,15 @@ const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const handleDelete = (id) => {
-    // setProducts(products.filter((product) => product.id !== id));
+
+  // ! delete a product
+  const handleDelete = async(slug) => {
+    try {
+      await mutateAsync(slug)
+      handleToast('success', 'محصول با موفقیت حذف شد')
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const handleEdit = (product) => {
@@ -70,11 +81,14 @@ const ProductTable = () => {
               </td>
               <td>{product.brand}</td>
               <td>{product.categories.name}</td>
-              <td>
-                <button onClick={() => handleEdit(product)}>
+              <td className="">
+                <button>
+                   <Link to={`/admin/dashboard/edit-product/${product.slug}`} onClick={() => handleEdit(product)}>
                   <CiEdit />
+                </Link>
                 </button>
-                <button onClick={() => handleDelete(product.id)}>
+               
+                <button onClick={() => handleDelete(product.slug)}>
                   <MdDelete />
                 </button>
               </td>

@@ -5,6 +5,7 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { userProfile } from "../../stores/store";
+import { logout } from "../../utils/logout";
 
 
 export default function HeaderAdmin({
@@ -73,7 +74,7 @@ export default function HeaderAdmin({
                   />
                 </div>
                 <div className="text-white text-[12px]">
-                    <Link to="/auth/login">خروج</Link>
+                    <button onClick={logout}>خروج</button>
                 </div>
               </div>
              
