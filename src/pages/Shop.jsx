@@ -14,7 +14,7 @@ const FilterComponent = () => {
 
   const categoryParam = Number(useSearchParams()[0].get('category'))
 
-  const { data: products, isLoading } = useGet(['product'], '/product')
+  const { data: products, isLoading } = useGet(['product'], '/product?limit=1000')
   const { data: categories } = useGet(['categories'], '/category')
 
 
