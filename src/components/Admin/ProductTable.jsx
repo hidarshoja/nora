@@ -8,7 +8,7 @@ import { handleToast } from "../../utils/message";
 import { Link } from "react-router-dom";
 
 const ProductTable = () => {
-  const { data: products, isLoading } = useGet(['product'], '/product')
+  const { data: products, isLoading } = useGet(['product'], '/product?limit=1000')
   const { mutateAsync, isPending } = useDelete(['product'], '/product')
 
   const [selectedProduct, setSelectedProduct] = useState(null);

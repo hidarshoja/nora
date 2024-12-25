@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const EditCategoryModal = ({ category, onClose, refetch }) => {
   const [image, setImage] = useState(null)
-  const { data, isLoading, refetch: getCategory } = useGet(['categories',category], `/category/show/${category}`)
+  const { data, isLoading } = useGet(['categories',category], `/category/show/${category}`)
   const { mutateAsync, isPending } = useUpdate('/category', ['categories'])
 
 
