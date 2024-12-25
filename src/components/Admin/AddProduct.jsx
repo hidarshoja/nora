@@ -13,7 +13,7 @@ const AddProduct = () => {
   const [errors, setErrors] = useState(null)
 
   const { data: categories, isLoading } = useGet(['category'], '/category')
-  const { mutateAsync, isPending, isError } = usePost('/product', 'product')
+  const { mutateAsync, isPending } = usePost('/product', ['product'])
 
   // ! select multy image
   const handleImageUpload = (e) => {

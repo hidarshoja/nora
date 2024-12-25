@@ -6,7 +6,13 @@ const usePost = (url, keys) => {
 
     const mutate = useMutation({
         mutationFn: (body) => axiosClient.post(url, body),
-        onSuccess: () => queryClient.invalidateQueries(keys),
+        onSuccess: () => {
+            // Refetch queries after mutation
+            keys.forEach(key => {
+                queryClient.refetchQueries([key])
+                queryClient.invalidateQueries([key])
+            })
+        },
     })
 
     return mutate
