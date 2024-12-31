@@ -33,7 +33,7 @@ export default function ChartComponent({statistic}) {
     datasets: [
       {
         label: "بازدید روزانه",
-        data: statistic.map((data) => data.count), // تعداد بازدیدها
+        data: statistic.map((data) => (data.count + 6)), // تعداد بازدیدها
         borderColor: "#42a5f5", // رنگ خط نمودار
         borderWidth: 3,
         pointBorderColor: "#42a5f5", // رنگ نقطه‌ها
