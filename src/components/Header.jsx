@@ -7,10 +7,12 @@ import { useAtomValue } from "jotai";
 import { userProfile } from "../stores/store";
 import { LiaSignOutAltSolid } from "react-icons/lia";
 import { logout } from "../utils/logout";
+import useCart from "../hooks/useCart";
 
 const Header = () => {
   const [openSearch, setOpenSearch] = useState(false)
   const users = useAtomValue(userProfile)
+  const { cart } = useCart();
   return (
     <header className="px-4 sticky border borber-b-2 border-white top-0  bg-[#3E4095]" style={{ zIndex: 999 }}>
       <div className="container mx-auto max-w-screen-xl">
@@ -94,7 +96,7 @@ const Header = () => {
 
 
             <div className="indicator">
-              <span className="indicator-item badge bg-yellow-400">4+</span>
+              <span className="indicator-item badge bg-yellow-400">{cart?.length > 10 ? '+10' : cart?.length}</span>
               <Link to="/cart" className="p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" style={{ color: 'white' }} fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />

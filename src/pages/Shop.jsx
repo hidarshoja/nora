@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import MobileShop from "../components/MobileShop";
 import DesktopShop from "../components/DesktopShop";
 import useGet from "../hooks/useGet";
+import useCart from "../hooks/useCart";
 
 const FilterComponent = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
@@ -11,15 +12,17 @@ const FilterComponent = () => {
     category: 0,
     brand: '',
   });
+  const {addToCart} = useCart()
 
   const categoryParam = Number(useSearchParams()[0].get('category'))
 
   const { data: products, isLoading } = useGet(['product'], '/product?limit=1000')
   const { data: categories } = useGet(['categories'], '/category')
 
-
+  // ! filter by categories from url
   let FilteredData = categoryParam !== 0 ? products?.data?.products?.filter((product) => product.categories.id === categoryParam) : products?.data?.products
 
+  // ! filter by filters
   FilteredData = FilteredData
     ?.filter((product) => {
       return (
@@ -121,6 +124,7 @@ const FilterComponent = () => {
           categories={categories}
           filters={filters}
           setFilters={setFilters}
+          addToCart={addToCart}
         />
         {/* {filteredProducts?.length > productsPerPage && (
           <div className="flex justify-center mt-6">

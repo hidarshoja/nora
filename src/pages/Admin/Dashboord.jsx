@@ -1,5 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import ChartLineComponent from '../../components/Admin/ChartLineComponent';
+import useGet from '../../hooks/useGet';
 
 const clients = [
   {
@@ -31,6 +32,10 @@ const clients = [
 
 
 export default function Dashboord() {
+  const {data:statistic, isLoading} = useGet(['views'], '/setting/views/statistic')
+if (isLoading) {
+    return <div>Loading ...</div>
+  }
   return (
    <div className="md:p-4">
    <h3  className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">میزان درآمد و تعداد کاربران</h3>
@@ -71,7 +76,7 @@ export default function Dashboord() {
       ))}
     </ul>
     <h3 className='text-base font-semibold px-3 py-6 mt-6'>نمودار بازدید</h3>
-    <ChartLineComponent />
+    <ChartLineComponent statistic={statistic.data.data}/>
    </div>
   );
 }

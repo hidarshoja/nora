@@ -1,20 +1,23 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { handleToast } from "../../utils/message";
 import { getFormData } from "../../utils/form-data";
 import axiosClient from '../../axios-client'
 import { transformedErrors } from "../../utils";
 import { useSetAtom } from "jotai";
-import {userProfile} from '../../stores/store'
+import { userProfile } from '../../stores/store'
 
 const Login = () => {
   const [error, setError] = useState([])
   const [loading, setLoading] = useState(false)
+  const next = useSearchParams()[0].get('next')
+
   const setProfile = useSetAtom(userProfile)
   const navigate = useNavigate()
 
+
   // !handle login api
-  const handleLogin = async(e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const body = getFormData(e.target);
 
@@ -22,24 +25,28 @@ const Login = () => {
     setError(null)
 
     try {
-      const response = await axiosClient.post('/auth/login',body)
+      const response = await axiosClient.post('/auth/login', body)
       setProfile(response.data.user)
-      localStorage.setItem('ACCESS_TOKEN',response.data.token)
-      handleToast('success',response.data.message)
+      localStorage.setItem('ACCESS_TOKEN', response.data.token)
+      handleToast('success', response.data.message)
 
       setTimeout(() => {
-        if (response.data.user?.role === "user") {
+
+        if (next) {
+          navigate(next)
+          return
+        } else if (response.data.user?.role === "user") {
           navigate('/user/home/main');
         } else if (response.data.user?.role === "admin") {
-          navigate('/admin/dashboard/home'); 
+          navigate('/admin/dashboard/home');
         }
       }, 2500);
 
     } catch (error) {
       console.log(error)
       setError(transformedErrors(error?.response?.data?.errors))
-      if(error?.response?.data?.message) handleToast('error',error?.response?.data?.message)
-    }finally{
+      if (error?.response?.data?.message) handleToast('error', error?.response?.data?.message)
+    } finally {
       setLoading(false)
     }
   }
@@ -57,7 +64,7 @@ const Login = () => {
                 <label className="label">
                   <span className="label-text-alt">شماره موبایل :</span>
                 </label>
-                <input type="number" className="input input-bordered w-full my-2" name="phone"/>
+                <input type="number" className="input input-bordered w-full my-2" name="phone" />
                 <p className="text-red-600 mb-3">{error?.phone ? error?.phone[0] : ""}</p>
 
                 <label className="label">
@@ -65,14 +72,14 @@ const Login = () => {
                 </label>
                 <input type="password" className="input input-bordered w-full my-2" name="password" />
                 <p className="text-red-600 mb-3">{error?.password ? error?.password[0] : ""}</p>
-              
-                <button 
+
+                <button
                   className={`btn bg-stone-800 hover:bg-stone-900 text-white w-full my-4 disabled:bg-stone-700 disabled:text-white`}
                   disabled={loading}
                 >
                   {loading ? "در حال ورود ..." : "ورود"}
                 </button>
-             
+
               </form>
               <p className="text-center my-4">
                 رمز عبور خود را <Link to="/auth/forget" className="text-green-500 underline">فراموش </Link>کرده اید؟
@@ -83,7 +90,7 @@ const Login = () => {
               </p>
             </div>
 
-           
+
             <div className="hidden md:block">
               <img className="bg-cover" src="/assets/images/login/login.jpg" alt="Background" />
             </div>

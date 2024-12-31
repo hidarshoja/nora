@@ -1,52 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useCart from "../hooks/useCart";
+import useGet from "../hooks/useGet";
 
 const Cart = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "سیبک فرمان",
-      category: "جلو بندی",
-      originalPrice: 360000,
-      discountPrice: 280000,
-      quantity: 1,
-      image: "assets/images/new-img/sipak-nora.jpg",
-    },
-    {
-      id: 2,
-      name: "روغن چهار لیتری",
-      category: "تعویضی ها",
-      originalPrice: 360000,
-      discountPrice: 280000,
-      quantity: 1,
-      image: "assets/images/new-img/oil.webp",
-    },
-  ]);
+  const { cart, setCart, removeFromCart, changeQuantity, totalPrice } = useCart()
+  const { data, isLoading, refetch } = useGet(['product'], '/product?all=true')
+  const postCost = 140000
 
-  const handleQuantityChange = (id, increment) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id
-          ? { ...product, quantity: Math.max(1, product.quantity + increment) }
-          : product
-      )
-    );
-  };
+  //! Efficiently check and update cart prices
+  useEffect(() => {
+    if (data && data?.data?.products) {
+      const dbProducts = data.data.products;
+      let isUpdated = false;
 
-  const handleRemoveProduct = (id) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== id)
-    );
-  };
+      const updatedCart = cart.reduce((acc, product) => {
+        const dbProduct = dbProducts.find((p) => p.id == product.product_id);
+        if (dbProduct) {
+          if (dbProduct.price !== product.price || dbProduct.price_with_off != product.price_with_off) {
+            isUpdated = true;
+            acc.push({
+              ...product,
+              price: dbProduct.price,
+              price_with_off: dbProduct.price_with_off,
+            });
+          } else {
+            acc.push(product);
+          }
+        } else {
+          acc.push(product); 
+        }
+        return acc;
+      }, []);
 
-  const calculateTotal = () => {
-    const productsTotal = products.reduce(
-      (total, product) => total + product.discountPrice * product.quantity,
-      0
-    );
-    const shippingCost = 140000; // ثابت هزینه ارسال
-    return productsTotal + shippingCost;
-  };
+      if (isUpdated) {
+        setCart(updatedCart);
+      }
+    }
+  }, [data]); 
+
+  //! Refetch data every 30 seconds with proper cleanup
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if(cart.length === 0) return
+      refetch();
+    }, 30000);
+
+    return () => clearInterval(intervalId); 
+  }, [refetch]);
+
 
   return (
     <section className="my-14 mt-4 px-4">
@@ -84,30 +86,30 @@ const Cart = () => {
           </nav>
         </div>
 
-        {products.length === 0 ? (
+        {cart.length === 0 ? (
           <div className="text-center text-xl font-bold text-red-500">
             سبد خرید شما خالی است
           </div>
         ) : (
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 md:col-span-9">
-              {products.map((product) => (
+              {cart.map((product) => (
                 <div
-                  key={product.id}
+                  key={product.product_id}
                   className="bg-gray-200 relative rounded-3xl p-4 flex flex-col md:flex-row items-center  mb-4 gap-16"
                 >
-                       <button
-                      onClick={() => handleRemoveProduct(product.id)}
-                      className="text-red-500 absolute left-3 top-3 text-lg  lg:hidden"
-                    >
-                      x 
-                    </button>
-                  <div className="flex gap-1 items-center w-full lg:w-1/2 ">
+                  <button
+                    onClick={() => removeFromCart(product.id)}
+                    className="text-red-500 absolute left-3 top-3 text-lg  lg:hidden"
+                  >
+                    x
+                  </button>
+                  <div className="flex gap-1 items-center w-full lg:w-1/3 ">
                     <div>
                       <img
                         className="w-32 border rounded-2xl"
-                        src={product.image}
-                        alt={product.name}
+                        src={product?.image? `${import.meta.env.VITE_API_BASE_URL}${product.image}` : ''}
+                        alt={product.image}
                       />
                     </div>
                     <div className="leading-10">
@@ -115,41 +117,62 @@ const Cart = () => {
                         {product.name}
                       </h1>
                       <p>دسته بندی: {product.category}</p>
-                    
+
                     </div>
                   </div>
-                  <div  className="flex gap-1 items-center w-full lg:w-1/2 justify-between">
-                    <div className=" flex flex-col gap-4 text-base mt-4">
-                      <span className="line-through">
+                  <div className="flex gap-1 items-center w-full lg:w-1/2 justify-between">
+                    {product.price_with_off ? (
+                      <div className=" flex flex-col gap-4 text-base mt-4">
+                        <span className="line-through">
+                          {new Intl.NumberFormat("fa-IR").format(
+                            product.price
+                          )}{" "}ت
+                        </span>
+                        <span className="text-yellow-500">
+                          {new Intl.NumberFormat("fa-IR").format(
+                            product.price_with_off
+                          )}{" "}ت
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="">
                         {new Intl.NumberFormat("fa-IR").format(
-                          product.originalPrice
+                          product.price
                         )}{" "}ت
                       </span>
-                      <span className="text-yellow-500">
+                    )}
+
+
+                    <div className=" flex flex-col gap-4 text-base ">
+                      <span className="">
                         {new Intl.NumberFormat("fa-IR").format(
-                          product.discountPrice
+                          product.price_with_off ? product.price_with_off * product.amount : product.price * product.amount
                         )}{" "}ت
                       </span>
+
                     </div>
+
+
                     <div>
                       <div className="number flex flex-col items-center md:flex-row">
                         <span className="minus pl-4">تعداد:</span>
                         <div className="flex border border-gray-700 rounded-md bg-white">
                           <button
-                            onClick={() => handleQuantityChange(product.id, -1)}
+                            onClick={() => changeQuantity(product.product_id, -1)}
                             className="p-2"
+                            disabled={product.amount === 1}
                           >
                             -
                           </button>
-                          
+
                           <input
                             type="text"
-                            value={product.quantity}
+                            value={product.amount}
                             className="input text-center w-12"
                             readOnly
                           />
                           <button
-                            onClick={() => handleQuantityChange(product.id, 1)}
+                            onClick={() => changeQuantity(product.product_id, 1)}
                             className="p-2"
                           >
                             +
@@ -158,10 +181,10 @@ const Cart = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleRemoveProduct(product.id)}
+                      onClick={() => removeFromCart(product.product_id)}
                       className="text-red-500  text-lg hidden lg:block"
                     >
-                      حذف 
+                      حذف
                     </button>
                   </div>
                 </div>
@@ -174,39 +197,30 @@ const Cart = () => {
                   <div className="flex items-center justify-between p-4 bg-yellow-100 rounded-lg">
                     <span>تعداد خرید:</span>
                     <span>
-                      {products.reduce(
-                        (total, product) => total + product.quantity,
-                        0
-                      )}{" "}
+                      {cart?.length}{" "}
                       عدد
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-4">
                     <span>مبلغ کل:</span>
                     <span>
-                      {new Intl.NumberFormat("fa-IR").format(
-                        products.reduce(
-                          (total, product) =>
-                            total + product.discountPrice * product.quantity,
-                          0
-                        )
-                      )}
+                      {new Intl.NumberFormat("fa-IR").format(totalPrice)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-yellow-100 rounded-lg">
                     <span>هزینه ارسال:</span>
-                    <span>{new Intl.NumberFormat("fa-IR").format(140000)}</span>
+                    <span>{new Intl.NumberFormat("fa-IR").format(postCost)}</span>
                   </div>
                   <div className="flex items-center justify-between p-4">
                     <span>مبلغ نهایی:</span>
                     <span>
-                      {new Intl.NumberFormat("fa-IR").format(calculateTotal())}
+                      {new Intl.NumberFormat("fa-IR").format(totalPrice + postCost)}
                     </span>
                   </div>
-                  <Link to="/checkOut">
-                  <button className="btn bg-stone-800 hover:bg-stone-900 text-white">
-                    پرداخت
-                  </button>
+                  <Link to="/check-out">
+                    <button className="btn bg-stone-800 hover:bg-stone-900 text-white">
+                      پرداخت
+                    </button>
                   </Link>
                 </div>
               </div>

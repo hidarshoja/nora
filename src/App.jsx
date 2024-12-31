@@ -11,6 +11,7 @@ function App() {
         isEnabled={true}
       >
         <div dir='rtl' className='font-YekanBakh-Regular text-sm'>
+        
           <MainLayout />
         </div>
         <Toaster

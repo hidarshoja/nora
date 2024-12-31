@@ -83,7 +83,8 @@ const EditProduct = () => {
         const body={
             ...getFormData(e.target),
             images:hashedImaged,
-            ...selectedProduct
+            ...selectedProduct,
+            price_with_off : getFormData(e.target).price_with_off !== '' ? getFormData(e.target).price_with_off : null
         }
 
         try {

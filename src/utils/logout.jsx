@@ -1,4 +1,3 @@
-import axiosClient from "../axios-client"
 import { handleToast } from "./message"
 
 export const logout = async() => {

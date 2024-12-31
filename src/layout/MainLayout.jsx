@@ -5,6 +5,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { userProfile } from '../stores/store';
 import { checkAuth } from '../utils/auth';
+import { Toaster } from 'react-hot-toast';
+import { CartProvider } from '../hooks/useCart';
 
 const MainLayout = () => {
   const { pathname } = useLocation();
@@ -27,11 +29,17 @@ const MainLayout = () => {
 
   return (
     <div className="main-layout">
-      <HeaderComponent />
-      <main className="content">
-        <Outlet />
-      </main>
-      <FooterComponent />
+      <CartProvider>
+        <HeaderComponent />
+        <main className="content">
+          <Outlet />
+        </main>
+        <FooterComponent />
+      </CartProvider>
+      <Toaster
+        position="top-left"
+        reverseOrder={false}
+      />
     </div>
   );
 };

@@ -11,3 +11,14 @@ export const transformedErrors = (errors) => {
 
     return transformedErrors
 }
+
+export function removeFormDataPrefix(errors) {
+    const updatedErrors = {};
+
+    Object.entries(errors).forEach(([key, value]) => {
+        const newKey = key.replace("formData.", ""); // Remove "formData." from the key
+        updatedErrors[newKey] = value;
+    });
+
+    return updatedErrors;
+}
