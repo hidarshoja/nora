@@ -7,17 +7,18 @@ import NewProducts from '../components/NewProducts';
 import ProductCarousel from '../components/ProductCarousel';
 import BlogComponent from '../components/BlogComponent';
 import axiosClient from '../axios-client';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { checkIp } from '../stores/store';
-
+import { v4 as uuidv4 } from 'uuid'
 export default function Home() {
-  const  [isVisited, setIsCheck]  = useAtom(checkIp)
+  const [isVisited, setIsCheck] = useAtom(checkIp)
 
   useEffect(() => {
+
     const saveIp = async () => {
       try {
         // Send the request to the backend to save the IP
-        await axiosClient.post("/setting/views");
+        await axiosClient.post("/setting/views", { unique_id });
 
         console.log("IP saved successfully");
         setIsCheck(true)
@@ -27,6 +28,14 @@ export default function Home() {
       }
     };
 
+    let unique_id = localStorage.getItem('unique_id')
+    if (!unique_id) {
+      unique_id = uuidv4()
+      localStorage.setItem('unique_id', unique_id)
+
+      saveIp()
+      return
+    }
     if (!isVisited) {
       saveIp()
     }
