@@ -18,8 +18,9 @@ export default function Home() {
     const ipSavedToday = localStorage.getItem("ipSavedToday");
 
     if(!ipSavedToday){
-      localStorage.setItem("ipSavedToday",today)
+      localStorage.setItem("ipSavedToday",'1-1-1')
       saveIp();
+      return
     }
     if (localStorage.getItem("ipSavedToday") === today) return;
     
