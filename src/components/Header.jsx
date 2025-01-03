@@ -69,6 +69,7 @@ const Header = () => {
                   <li className='desktop_menu'><NavLink to="/blog">وبلاگ</NavLink></li>
                   <li className='desktop_menu'><NavLink to="/about">درباره ما</NavLink></li>
                   <li className='desktop_menu'><NavLink to="/contact">تماس با ما</NavLink></li>
+                  <li className="desktop_menu"><NavLink to="/Question">سوالات متداول</NavLink></li>
                   {users && (users.role === "admin" ?
                     <li className='desktop_menu'><NavLink to="/admin/dashboard/home">پنل مدیریت</NavLink></li> :
                     <li className='desktop_menu'><NavLink to="/user/home/main">داشبورد</NavLink></li>)

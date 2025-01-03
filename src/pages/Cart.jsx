@@ -99,7 +99,7 @@ const Cart = () => {
                   className="bg-gray-200 relative rounded-3xl p-4 flex flex-col md:flex-row items-center  mb-4 gap-16"
                 >
                   <button
-                    onClick={() => removeFromCart(product.id)}
+                    onClick={() => removeFromCart(product.product_id)}
                     className="text-red-500 absolute left-3 top-3 text-lg  lg:hidden"
                   >
                     x

@@ -11,7 +11,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { checkIp } from '../stores/store';
 
 export default function Home() {
-  const { isVisited, setIsCheck } = useAtom(checkIp)
+  const  [isVisited, setIsCheck]  = useAtom(checkIp)
 
   useEffect(() => {
     const saveIp = async () => {
@@ -23,6 +23,7 @@ export default function Home() {
         setIsCheck(true)
       } catch (error) {
         console.error("Error saving IP:", error);
+        setIsCheck(true)
       }
     };
 

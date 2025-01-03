@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useGet from "../hooks/useGet";
+import useCart from "../hooks/useCart";
 
 export default function ProductDetails() {
+  const {addToCart} = useCart()
   const { slug } = useParams();
   const { data: product, isLoading } = useGet(['product', slug], `/product/show/${slug}`)
 
@@ -127,7 +129,7 @@ export default function ProductDetails() {
                 </div>
             )}
 
-            <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2">
+            <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2" onClick={()=>addToCart(product?.data)}>
               افزودن به سبد خرید
             </button>
           </div>
