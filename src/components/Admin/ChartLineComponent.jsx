@@ -11,8 +11,6 @@ import {
   Tooltip,
   Filler,
 } from "chart.js";
-import { useEffect, useState } from "react";
-import axiosClient from "../../axios-client";
 
 // ثبت کردن اجزای مورد نیاز Chart.js
 Chart.register(
@@ -29,11 +27,11 @@ export default function ChartComponent({statistic}) {
 
 
   const data = {
-    labels: statistic.map((data) => `${new Intl.DateTimeFormat('fa-IR').format(new Date(data.date))}`), // روزها به عنوان برچسب محور X
+    labels: statistic.map((data) => `${new Intl.DateTimeFormat('fa-IR',{ month: 'long', day: 'numeric' }).format(new Date(data.date))}`), // روزها به عنوان برچسب محور X
     datasets: [
       {
         label: "بازدید روزانه",
-        data: statistic.map((data) => (data.count + 6)), // تعداد بازدیدها
+        data: statistic.map((data) => (data.count)), // تعداد بازدیدها
         borderColor: "#42a5f5", // رنگ خط نمودار
         borderWidth: 3,
         pointBorderColor: "#42a5f5", // رنگ نقطه‌ها

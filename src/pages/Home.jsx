@@ -9,17 +9,24 @@ import BlogComponent from '../components/BlogComponent';
 import axiosClient from '../axios-client';
 
 export default function Home() {
-  const [isSaved, setIsSaved] = useState(false);
+  
 
   useEffect(() => {
+    // Get today's date in ISO format (YYYY-MM-DD)
+    const today = new Date().toISOString().split("T")[0];
     // Check if the IP is already saved (stored in localStorage)
     const ipSavedToday = localStorage.getItem("ipSavedToday");
 
-    if (ipSavedToday) {
-      setIsSaved(true);
-    } else {
+    if(!ipSavedToday){
+      localStorage.setItem("ipSavedToday",today)
       saveIp();
     }
+    if (localStorage.getItem("ipSavedToday") === today) return;
+    
+    if (ipSavedToday !== today) {
+      saveIp();
+    }  
+   
   }, []);
 
   const saveIp = async () => {
@@ -30,7 +37,6 @@ export default function Home() {
       if (response.status === 201) {
         // Save the flag in localStorage with today's date
         localStorage.setItem("ipSavedToday", new Date().toISOString().split("T")[0]);
-        setIsSaved(true);
         console.log("IP saved successfully");
       }
     } catch (error) {

@@ -1,39 +1,46 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import ChartLineComponent from '../../components/Admin/ChartLineComponent';
 import useGet from '../../hooks/useGet';
+import { useEffect, useState } from 'react';
 
-const clients = [
-  {
-    id: 1,
-    name: 'تعداد کاربران',
-    imageUrl: '/assets/images/new-img/users.svg',
-    lastInvoice: { amount: 151, status: 'نفر' },
-  },
-  {
-    id: 2,
-    name: 'میزان در آمد روزانه',
-    imageUrl: '/assets/images/new-img/day.jpg',
-    lastInvoice: { amount: 390000000, status: 'تومان' },
-  },
-  {
-    id: 3,
-    name: 'میزان در آمد ماهانه',
-    imageUrl: '/assets/images/new-img/moon.svg',
-    lastInvoice: { amount: 3459660000, status: 'تومان' },
-  },
-  {
-    id: 4,
-    name: 'میزان درآمد کل',
-    imageUrl: '/assets/images/new-img/total.svg',
-    lastInvoice: { amount: 5600000000, status: 'تومان' },
-  },
-];
+
 
 
 
 export default function Dashboord() {
+  const [clients, setClients] = useState([]);
   const {data:statistic, isLoading} = useGet(['views'], '/setting/views/statistic')
-if (isLoading) {
+  const {data:income, isLoading:loading} = useGet(['incomes'], '/setting/income/statistic')
+  
+  useEffect(() => {
+    setClients([{
+      id: 1,
+      name: 'تعداد کاربران',
+      imageUrl: '/assets/images/new-img/users.svg',
+      lastInvoice: { amount: income?.data?.users, status: 'نفر' },
+    },
+    {
+      id: 2,
+      name: 'میزان در آمد روزانه',
+      imageUrl: '/assets/images/new-img/day.jpg',
+      lastInvoice: { amount: income?.data?.totalPriceToday, status: 'تومان' },
+    },
+    {
+      id: 3,
+      name: 'میزان در آمد ماهانه',
+      imageUrl: '/assets/images/new-img/moon.svg',
+      lastInvoice: { amount: income?.data?.totalPriceMonth, status: 'تومان' },
+    },
+    {
+      id: 4,
+      name: 'میزان درآمد کل',
+      imageUrl: '/assets/images/new-img/total.svg',
+      lastInvoice: { amount: income?.data?.totalPriceAll, status: 'تومان' },
+    }],)
+  },[loading])
+
+
+if (isLoading || loading) {
     return <div>Loading ...</div>
   }
   return (
