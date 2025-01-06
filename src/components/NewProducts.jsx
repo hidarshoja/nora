@@ -60,7 +60,11 @@ const NewProducts = () => {
                   )}
 
                   <div className="flex justify-center gap-2 items-center mt-4">
-                    <button className="bg-yellow-500 p-2 text-white rounded-lg" onClick={()=>addToCart(product)}>
+                  {product.amount == 0 ? <span className="text-red-500">ناموجود</span> :
+                    <button
+                      className="bg-yellow-500 p-2 text-white rounded-lg"
+                      onClick={() => addToCart(product)}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -76,6 +80,7 @@ const NewProducts = () => {
                         />
                       </svg>
                     </button>
+                  }
 
                   </div>
                 </div>

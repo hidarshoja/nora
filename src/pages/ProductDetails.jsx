@@ -139,8 +139,8 @@ export default function ProductDetails() {
             )}
            
 
-            <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2" onClick={()=>addToCart(product?.data)}>
-              افزودن به سبد خرید
+            <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2 disabled:bg-gray-500" onClick={()=>addToCart(product?.data)} disabled={product?.data.amount == 0}>
+              {product?.data.amount == 0 ? "ناموجود" : "افزودن به سبد خرید"}
             </button>
           </div>
         </div>
