@@ -17,7 +17,6 @@ const EditProduct = () => {
         category_id: 0,
         machine: "",
         brand: "",
-        material: "",
     })
     const [errors, setErrors] = useState(null)
     const [imageId, setImageId] = useState(0)
@@ -27,17 +26,16 @@ const EditProduct = () => {
     const { slug } = useParams()
 
     const { data: categories } = useGet(['category'], '/category')
-    const { data, isLoading:loading } = useGet(['product-single',slug], `/product/show/${slug}`)
-    const { mutateAsync,isPending } = useDelete(`/product/image/delete`,['product-single'])
-    const { mutateAsync:mutate,isPending:isLoading } = useUpdate(`/product`,['product-single','product'])
-   
+    const { data, isLoading: loading } = useGet(['product-single', slug], `/product/show/${slug}`)
+    const { mutateAsync, isPending } = useDelete(`/product/image/delete`, ['product-single'])
+    const { mutateAsync: mutate, isPending: isLoading } = useUpdate(`/product`, ['product-single', 'product'])
+
 
     useEffect(() => {
         setSelectedProduct({
             category_id: data?.data?.categories?.id,
             machine: data?.data?.machine,
             brand: data?.data?.brand,
-            material: data?.data?.material,
         })
     }, [loading])
 
@@ -57,15 +55,15 @@ const EditProduct = () => {
     };
 
     // ! remove image
-    const handleRemoveImage = async() => {
-       try {
-        await mutateAsync(imageId)
-        handleToast('success', 'عکس با موفقیت حذف شد')
-        setIsOpen(false)
-        setImageId(0)
-       }catch (error) {
-        console.log(error)
-       }
+    const handleRemoveImage = async () => {
+        try {
+            await mutateAsync(imageId)
+            handleToast('success', 'عکس با موفقیت حذف شد')
+            setIsOpen(false)
+            setImageId(0)
+        } catch (error) {
+            console.log(error)
+        }
 
     };
 
@@ -73,22 +71,22 @@ const EditProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if(data?.data?.images.length === 0 && images?.length === 0) {
+        if (data?.data?.images.length === 0 && images?.length === 0) {
             handleToast('error', 'حداقل یک عکس وارد کنید')
             return
         }
 
         setErrors(null)
-        const hashedImaged =images?.length > 0 ?  await handleImageChange(images) : []
-        const body={
+        const hashedImaged = images?.length > 0 ? await handleImageChange(images) : []
+        const body = {
             ...getFormData(e.target),
-            images:hashedImaged,
+            images: hashedImaged,
             ...selectedProduct,
-            price_with_off : getFormData(e.target).price_with_off !== '' ? getFormData(e.target).price_with_off : null
+            price_with_off: getFormData(e.target).price_with_off !== '' ? getFormData(e.target).price_with_off : null
         }
 
         try {
-             await mutate({slug,body})
+            await mutate({ slug, body })
             handleToast('success', 'محصول با موفقیت ویرایش شد')
             setErrors(null)
             setImages([])
@@ -143,7 +141,7 @@ const EditProduct = () => {
                                 className="w-20 h-20 object-cover rounded border"
                             />
                             <button
-                                 onClick={() => {
+                                onClick={() => {
                                     setImageId(image.id)
                                     setIsOpen(true)
                                 }}
@@ -154,14 +152,30 @@ const EditProduct = () => {
                         </div>
                     ))}
                 </div>
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="نام محصول"
-                    defaultValue={data?.data?.name}
-                    className="block w-full p-2 mb-2 border"
-                />
-                <p className="text-red-600 mb-3 text-sm">{errors?.name ? errors?.name[0] : ""}</p>
+                <div className="flex sm:flex-row flex-col gap-2">
+                    <div className="w-full sm:w-1/2">
+                        <input
+                            type="text"
+                            name="name"
+                            defaultValue={data?.data?.name}
+                            placeholder="نام محصول"
+                            className="block w-full p-2 mb-2 border"
+                        />
+                        <p className="text-red-600 mb-3 text-sm">{errors?.name ? errors?.name[0] : ""}</p>
+                    </div>
+
+                    <div className="w-full sm:w-1/2">
+                        <input
+                            type="number"
+                            name="amount"
+                            placeholder="تعداد محصول موجود"
+                            defaultValue={data?.data?.amount}
+                            className="block w-full p-2 mb-2 border"
+                        />
+                        <p className="text-red-600 mb-3 text-sm">{errors?.amount ? errors?.amount[0] : ""}</p>
+                    </div>
+                </div>
+
 
                 <div className="flex sm:flex-row flex-col gap-2">
                     <div className="w-full sm:w-1/2">
@@ -231,7 +245,7 @@ const EditProduct = () => {
                             value={selectedProduct?.brand}
                             onChange={(e) => setSelectedProduct(prev => ({ ...prev, brand: e.target.value }))}
                         >
-                            <option value="">برند محصول</option>
+                            <option value="">نوع محصول</option>
                             {carManufacturers && carManufacturers.map((cars) => (
                                 <option key={cars} value={cars}>
                                     {cars}
@@ -241,7 +255,7 @@ const EditProduct = () => {
                         <p className="text-red-600 mb-3 text-sm">{errors?.brand ? errors?.brand[0] : ""}</p>
                     </div>
                     <div className="w-full sm:w-1/2">
-                        <select
+                        {/* <select
                             name="material"
                             className="block w-full p-2 mb-2 border text-gray-600"
                             value={selectedProduct?.material}
@@ -253,12 +267,29 @@ const EditProduct = () => {
                                     {cars}
                                 </option>
                             ))}
-                        </select>
+                        </select> */}
+                        <input
+                            type="text"
+                            name="material"
+                            placeholder="برند محصول"
+                            defaultValue={data?.data?.material}
+                            className="block w-full p-2 mb-2 border"
+                        />
                         <p className="text-red-600 mb-3 text-sm">{errors?.material ? errors?.material[0] : ""}</p>
                     </div>
                 </div>
 
+                <div className="w-full">
+                    <textarea
+                        name="description"
+                        placeholder="توضیحات محصول را وارد کنید"
+                        className="block w-full p-2 mb-2 border"
+                        defaultValue={data?.data?.description}
+                    >
 
+                    </textarea>
+                    <p className="text-red-600 mb-3 text-sm">{errors?.description ? errors?.description[0] : ""}</p>
+                </div>
 
                 <button
                     className="bg-green-500 text-white px-4 py-2 rounded"
@@ -269,7 +300,7 @@ const EditProduct = () => {
             </form>
 
 
-            <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={()=> setIsOpen(false)}>
+            <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsOpen(false)}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto text-black bg-black/75">
                     <div className="flex min-h-full items-center justify-center p-4">
                         <DialogPanel
@@ -285,7 +316,7 @@ const EditProduct = () => {
                             <div className="flex justify-center items-center gap-3 mt-4">
                                 <Button
                                     className="inline-flex items-center gap-2 rounded-md bg-red-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-red-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-red-700"
-                                    onClick={()=>setIsOpen(false)}
+                                    onClick={() => setIsOpen(false)}
                                 >
                                     انصراف
                                 </Button>
@@ -294,7 +325,7 @@ const EditProduct = () => {
                                     onClick={handleRemoveImage}
                                     disabled={isPending}
                                 >
-                                   {isPending ? 'در حال پاک کردن...' : 'پاک کردن'}
+                                    {isPending ? 'در حال پاک کردن...' : 'پاک کردن'}
                                 </Button>
                             </div>
                         </DialogPanel>

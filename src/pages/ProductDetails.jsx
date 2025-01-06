@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useGet from "../hooks/useGet";
 import useCart from "../hooks/useCart";
+import DescriptionModel from "../components/DescriptionModel";
 
 export default function ProductDetails() {
+  const [openModal, setOpenModal] = useState(false)
+  const [description, setDescription] = useState(null)
+
   const {addToCart} = useCart()
   const { slug } = useParams();
   const { data: product, isLoading } = useGet(['product', slug], `/product/show/${slug}`)
@@ -112,8 +116,13 @@ export default function ProductDetails() {
             <h2 className="text-2xl font-bold mb-2">{product?.data?.name}</h2>
             <p className="text-gray-500 mb-4">دسته بندی: {product?.data?.categories?.name}</p>
             <p className="text-gray-700 mb-4">نوع خودرو: {product?.data?.machine}</p>
-            <p className="text-gray-700 mb-4">برند: {product?.data?.brand}</p>
-            <p className="text-gray-700 mb-4">جنس: {product?.data?.material}</p>
+            <p className="text-gray-700 mb-4">شرکت سازنده: {product?.data?.brand}</p>
+            <p className="text-gray-700 mb-4">برند محصول: {product?.data?.material}</p>
+            <p className="mb-4 text-red-500">موجودی محصول: {product?.data?.amount} عدد</p>
+            <button className="text-blue-700 mb-4" onClick={()=>{
+              setOpenModal(true)
+              setDescription(product?.data?.description)
+              }}>توضیحات محصول</button>
             {product?.data.price_with_off ? (
               <>
                 <div className="text-lg text-yellow-500 font-bold mb-2">
@@ -128,6 +137,7 @@ export default function ProductDetails() {
                   {new Intl.NumberFormat('fa-IR').format(product?.data.price)} تومان
                 </div>
             )}
+           
 
             <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2" onClick={()=>addToCart(product?.data)}>
               افزودن به سبد خرید
@@ -146,6 +156,7 @@ export default function ProductDetails() {
           ))}
         </div>
       </div>
+      {openModal && <DescriptionModel description={description} setOpenModal={setOpenModal} openModal={openModal} />}
     </div>
 
   );

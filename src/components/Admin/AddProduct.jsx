@@ -40,6 +40,8 @@ const AddProduct = () => {
     e.preventDefault();
     const hashedImaged = await handleImageChange(images)
 
+    if (hashedImaged.length === 0) return
+
     try {
       let body = {
         ...getFormData(e.target),
@@ -57,9 +59,9 @@ const AddProduct = () => {
       document.querySelector('form').reset();
 
       setInterval(() => {
-       // setImages([])
+        // setImages([])
         setErrors(null)
-      },2000)
+      }, 2000)
 
 
     } catch (error) {
@@ -108,13 +110,28 @@ const AddProduct = () => {
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        name="name"
-        placeholder="نام محصول"
-        className="block w-full p-2 mb-2 border"
-      />
-      <p className="text-red-600 mb-3 text-sm">{errors?.name ? errors?.name[0] : ""}</p>
+      <div className="flex sm:flex-row flex-col gap-2">
+        <div className="w-full sm:w-1/2">
+          <input
+            type="text"
+            name="name"
+            placeholder="نام محصول"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3 text-sm">{errors?.name ? errors?.name[0] : ""}</p>
+        </div>
+
+        <div className="w-full sm:w-1/2">
+          <input
+            type="number"
+            name="amount"
+            placeholder="تعداد محصول موجود"
+            className="block w-full p-2 mb-2 border"
+          />
+          <p className="text-red-600 mb-3 text-sm">{errors?.amount ? errors?.amount[0] : ""}</p>
+        </div>
+      </div>
+
 
       <div className="flex sm:flex-row flex-col gap-2">
         <div className="w-full sm:w-1/2">
@@ -142,7 +159,7 @@ const AddProduct = () => {
         <div className="w-full sm:w-1/2">
           <select
             name="category_id"
-            className="block w-full p-2 mb-2 border text-gray-400"
+            className="block w-full p-2 mb-2 border text-gray-600"
           >
             <option value="">انتخاب دسته بندی</option>
             {categories?.data && categories?.data.map((category) => (
@@ -157,7 +174,7 @@ const AddProduct = () => {
         <div className="w-full sm:w-1/2">
           <select
             name="machine"
-            className="block w-full p-2 mb-2 border text-gray-400"
+            className="block w-full p-2 mb-2 border text-gray-600"
           >
             <option value="">انتخاب نوع خودرو</option>
             {iranianCars && iranianCars.map((cars) => (
@@ -173,11 +190,11 @@ const AddProduct = () => {
 
       <div className="flex sm:flex-row flex-col gap-2">
         <div className="w-full sm:w-1/2">
-        <select
+          <select
             name="brand"
-            className="block w-full p-2 mb-2 border text-gray-400"
+            className="block w-full p-2 mb-2 border text-gray-600"
           >
-            <option value="">برند محصول</option>
+            <option value="">نوع محصول</option>
             {carManufacturers && carManufacturers.map((cars) => (
               <option key={cars} value={cars}>
                 {cars}
@@ -187,9 +204,9 @@ const AddProduct = () => {
           <p className="text-red-600 mb-3 text-sm">{errors?.brand ? errors?.brand[0] : ""}</p>
         </div>
         <div className="w-full sm:w-1/2">
-        <select
+          {/* <select
             name="material"
-            className="block w-full p-2 mb-2 border text-gray-400"
+            className="block w-full p-2 mb-2 border text-gray-600"
           >
             <option value="">جنس محصول</option>
             {carPartsMaterials && carPartsMaterials.map((cars) => (
@@ -197,11 +214,26 @@ const AddProduct = () => {
                 {cars}
               </option>
             ))}
-          </select>
+          </select> */}
+          <input
+            type="text"
+            name="material"
+            placeholder="برند محصول"
+            className="block w-full p-2 mb-2 border"
+          />
           <p className="text-red-600 mb-3 text-sm">{errors?.material ? errors?.material[0] : ""}</p>
         </div>
       </div>
+      <div className="w-full">
+        <textarea
+          name="description"
+          placeholder="توضیحات محصول را وارد کنید"
+          className="block w-full p-2 mb-2 border"
+        >
 
+        </textarea>
+        <p className="text-red-600 mb-3 text-sm">{errors?.description ? errors?.description[0] : ""}</p>
+      </div>
 
 
       <button
