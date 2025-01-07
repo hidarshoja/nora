@@ -57,12 +57,12 @@ const ContactUs = () => {
             </ol>
           </nav>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-3xl p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-white rounded-3xl p-4">
           <div className="p-4">
             <h3 className="text-xl font-YekanBakh-ExtraBold mb-2">
               راه های ارتباطی ...
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
               {[
                 {
                   icon: (
