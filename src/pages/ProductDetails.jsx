@@ -3,20 +3,21 @@ import { useParams } from "react-router-dom";
 import useGet from "../hooks/useGet";
 import useCart from "../hooks/useCart";
 import DescriptionModel from "../components/DescriptionModel";
+import ProductComment from "../components/ProductComment";
 
 export default function ProductDetails() {
   const [openModal, setOpenModal] = useState(false)
   const [description, setDescription] = useState(null)
 
-  const {addToCart} = useCart()
+  const { addToCart } = useCart()
   const { slug } = useParams();
   const { data: product, isLoading } = useGet(['product', slug], `/product/show/${slug}`)
-
+console.log(product)
   const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
-    if (!isLoading && product?.data.images?.length > 0) {
-      setSelectedImage(product.data.images[0].image_url);
+    if (!isLoading && product?.data?.product.images?.length > 0) {
+      setSelectedImage(product?.data?.product.images[0].image_url);
     }
   }, [isLoading, product]); // Runs only when `isLoading` or `product` changes
 
@@ -80,85 +81,94 @@ export default function ProductDetails() {
   //   return <div>محصول یافت نشد</div>;
   // }
   return (
-    <div className="w-full flex flex-col md:flex-row mt-10 px-3">
-      <div className="w-full lg:w-1/2">
-        <div className="flex flex-col md:flex-row">
-          {/* Box 1 */}
-          <div className="w-full md:w-1/2 p-4">
-            {/* Main Image */}
-            <div className="mb-4">
-              <img
-                src={selectedImage ? `${import.meta.env.VITE_API_BASE_URL}${selectedImage}` : ""}
-                alt="Product"
-                className="w-full h-[300px] rounded-lg shadow-md"
-              />
-            </div>
-
-            {/* Thumbnail Images */}
-            <div className="flex gap-2">
-              {product?.data?.images.map((image, index) => (
+    <>
+      <div className="w-full flex flex-col md:flex-row mt-10 px-3">
+        <div className="w-full lg:w-1/2">
+          <div className="flex flex-col md:flex-row">
+            {/* Box 1 */}
+            <div className="w-full md:w-1/2 p-4">
+              {/* Main Image */}
+              <div className="mb-4">
                 <img
-                  key={index}
-                  src={image.image_url ? `${import.meta.env.VITE_API_BASE_URL}${image.image_url}` : ""}
-                  alt={`Thumbnail ${index + 1}`}
-                  className={`w-20 h-20 cursor-pointer rounded-lg border-2 ${selectedImage === image.image_url
-                    ? "border-yellow-500"
-                    : "border-gray-300"
-                    }`}
-                  onClick={() => setSelectedImage(image.image_url)}
+                  src={selectedImage ? `${import.meta.env.VITE_API_BASE_URL}${selectedImage}` : ""}
+                  alt="Product"
+                  className="w-full h-[300px] rounded-lg shadow-md"
                 />
-              ))}
-            </div>
-          </div>
+              </div>
 
-          {/* Box 2 */}
-          <div className="w-full md:w-1/2 p-4">
-            <h2 className="text-2xl font-bold mb-2">{product?.data?.name}</h2>
-            <p className="text-gray-500 mb-4">دسته بندی: {product?.data?.categories?.name}</p>
-            <p className="text-gray-700 mb-4">نوع خودرو: {product?.data?.machine}</p>
-            <p className="text-gray-700 mb-4">شرکت سازنده: {product?.data?.brand}</p>
-            <p className="text-gray-700 mb-4">جنس محصول: {product?.data?.material}</p>
-            <p className="mb-4 text-green-500">{product?.data?.amount > 0 && "موجود در انبار"} </p>
-            <button className="text-blue-700 mb-4" onClick={()=>{
-              setOpenModal(true)
-              setDescription(product?.data?.description)
+              {/* Thumbnail Images */}
+              <div className="flex gap-2">
+                {product?.data?.product?.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.image_url ? `${import.meta.env.VITE_API_BASE_URL}${image.image_url}` : ""}
+                    alt={`Thumbnail ${index + 1}`}
+                    className={`w-20 h-20 cursor-pointer rounded-lg border-2 ${selectedImage === image.image_url
+                      ? "border-yellow-500"
+                      : "border-gray-300"
+                      }`}
+                    onClick={() => setSelectedImage(image.image_url)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Box 2 */}
+            <div className="w-full md:w-1/2 p-4">
+              <h2 className="text-2xl font-bold mb-2">{product?.data?.product?.name}</h2>
+              <p className="text-gray-500 mb-4">دسته بندی: {product?.data?.product?.categories?.name}</p>
+              <p className="text-gray-700 mb-4">نوع خودرو: {product?.data?.product?.machine}</p>
+              <p className="text-gray-700 mb-4">شرکت سازنده: {product?.data?.product?.brand}</p>
+              <p className="text-gray-700 mb-4">جنس محصول: {product?.data?.product?.material}</p>
+              <p className="mb-4 text-green-500">{product?.data?.product?.amount > 0 && "موجود در انبار"} </p>
+              <button className="text-blue-700 mb-4" onClick={() => {
+                setOpenModal(true)
+                setDescription(product?.data?.product?.description)
               }}>توضیحات محصول</button>
-            {product?.data.price_with_off ? (
-              <>
+              {product?.data?.product.price_with_off ? (
+                <>
+                  <div className="text-lg text-yellow-500 font-bold mb-2">
+                    {new Intl.NumberFormat('fa-IR').format(product?.data?.product.price_with_off)} تومان
+                  </div>
+                  <div className="text-gray-400 line-through mb-4">
+                    {new Intl.NumberFormat('fa-IR').format(product?.data?.product.price)} تومان
+                  </div>
+                </>
+              ) : (
                 <div className="text-lg text-yellow-500 font-bold mb-2">
-                  {new Intl.NumberFormat('fa-IR').format(product?.data.price_with_off)} تومان
+                  {new Intl.NumberFormat('fa-IR').format(product?.data?.product.price)} تومان
                 </div>
-                <div className="text-gray-400 line-through mb-4">
-                  {new Intl.NumberFormat('fa-IR').format(product?.data.price)} تومان
-                </div>
-              </>
-            ) : (
-              <div className="text-lg text-yellow-500 font-bold mb-2">
-                  {new Intl.NumberFormat('fa-IR').format(product?.data.price)} تومان
-                </div>
-            )}
-           
+              )}
 
-            <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2 disabled:bg-gray-500" onClick={()=>addToCart(product?.data)} disabled={product?.data.amount == 0}>
-              {product?.data.amount == 0 ? "ناموجود" : "افزودن به سبد خرید"}
-            </button>
+
+              <button className="w-full bg-black text-white py-2 px-4 rounded-lg mb-2 disabled:bg-gray-500" onClick={() => addToCart(product?.data?.product)} disabled={product?.data?.product.amount == 0}>
+                {product?.data?.product.amount == 0 ? "ناموجود" : "افزودن به سبد خرید"}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="hidden md:block w-full lg:w-1/2 lg:flex px-2">
-        <div className="w-1/2"></div>
-        <div className=" w-full lg:w-1/2 flex items-center flex-col">
-          {features.map((feature, index) => (
-            <div key={index} className="flex items-center border rounded-lg w-64 my-2 p-2">
-              {feature.icon}
-              <span className="mr-2">{feature.text}</span>
-            </div>
-          ))}
+        <div className="hidden md:block w-full lg:w-1/2 lg:flex px-2">
+          <div className="w-1/2"></div>
+          <div className=" w-full lg:w-1/2 flex items-center flex-col">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-center border rounded-lg w-64 my-2 p-2">
+                {feature.icon}
+                <span className="mr-2">{feature.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      {openModal && <DescriptionModel description={description} setOpenModal={setOpenModal} openModal={openModal} />}
-    </div>
 
+
+        {openModal && <DescriptionModel description={description} setOpenModal={setOpenModal} openModal={openModal} />}
+      </div>
+
+      <ProductComment 
+        comments={product?.data?.product?.comments} 
+        id={product?.data?.product?.id} 
+        reviews={product?.data?.reviews}
+      />
+    </>
   );
 }
 

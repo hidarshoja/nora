@@ -1,138 +1,71 @@
 import React, { useState } from "react";
-import { FcAnswers } from "react-icons/fc";
-import { MdDelete } from "react-icons/md";
+import useGet from "../../hooks/useGet";
+import { GiStopSign } from "react-icons/gi";
+import { TiTick } from "react-icons/ti";
+import useUpdate from "../../hooks/useUpdate";
+import { handleToast } from "../../utils/message";
 
 export default function CommentProduct() {
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      date: "1402/09/12",
-      time: "14:30",
-      userName: "علی رضایی",
-      contact: "ali@gmail.com",
-      title: "آیا شما با تعداد بالا سیبک می فروشید؟",
-    },
-    {
-      id: 2,
-      date: "1402/09/11",
-      time: "10:15",
-      userName: "زهرا محمدی",
-      contact: "09121234567",
-      title: "سوال در مورد موجودی قطعات یدکی",
-    },
-  ]);
+  const { data, isLoading } = useGet(['product-comment'], '/product-comment')
+  const { mutateAsync:mutateAsyncStatus } = useUpdate('/product-comment', ['comment', 'product'])
+  console.log(data)
 
-  const [selectedComment, setSelectedComment] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+ 
 
-  const handleReply = (comment) => {
-    setSelectedComment(comment);
-    setIsModalOpen(true);
-  };
+   const handleStatus = async(id) => {
+    
+     try {
+       await mutateAsyncStatus({ slug: id, body:{} })
+       handleToast('success', 'وضعیت کامنت با موفقیت تغییر کرد')
+     } catch (error) {
+       console.log(error)
+     }
+   };
 
-  const handleDelete = (id) => {
-    setComments(comments.filter((comment) => comment.id !== id));
-  };
-
-  const closeModal = () => {
-    setSelectedComment(null);
-    setIsModalOpen(false);
-  };
-
-  const truncateText = (text, wordLimit) => {
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+  if (isLoading) {
+    return <div>Loading ...</div>
+  }
 
   return (
     <div className="p-4">
       <h2 className="text-sm lg:text-xl font-bold mb-4">کامنت محصولات</h2>
       <div className="overflow-x-auto">
-      <table className="table-auto w-full text-center border">
-        <thead className="border-b bg-blue-700 text-white">
-          <tr className="text-sm lg:text-md">
-            <th className="py-3">آیدی</th>
-            <th>تاریخ</th>
-            <th>ساعت</th>
-            <th>نام کاربر</th>
-            <th>شماره تماس/ایمیل</th>
-            <th>عنوان کامنت</th>
-            <th>عملیات</th>
-          </tr>
-        </thead>
-        <tbody>
-          {comments.map((comment) => (
-            <tr key={comment.id} className="hover:bg-gray-200 text-sm lg:text-md">
-              <td className="py-2">{comment.id}</td>
-              <td>{comment.date}</td>
-              <td>{comment.time}</td>
-              <td>{comment.userName}</td>
-              <td>{comment.contact}</td>
-              <td>{truncateText(comment.title, 5)}</td>
-              <td>
-                <button
-                  className="text-2xl  p-1 rounded mx-1"
-                  onClick={() => handleReply(comment)}
-                >
-                   <FcAnswers />
-                </button>
-                <button
-                  className="text-2xl  p-1 rounded mx-1"
-                  onClick={() => handleDelete(comment.id)}
-                >
-                  <MdDelete />
-                </button>
-              </td>
+        <table className="table-auto w-full text-center border">
+          <thead className="border-b bg-blue-700 text-white">
+            <tr className="text-sm lg:text-md">
+              <th className="py-3">ردیف</th>
+              <th>تاریخ</th>
+              <th>نام کاربر</th>
+              <th>نام محصول</th>
+              <th>عنوان کامنت</th>
+              <th>امتیاز</th>
+              <th>وضعیت</th>
+              <th>عملیات</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data?.data?.comments.map((comment) => (
+              <tr key={comment.id} className="hover:bg-gray-200 text-sm lg:text-md">
+                <td className="py-2">{comment.id}</td>
+                <td>{new Intl.DateTimeFormat("fa-IR").format(new Date(comment.createdAt))}</td>
+                <td>{comment.user.first_name + ' ' + comment.user.last_name}</td>
+                <td>{comment.product.name}</td>
+                <td>{comment.body}</td>
+                <td>{comment.rate}</td>
+                <td className={comment.status === 'published' ? 'text-green-500' : 'text-red-500'}>{comment.status === 'published' ? 'فعال' : 'انتظار'}</td>
+                <td>
+                  {comment?.status === 'published' ?
+                    <GiStopSign className="text-red-500 cursor-pointer size-6" onClick={() => handleStatus(comment.id)} /> :
+                    <TiTick className="text-green-500 cursor-pointer size-6" onClick={() => handleStatus(comment.id)} />
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
       </div>
 
-      {isModalOpen && selectedComment && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/3">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold"> 
-                  {selectedComment.title}
-                 </h2>
-              <button
-                className="text-red-500 text-lg"
-                onClick={closeModal}
-              >
-                &times;
-              </button>
-            </div>
-            <div className="mb-4">
-              <p className="text-gray-700 font-medium">
-                {selectedComment.title}
-              </p>
-            </div>
-            <textarea
-              className="w-full border p-2 rounded mb-4"
-              rows="5"
-              placeholder="متن پاسخ خود را اینجا بنویسید..."
-            ></textarea>
-            <div className="flex justify-end">
-              <button
-                className="bg-gray-300 text-black px-4 py-2 rounded mx-2"
-                onClick={closeModal}
-              >
-                انصراف
-              </button>
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={closeModal}
-              >
-                ارسال
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

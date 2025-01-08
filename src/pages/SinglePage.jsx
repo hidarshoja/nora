@@ -7,6 +7,7 @@ import usePost from '../hooks/usePost';
 import { handleToast } from '../utils/message';
 import useUpdate from '../hooks/useUpdate';
 import { EyeIcon } from '@heroicons/react/24/outline';
+import CommentSection from '../components/CommentSection';
 
 const BlogDetail = () => {
 
@@ -20,8 +21,7 @@ const BlogDetail = () => {
   const { data: bestBlog, loading } = useGet(['showblog', id], `/blog?best=true`)
   const { mutateAsync, isPending } = usePost('/comment', ['comment', 'show-blog', id])
   const { mutateAsync: addViews } = useUpdate('/blog', ['show-blog', id])
-
-
+  
   useEffect(() => {
     const addView = async (params) => {
       try {
@@ -129,7 +129,7 @@ const BlogDetail = () => {
                 </div> :
                 <p className='text-center mt-4 text-red-500 font-bold'>برای ارسال نظر ابتدا وارد شوید</p>
               }
-
+              <CommentSection comments={blog?.data?.comments} />
 
             </div>
           </div>

@@ -1,33 +1,134 @@
-import { useState } from 'react'
-import AddQuestionComponent from '../../components/Admin/AddQuestionComponent';
-import ReplyQuestionComponent from '../../components/Admin/ReplyQuestionComponent';
+import { useState } from "react";
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
 
 export default function Questions() {
+  const [questions, setQuestions] = useState([
+    {
+      id: 1,
+      topic: "نحوه ثبت نام",
+      author: "اصغر اصغری",
+      question: "نحوه ثبت نام چگونه است؟",
+      answer: "نحوه ثبت نام در سایت پس از اینکه فرم ثبت نام را پر کردید اطلاعات شما برای ما ذخیره و ثبت نام شما تایید می شود.",
+    },
+    {
+      id: 2,
+      topic: "نحوه خرید",
+      author: "محمد اصغری",
+      question: "نحوه خرید چگونه است؟",
+      answer: "نحوه خرید در سایت پس از اینکه فرم ثبت نام را پر کردید اطلاعات شما برای ما ذخیره و ثبت نام شما تایید می شود و شما می توانید خرید انجام بدهید.",
+    },
+  ]);
 
-    const [activeTab, setActiveTab] = useState("list");
+  const [form, setForm] = useState({
+    topic: "",
+    author: "",
+    question: "",
+    answer: "",
+  });
+
+  const [expandedItem, setExpandedItem] = useState(null);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleAddQuestion = () => {
+    setQuestions([...questions, { id: Date.now(), ...form }]);
+    setForm({ topic: "", author: "", question: "", answer: "" });
+  };
+
+  const handleDelete = (id) => {
+    setQuestions(questions.filter((q) => q.id !== id));
+  };
+
+  const handleEdit = (id) => {
+    const questionToEdit = questions.find((q) => q.id === id);
+    setForm(questionToEdit);
+    handleDelete(id);
+  };
+
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? `${words.slice(0, wordLimit).join(" ")} ...`
+      : text;
+  };
+
+  const toggleExpandedItem = (id) => {
+    setExpandedItem(expandedItem === id ? null : id);
+  };
+
   return (
-    <div className='md:p-4'>
-                <h1 className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">صفحه سوالات</h1>
-      <div className="flex border-b mb-4">
-        <button
-          onClick={() => setActiveTab("list")}
-          className={`px-4 py-2 ${
-            activeTab === "list" ? "border-b-2 border-blue-500 text-blue-500" : ""
-          }`}
-        >
-           ایجاد سوال
-        </button>
-        <button
-          onClick={() => setActiveTab("add")}
-          className={`px-4 py-2 ${
-            activeTab === "add" ? "border-b-2 border-blue-500 text-blue-500" : ""
-          }`}
-        >
-           پاسخ سوالات
+    <div>
+
+      <div className="mb-6">
+        <h3 className="text-lg md:text-xl font-YekanBakh-Regular  mb-5">سوالات</h3>
+
+        <input
+          name="question"
+          value={form.question}
+          onChange={handleChange}
+          placeholder="موضوع سوال"
+          className="border p-2 w-full mb-2"
+        />
+        <textarea
+          name="answer"
+          value={form.answer}
+          onChange={handleChange}
+          placeholder="پاسخ سوال"
+          className="border p-2 w-full mb-2"
+        ></textarea>
+        <button onClick={handleAddQuestion} className="bg-blue-500 text-white px-4 py-2 rounded">
+          ثبت سوال
         </button>
       </div>
-      {activeTab === "list" && <AddQuestionComponent />}
-      {activeTab === "add" && <ReplyQuestionComponent />}
+
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full text-center border">
+          <thead className="border-b bg-blue-700 text-white">
+            <tr className="text-sm md:text-md">
+              <th>آیدی</th>
+              <th>موضوع سوال</th>
+              <th>پاسخ</th>
+              <th>عملیات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questions.map((q) => (
+              <tr key={q.id} className="hover:bg-gray-200 text-sm md:text-md">
+                <td>{q.id}</td>
+                <td>{q.topic}</td>
+                <td>{q.author}</td>
+                <td>
+                  <span onClick={() => toggleExpandedItem(q.id)} className="cursor-pointer">
+                    {expandedItem === q.id ? q.question : truncateText(q.question, 3)}
+                  </span>
+                </td>
+                <td>
+                  <span onClick={() => toggleExpandedItem(q.id)} className="cursor-pointer">
+                    {expandedItem === q.id ? q.answer : truncateText(q.answer, 3)}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    className="px-2 py-1 rounded mx-1"
+                    onClick={() => handleEdit(q.id)}
+                  >
+                    <CiEdit />
+                  </button>
+                  <button
+                    className=" px-2 py-1 rounded mx-1"
+                    onClick={() => handleDelete(q.id)}
+                  >
+                    <MdDelete />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  )
+  );
 }
