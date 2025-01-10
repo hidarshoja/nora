@@ -1,25 +1,25 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import usePost from "../hooks/usePost";
+import { getFormData } from "../utils/form-data";
+import { handleToast } from "../utils/message";
+import { transformedErrors } from "../utils";
 
 const ContactUs = () => {
-  const [formValues, setFormValues] = useState({
-    subject: "",
-    email: "",
-    message: "",
-  });
+  const {mutateAsync, isPending} = usePost('/contact', ['contact'])
+  const [error, setError] = useState({})
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleSubmit = async(e) => {
+    e.preventDefault()
 
-  const handleSubmit = () => {
-    console.log({
-      subject: formValues.subject,
-      email: formValues.email,
-      message: formValues.message,
-    });
+    try {
+      await mutateAsync(getFormData(e.target))
+      handleToast('success', 'پیام شما با موفقیت ارسال شد')
+    } catch (error) {
+      console.log(error)
+      setError(transformedErrors(error?.response?.data?.errors))
+    }
   };
 
   return (
@@ -169,7 +169,7 @@ const ContactUs = () => {
               ))}
             </div>
           </div>
-          <div className="p-4">
+          <form className="p-4" onSubmit={handleSubmit}>
             <h3 className="text-xl font-YekanBakh-ExtraBold mb-2">
               با ما در ارتباط باشید...
             </h3>
@@ -179,11 +179,10 @@ const ContactUs = () => {
               </label>
               <input
                 type="text"
-                name="subject"
+                name="name"
                 className="input input-bordered w-full"
-                value={formValues.subject}
-                onChange={handleInputChange}
               />
+              <p className="text-red-500 text-[14px] my-2">{error?.name ? error.name[0] : ""}</p>
               <label className="label">
                 <span className="label-text-alt">پست الکترونیکی:</span>
               </label>
@@ -191,27 +190,25 @@ const ContactUs = () => {
                 type="email"
                 name="email"
                 className="input input-bordered w-full"
-                value={formValues.email}
-                onChange={handleInputChange}
               />
+              <p className="text-red-500 text-[14px] my-2">{error?.email ? error.email[0] : ""}</p>
               <label className="label">
                 <span className="label-text-alt">متن پیام:</span>
               </label>
               <textarea
-                name="message"
+                name="body"
                 className="textarea textarea-bordered h-24"
                 placeholder="متن پیام را بنویسید..."
-                value={formValues.message}
-                onChange={handleInputChange}
               ></textarea>
+              <p className="text-red-500 text-[14px] my-2">{error?.body ? error.body[0] : ""}</p>
               <button
-                className="btn bg-stone-800 hover:bg-stone-900 text-white my-3"
-                onClick={handleSubmit}
+                className="btn bg-stone-800 hover:bg-stone-900 text-white my-3 disabled:bg-gray-500 disabled:cursor-not-allowed"
+                disabled={isPending}
               >
-                ارسال پیام
+                {isPending ? "در حال ارسال..." : "ارسال"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </section>

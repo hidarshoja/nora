@@ -1,26 +1,11 @@
 import  { useState } from "react";
 import { FcAnswers } from "react-icons/fc";
 import { MdDelete } from "react-icons/md";
+import useGet from "../../hooks/useGet";
 
 export default function CommentsPhone() {
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      date: "1402/09/12",
-      time: "14:30",
-      userName: "مهدی قاسمی",
-      contact: "mehdi@example.com",
-      title: "آیا امکان تماس فوری هست؟",
-    },
-    {
-      id: 2,
-      date: "1402/09/11",
-      time: "10:15",
-      userName: "زهرا رضوی",
-      contact: "09351234567",
-      title: "شماره تماس پشتیبانی شما چیست؟",
-    },
-  ]);
+  const {data:contact,isLoading} = useGet(['contact'], '/contact')
+  
 
   const [selectedComment, setSelectedComment] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,7 +23,9 @@ export default function CommentsPhone() {
     setSelectedComment(null);
     setIsModalOpen(false);
   };
-
+if (isLoading) {
+  return <div>Loading ...</div>
+}
   return (
     <div className="p-4">
       <h2 className="text-sm lg:text-lg font-bold mb-4">کامنت های تماس با ما</h2>
@@ -48,22 +35,22 @@ export default function CommentsPhone() {
           <tr className="text-sm lg:text-md">
             <th className="py-3">آیدی</th>
             <th>تاریخ</th>
-            <th>ساعت</th>
-            <th>نام کاربر</th>
-            <th>شماره تماس/ایمیل</th>
             <th>عنوان کامنت</th>
+            <th>پیام</th>
+            <th>شماره تماس/ایمیل</th>
+            <th>وضعیت</th>
             <th>عملیات</th>
           </tr>
         </thead>
         <tbody>
-          {comments.map((comment) => (
+          {contact?.data?.map((comment) => (
             <tr key={comment.id} className="hover:bg-gray-200 text-sm lg:text-md">
               <td className="py-2">{comment.id}</td>
-              <td>{comment.date}</td>
-              <td>{comment.time}</td>
-              <td>{comment.userName}</td>
-              <td>{comment.contact}</td>
-              <td>{comment.title.split(" ").slice(0, 4).join(" ") + "..."}</td>
+              <td>{new Intl.DateTimeFormat("fa-IR").format(new Date(comment.createdAt))}</td>
+              <td>{comment.name}</td>
+              <td>{(comment.description).splice(0,10) + '...'}</td>
+              <td>{comment.email}</td>
+              <td className={`${comment.status === 'awnsered' ? 'text-green-500' : 'text-red-500'}`}>{comment.status === 'awnsered' ? 'پاسخ داده شده' : 'پاسخ داده نشده'}</td>
               <td>
                 <button
                   className="text-2xl p-1 rounded mx-1"
