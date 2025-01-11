@@ -61,6 +61,7 @@ const ProductTable = () => {
             <th>قیمت تخفیف‌دار</th>
             <th>برند</th>
             <th>دسته‌بندی</th>
+            <th>موجودی</th>
             <th>عملیات</th>
           </tr>
         </thead>
@@ -81,6 +82,7 @@ const ProductTable = () => {
               </td>
               <td>{product.brand}</td>
               <td>{product.categories.name}</td>
+              <td>{product.amount}</td>
               <td className="">
                 <button>
                    <Link to={`/admin/dashboard/edit-product/${product.slug}`} onClick={() => handleEdit(product)}>

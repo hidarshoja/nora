@@ -29,13 +29,13 @@ const EditProduct = () => {
     const { data, isLoading: loading } = useGet(['product-single', slug], `/product/show/${slug}`)
     const { mutateAsync, isPending } = useDelete(`/product/image/delete`, ['product-single'])
     const { mutateAsync: mutate, isPending: isLoading } = useUpdate(`/product`, ['product-single', 'product'])
-
+console.log(data)
 
     useEffect(() => {
         setSelectedProduct({
-            category_id: data?.data?.categories?.id,
-            machine: data?.data?.machine,
-            brand: data?.data?.brand,
+            category_id: data?.data?.product.categories?.id,
+            machine: data?.data?.product.machine,
+            brand: data?.data?.product.brand,
         })
     }, [loading])
 
@@ -71,7 +71,7 @@ const EditProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (data?.data?.images.length === 0 && images?.length === 0) {
+        if (data?.data?.product.images.length === 0 && images?.length === 0) {
             handleToast('error', 'حداقل یک عکس وارد کنید')
             return
         }
@@ -133,7 +133,7 @@ const EditProduct = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-2">
-                    {data.data.images.length > 0 && data.data.images?.map((image, index) => (
+                    {data?.data?.product.images?.length > 0 && data?.data?.product?.images?.map((image, index) => (
                         <div key={index} className="relative">
                             <img
                                 src={image?.image_url ? `${import.meta.env.VITE_API_BASE_URL}${image.image_url}` : ''}
@@ -157,7 +157,7 @@ const EditProduct = () => {
                         <input
                             type="text"
                             name="name"
-                            defaultValue={data?.data?.name}
+                            defaultValue={data?.data?.product.name}
                             placeholder="نام محصول"
                             className="block w-full p-2 mb-2 border"
                         />
@@ -169,7 +169,7 @@ const EditProduct = () => {
                             type="number"
                             name="amount"
                             placeholder="تعداد محصول موجود"
-                            defaultValue={data?.data?.amount}
+                            defaultValue={data?.data?.product.amount}
                             className="block w-full p-2 mb-2 border"
                         />
                         <p className="text-red-600 mb-3 text-sm">{errors?.amount ? errors?.amount[0] : ""}</p>
@@ -182,7 +182,7 @@ const EditProduct = () => {
                         <input
                             type="number"
                             name="price"
-                            defaultValue={data?.data?.price}
+                            defaultValue={data?.data?.product.price}
                             placeholder="قیمت اصلی"
                             className="block w-full p-2 mb-2 border"
                         />
@@ -193,7 +193,7 @@ const EditProduct = () => {
                             type="number"
                             name="price_with_off"
                             placeholder="قیمت تخفیف‌دار"
-                            defaultValue={data?.data?.price_with_off || ''}
+                            defaultValue={data?.data?.product.price_with_off || ''}
                             className="block w-full p-2 mb-2 border"
                         />
                         <p className="text-red-600 mb-3 text-sm">{errors?.price_with_off ? errors?.price_with_off[0] : ""}</p>
@@ -272,7 +272,7 @@ const EditProduct = () => {
                             type="text"
                             name="material"
                             placeholder="برند محصول"
-                            defaultValue={data?.data?.material}
+                            defaultValue={data?.data?.product.material}
                             className="block w-full p-2 mb-2 border"
                         />
                         <p className="text-red-600 mb-3 text-sm">{errors?.material ? errors?.material[0] : ""}</p>
@@ -284,7 +284,7 @@ const EditProduct = () => {
                         name="description"
                         placeholder="توضیحات محصول را وارد کنید"
                         className="block w-full p-2 mb-2 border"
-                        defaultValue={data?.data?.description}
+                        defaultValue={data?.data?.product.description}
                     >
 
                     </textarea>
