@@ -5,7 +5,6 @@ import useGet from "../../hooks/useGet";
 
 export default function CommentsPhone() {
   const {data:contact,isLoading} = useGet(['contact'], '/contact')
-  
 
   const [selectedComment, setSelectedComment] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,12 +42,12 @@ if (isLoading) {
           </tr>
         </thead>
         <tbody>
-          {contact?.data?.map((comment) => (
+          {contact?.data?.contact?.map((comment) => (
             <tr key={comment.id} className="hover:bg-gray-200 text-sm lg:text-md">
               <td className="py-2">{comment.id}</td>
               <td>{new Intl.DateTimeFormat("fa-IR").format(new Date(comment.createdAt))}</td>
               <td>{comment.name}</td>
-              <td>{(comment.description).splice(0,10) + '...'}</td>
+              <td>{comment.body}</td>
               <td>{comment.email}</td>
               <td className={`${comment.status === 'awnsered' ? 'text-green-500' : 'text-red-500'}`}>{comment.status === 'awnsered' ? 'پاسخ داده شده' : 'پاسخ داده نشده'}</td>
               <td>

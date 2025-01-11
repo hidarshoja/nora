@@ -8,7 +8,6 @@ import { handleToast } from "../../utils/message";
 export default function CommentProduct() {
   const { data, isLoading } = useGet(['product-comment'], '/product-comment')
   const { mutateAsync:mutateAsyncStatus } = useUpdate('/product-comment', ['comment', 'product'])
-  console.log(data)
 
  
 

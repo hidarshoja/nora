@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
+import DatePicker, { Calendar } from "react-multi-date-picker"
+import persian from "react-date-object/calendars/persian"
+import persian_fa from "react-date-object/locales/persian_fa"
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([
@@ -71,11 +74,11 @@ export default function Notifications() {
       notifications.map((notification) =>
         notification.id === currentEditId
           ? {
-              ...notification,
-              ...newNotification,
-              date: new Date().toLocaleDateString(),
-              time: new Date().toLocaleTimeString(),
-            }
+            ...notification,
+            ...newNotification,
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString(),
+          }
           : notification
       )
     );
@@ -123,15 +126,15 @@ export default function Notifications() {
               }
               className="w-full border p-2 rounded mb-4"
             />
-            <input
-              type="text"
-              placeholder="مدت اطلاعیه"
-              value={newNotification.duration}
-              onChange={(e) =>
-                setNewNotification({ ...newNotification, duration: e.target.value })
-              }
-              className="w-full border p-2 rounded mb-4"
+            <DatePicker
+              calendar={persian}
+              locale={persian_fa}
+              inputClass="w-full border p-2 rounded mb-4"
+              placeholder="تاریخ اطلاعیه"
+              onChange={(e) => setNewNotification({ ...newNotification, date: e.toLocaleDateString() })}
             />
+
+
             <textarea
               rows="4"
               placeholder="متن اطلاعیه"
@@ -176,7 +179,7 @@ export default function Notifications() {
                 <td>{notification.priority}</td>
                 <td>{notification.duration}</td>
                 <td>
-                {truncateText(notification.text, 5)}
+                  {truncateText(notification.text, 5)}
                 </td>
                 <td>{notification.date}</td>
                 <td>{notification.time}</td>
