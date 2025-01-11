@@ -5,39 +5,21 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import useGet from '../hooks/useGet';
+import CountdownTimer from './CountdownTimer';
 
-const products = [
-  {
-    image: "/assets/images/new-img/sipak11.jpg",
-    discount: "20%",
-    title: "لاستیک و سیبک",
-    originalPrice: 1250000,
-    discountedPrice: 1168000,
-  },
-  {
-    image: "assets/images/new-img/oil2.webp",
-    discount: "30%",
-    title: "روغن موتور اسپیدی",
-    originalPrice: 1080000,
-    discountedPrice: 900000,
-  },
-  {
-    image: "assets/images/new-img/butri.webp",
-    discount: "30%",
-    title: "باتری وارنا",
-    originalPrice: 630000,
-    discountedPrice: 430000,
-  },
-  {
-    image: "assets/images/new-img/disck2.webp",
-    discount: "30%",
-    title: "دیسک و لنت ترمز",
-    originalPrice: 600000,
-    discountedPrice: 420000,
-  },
-];
 
 export default function OfferSection() {
+  const {data,isLoading} = useGet(['product-offer'], '/product/offers')
+console.log(data)
+  if(isLoading){
+    return <div>Loading ...</div>
+  }
+
+  if(!data.data){
+    return 
+  }
+
   return (
     <section className="my-14 px-4">
       <div className="container mx-auto max-w-screen-xl">
@@ -62,27 +44,29 @@ export default function OfferSection() {
                   },
                 }}
               >
-                {products.map((product, index) => (
+                {data.data.suggestion_list.map((product, index) => (
                   <SwiperSlide key={index}>
                     <div className="bg-white rounded-3xl leading-10 p-4">
                       <div className="relative">
                         <a href="#" className="flex flex-col items-center justify-center">
-                          <img className="mb-4 h-[270px]" src={product.image} alt={product.title} />
+                          <img className="mb-4 h-[270px]"  src={product.product.images[0] ? `${import.meta.env.VITE_API_BASE_URL}${product.product.images[0].image_url}` : ''}  alt={product.title} />
                         </a>
                         <div className="bg-yellow-500 absolute top-2 right-2 rounded-full w-10 h-10">
-                          <p className="flex items-center justify-center">{product.discount}</p>
+                          <p className="flex items-center justify-center">{product.product.name}</p>
                         </div>
                       </div>
                       <div className="text-center">
-                        <a href="#"><h3 className="font-YekanBakh-ExtraBold text-base">{product.title}</h3></a>
-                        <div className="flex justify-center gap-4 text-base mt-4">
+                        <a href="#"><h3 className="font-YekanBakh-ExtraBold text-base">{product.product.name}</h3></a>
+                        
+                          <div className="flex justify-center gap-4 text-base mt-4">
                           <span className="line-through">
-                          {new Intl.NumberFormat('fa-IR').format(product.originalPrice)} تومان
+                          {new Intl.NumberFormat('fa-IR').format(product.product.price)} تومان
                           </span>
                           <span className="text-yellow-500">
-                          {new Intl.NumberFormat('fa-IR').format(product.discountedPrice)} تومان
+                          {new Intl.NumberFormat('fa-IR').format(product.product.price_with_off)} تومان
                           </span>
                         </div>
+                        
                       </div>
                       <div className="flex justify-center gap-2 items-center mt-4">
                         <Link className="bg-yellow-500 p-2 text-white rounded-lg" to="/cart">
@@ -97,42 +81,8 @@ export default function OfferSection() {
                 ))}
               </Swiper>
             </div>
-            <div className="hidden lg:block lg:col-span-3">
-              <div className="bg-stone-800 rounded-3xl p-4">
-                <div className="flex flex-col leading-8">
-                  <p className="text-white text-center">با 30 درصد تخفیف شگفتانه محصول خود را خریداری کنید :)</p>
-                  <div className="flex justify-center my-12">
-                    <img className="w-48" src="assets/images/off.png" alt="Offer" />
-                  </div>
-                  <div className="grid grid-cols-4 gap-2 leading-4">
-                    <div className="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span className="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span id="counterElement" style={{ '--value': 60 }}></span>
-                      </span>
-                      ثانیه
-                    </div>
-                    <div className="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span className="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span style={{ '--value': 10 }}></span>
-                      </span>
-                      دقیقه
-                    </div>
-                    <div className="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span className="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span style={{ '--value': 24 }}></span>
-                      </span>
-                      ساعت
-                    </div>
-                    <div className="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span className="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span style={{ '--value': 4 }}></span>
-                      </span>
-                      روز
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        
+            <CountdownTimer expiredAt={data.data.expired_at} />
           </div>
         </div>
       </div>

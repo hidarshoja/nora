@@ -10,5 +10,8 @@ export default defineConfig({
 	},
 	build:{
 		manifest: true,
-	}
+	},
+	optimizeDeps: {
+		include: ['jalaali-js']
+	  }
 });
