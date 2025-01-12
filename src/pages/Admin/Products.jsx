@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import ProductTable from "../../components/Admin/ProductTable";
 import AddProduct from "../../components/Admin/AddProduct";
+import OfferTable from "../../components/Admin/OfferTable";
 
 const Products = () => {
   const [activeTab, setActiveTab] = useState("list");
@@ -27,11 +28,20 @@ const Products = () => {
         >
           افزودن محصول
         </button>
+        <button
+          onClick={() => setActiveTab("offer")}
+          className={`px-4 py-2 ${
+            activeTab === "offer" ? "border-b-2 border-blue-500 text-blue-500" : ""
+          }`}
+        >
+          پیشنهادات شگفت انگیز
+        </button>
       </div>
 
       {/* Tab Content */}
       {activeTab === "list" && <ProductTable />}
       {activeTab === "add" && <AddProduct />}
+      {activeTab === "offer" && <OfferTable />}
     </div>
   );
 };

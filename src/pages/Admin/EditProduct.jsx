@@ -30,7 +30,6 @@ const EditProduct = () => {
     const { data, isLoading: loading } = useGet(['product-single', slug], `/product/show/${slug}`)
     const { mutateAsync, isPending } = useDelete(`/product/image/delete`, ['product-single'])
     const { mutateAsync: mutate, isPending: isLoading } = useUpdate(`/product`, ['product-single', 'product'])
-    console.log(data)
 
     useEffect(() => {
         setSelectedProduct({

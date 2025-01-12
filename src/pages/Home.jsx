@@ -19,11 +19,8 @@ export default function Home() {
       try {
         // Send the request to the backend to save the IP
         await axiosClient.post("/setting/views", { unique_id });
-
-        console.log("IP saved successfully");
         setIsCheck(true)
       } catch (error) {
-        console.error("Error saving IP:", error);
         setIsCheck(true)
       }
     };

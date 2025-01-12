@@ -12,7 +12,7 @@ export default function ProductDetails() {
   const { addToCart } = useCart()
   const { slug } = useParams();
   const { data: product, isLoading } = useGet(['product', slug], `/product/show/${slug}`)
-console.log(product)
+
   const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {

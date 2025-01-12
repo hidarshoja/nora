@@ -50,10 +50,8 @@ const CheckOut = () => {
       total_price: totalPrice
     }
 
-    console.log(body)
     try {
       const response = await mutateAsync(body)
-      console.log(response)
     } catch (error) {
       console.log(error)
       setError(removeFormDataPrefix(transformedErrors(error?.response?.data?.errors)))

@@ -19,7 +19,7 @@ export default function ReplyQuestionComponent() {
     };
   
     const handleSendReply = () => {
-      console.log(`Reply sent: ${reply}`);
+     
       setSelectedComment(null);
       setReply("");
     };

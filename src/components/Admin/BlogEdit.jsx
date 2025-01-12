@@ -14,7 +14,7 @@ const BlogEdit = ({ blog, onClose, refetch }) => {
     useEffect(() => {
         setCategory(data?.data?.category)
     }, [])
-    console.log(category)
+    
     // ! change image to link
     const handleImageChange = (e) => {
 
@@ -48,7 +48,6 @@ const BlogEdit = ({ blog, onClose, refetch }) => {
         
         try {
             const response = await mutateAsync({ slug: blog, body })
-            console.log(response.data)
             handleToast('success', 'بلاگ با موفقیت ویرایش شد')
             refetch()
             onClose()

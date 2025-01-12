@@ -7,7 +7,6 @@ import useGet from '../hooks/useGet';
 
 const Blog = () => {
   const {data,isLoading} = useGet(['blog'],'/blog');
-console.log(data)
   if (isLoading) {
     return <div>Loading ...</div>;
   }

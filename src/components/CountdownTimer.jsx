@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment-jalaali';
 
-const CountdownTimer = () => {
-  const persianDate = "1403-10-24 12:00:00";  // Sample Persian date
+const CountdownTimer = ({expiredAt}) => {
+  const persianDate = expiredAt;  
   const currentDate = new Date();
   const persianToGregorian = moment(persianDate, "jYYYY-jMM-jDD HH:mm:ss").toDate();
 

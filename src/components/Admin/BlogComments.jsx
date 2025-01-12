@@ -46,7 +46,6 @@ export default function BlogComments() {
     }
     try {
       const response = await mutateAsync(body)
-      console.log(response.data)
       handleToast('success', 'پاسخ کامنت انجام شد')
       setSelectedBlogComment(null);
       setIsBlogModalOpen(false);

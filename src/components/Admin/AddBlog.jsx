@@ -46,8 +46,6 @@ const AddBlog = () => {
         }
         try {
             const response = await mutateAsync(body)
-
-            console.log(response.data)
             handleToast('success', 'بلاگ با موفقیت اضافه شد')
 
         } catch (error) {

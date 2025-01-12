@@ -39,11 +39,9 @@ const EditCategoryModal = ({ category, onClose, refetch }) => {
       name: getFormData(e.target).name,
       image_url: image
     };
-    console.log(body)
-
+    
     try {
       const response = await mutateAsync({ slug: category, body })
-      console.log(response.data)
       handleToast('success', 'دسته بندی با موفقیت ویرایش شد')
       refetch()
       onClose()

@@ -13,7 +13,7 @@ export default function Users() {
 
   const { data: users, isLoading } = useGet(['user'], '/user')
   const { mutateAsync:mutateStatus, isPending } = useUpdate( '/user',['user'])
-  console.log(users)
+
 
   //  ! active or inactive user
   const handleStatus = async (usre_id) => {
