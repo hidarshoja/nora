@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { handleToast } from '../utils/message';
+import useGet from './useGet';
 
 // Create the context
 const CartContext = createContext();
 
 // Create a provider
 export const CartProvider = ({ children }) => {
+    const { data:option } = useGet(['options'], '/setting/about-us/key/post_cost')
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
@@ -72,7 +74,7 @@ export const CartProvider = ({ children }) => {
                     ? total + item.price_with_off * item.amount
                     : total + item.price * item.amount,
             0
-        );
+        ) + Number(option?.data?.value);
     }, [cart]);
 
     return (

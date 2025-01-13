@@ -63,6 +63,7 @@ const OfferTable = () => {
     if (isLoading) {
         return <div>Loading...</div>
     }
+
     return (
         <div>
             <form onSubmit={handleSubmit} className='flex flex-col'>
@@ -94,7 +95,7 @@ const OfferTable = () => {
                 </button>
             </form>
 
-            {offers.data && (
+            {offers?.data !== null && (
                 <div className="overflow-x-auto my-5">
                     <table className="table-auto w-full text-center border ">
                         <thead className="border-b-2 bg-[#090580] text-white">

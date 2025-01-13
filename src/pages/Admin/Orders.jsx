@@ -37,7 +37,7 @@ export default function AdminOrders() {
 
   const handleTrackingSubmit = async () => {
     try {
-      await mutateAsync({ slug: info.address_id, body: { ref_code: info.trackingNumber } })
+      await mutateAsync({ slug: info.address_id, body: { ref_code: info.trackingNumber, status:'ارسال شد' } })
       handleToast('success', 'کد پیگیری ثبت شد')
       setOpenModal(prev => ({ ...prev, ref_code: false }))
     } catch (error) {

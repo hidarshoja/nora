@@ -1,6 +1,12 @@
 import  { useState } from 'react';
+import useGet from '../../hooks/useGet'
+import { useAtomValue } from 'jotai';
+import {userProfile} from '../../stores/store'
 
 export default function OrderUser() {
+  const user = useAtomValue(userProfile)
+  const {data , isLoading} = useGet(['show-order'], `/order/${user?.id}/پرداخت`)
+  console.log(data)
   const [activeTab, setActiveTab] = useState('ok');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invoiceData, setInvoiceData] = useState(null);
@@ -175,6 +181,10 @@ export default function OrderUser() {
     printWindow.print();
   };
 
+  if (isLoading) {
+    return <div>Loading ...</div>
+  }
+
   return (
     <div className='px-1 md:px-3'>
        <div className="p-3 bg-stone-200 rounded-xl my-4">
@@ -212,32 +222,32 @@ export default function OrderUser() {
                   </div>
 
                   <div className={`tab-content rounded-lg ${activeTab === 'ok' ? '' : 'hidden'}`}>
-                    {orders.tab1.map((order, index) => (
+                    {data?.data.length > 0 &&data?.data?.map((order, index) => (
                       <div key={index} className="p-6 border rounded-2xl relative">
                         <div className={`bg-green-500 rounded-tl-2xl text-xs text-white py-3 px-6 rounded-br-2xl absolute top-0 left-0`}>
-                          {order.status}
+                          {order.address.statuse}
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
                           <div>
                             <span>تاریخ:</span>
-                            <span className="mr-1 text-stone-500">{order.date}</span>
+                            <span className="mr-1 text-stone-500">{new Intl.DateTimeFormat('fa-IR',{day:'2-digit',year: 'numeric',  month: 'short'}).format(new Date(order.address.createdAt))}</span>
                           </div>
                           <div>
                             <span>کد سفارش:</span>
-                            <span className="mr-1 text-stone-500">{order.orderCode}</span>
-                          </div>
-                          <div>
-                            <span>تخفیف:</span>
-                            <span className="mr-1 text-stone-500">{order.discount}</span>
+                            <span className="mr-1 text-stone-500">{order.address.id}</span>
                           </div>
                           <div>
                             <span>جمع سبد خرید:</span>
-                            <span className="mr-1 text-stone-500">{order.total}</span>
+                            <span className="mr-1 text-stone-500">{new Intl.NumberFormat('fa-Ir').format(order.total_price)} تومان</span>
+                          </div>
+                          <div>
+                            <span>کد رهگیری:</span>
+                            <span className="mr-1 text-stone-500">{order.address.ref_code || 'در حال آماده سازی'}</span>
                           </div>
                         </div>
                         <div className="flex flex-col sm:flex-row justify-between items-center">
                           <div className="flex mb-6">
-                            {order.products.map((product) => (
+                            {order.orders.map((product) => (
                               <a key={product.id} href="single-product.html">
                                 <img className="w-24" src={product.src} alt="" />
                               </a>

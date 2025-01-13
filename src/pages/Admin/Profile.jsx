@@ -2,6 +2,7 @@ import  { useState } from 'react';
 import axios from 'axios';
 
 export default function Profile() {
+  const {data,isLoading} = useGet(['product'], '/product?limit=1000')
   const [activeTab, setActiveTab] = useState("personalInfo");
 
   const [formData, setFormData] = useState({

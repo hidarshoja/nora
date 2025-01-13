@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import usePost from "../hooks/usePost";
+import useGet from '../hooks/useGet'
 import { getFormData } from "../utils/form-data";
 import { handleToast } from "../utils/message";
 import { transformedErrors } from "../utils";
 
 const ContactUs = () => {
+  const {data, isLoading} = useGet(['setting'], '/setting/about-us')
   const {mutateAsync, isPending} = usePost('/contact', ['contact'])
   const [error, setError] = useState({})
 
@@ -22,6 +24,9 @@ const ContactUs = () => {
     }
   };
 
+  if(isLoading) {
+    return <div>Loading ....</div>
+  }
   return (
     <section className="mb-20 px-4">
       <div className="container mx-auto max-w-screen-xl">
@@ -82,7 +87,7 @@ const ContactUs = () => {
                     </svg>
                   ),
                   title: "ایمیل:",
-                  description: "norapart1398@gmail.com",
+                  description: data?.data[0]?.value,
                 },
                 {
                   icon: (
@@ -107,8 +112,8 @@ const ContactUs = () => {
                     </svg>
                   ),
                   title: "آدرس:",
-                  description:
-                   " تهران جاده گیلاوند بسمت بومهن ۵۰۰ متر بعداز پمپ بنزین موسوی . نمایندگی پخش قطعات یدکی خودرو . اصغری",
+                  description:data?.data[1]?.value
+                   
                 },
                 {
                   icon: (
@@ -128,7 +133,7 @@ const ContactUs = () => {
                     </svg>
                   ),
                   title: "ساعت کاری فروشگاه:",
-                  description: "8 تا 22 ",
+                  description: data?.data[2]?.value,
                 },
                 {
                   icon: (
@@ -148,7 +153,7 @@ const ContactUs = () => {
                     </svg>
                   ),
                   title: "تماس",
-                  description: "09358191484 - 09194112970",
+                  description: `${data?.data[3]?.value} - ${data?.data[4]?.value}`,
                 },
                 
               ].map((item, index) => (

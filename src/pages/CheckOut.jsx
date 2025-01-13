@@ -15,7 +15,8 @@ const CheckOut = () => {
   const [error, setError] = useState([])
 
   const { data, isLoading } = useGet(['province'], `/province`)
-  const { mutateAsync } = usePost(`/order`, ['orders'])
+  // const { mutateAsync } = usePost(`/order`, ['orders'])
+  const { mutateAsync } = usePost(`/order/payment`, ['payment'])
 
 
   useEffect(() => {
@@ -49,9 +50,12 @@ const CheckOut = () => {
       user_id: user?.id,
       total_price: totalPrice
     }
-
+   
+    localStorage.setItem('body',JSON.stringify(body))
+   
     try {
-      const response = await mutateAsync(body)
+      const response = await mutateAsync({amount:totalPrice})
+      window.location.href = response.data.redirect_url
     } catch (error) {
       console.log(error)
       setError(removeFormDataPrefix(transformedErrors(error?.response?.data?.errors)))
@@ -176,7 +180,7 @@ const CheckOut = () => {
 
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text-alt">کدپستی:</span>
+                <span className="label-text-alt">کدپستی (اختیاری):</span>
               </label>
               <input
                 type="text"
