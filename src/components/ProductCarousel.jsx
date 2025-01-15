@@ -63,7 +63,8 @@ const ProductCarousel = () => {
                     </div>
                   )}
                   <div className="flex justify-center gap-2 items-center mt-4">
-                    <button onClick={()=>addToCart(product)} className="bg-yellow-500 p-2 text-white rounded-lg" href={product.link}>
+          {product?.amount > 0 ? (
+            <button onClick={()=>addToCart(product)} className="bg-yellow-500 p-2 text-white rounded-lg" href={product.link}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -79,6 +80,10 @@ const ProductCarousel = () => {
                         />
                       </svg>
                     </button>
+          ): (
+            <p className='text-red-500'>ناموجود</p>
+          )}
+                    
 
                   </div>
                 </div>

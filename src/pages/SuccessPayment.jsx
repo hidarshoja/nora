@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import axiosClient from '../axios-client'
-
+import useCart from '../hooks/useCart'
 const SuccessPayment = () => {
+    const { setCart } = useCart()
     const { state } = useLocation()
 
     if (!state?.authority) {
@@ -12,29 +13,40 @@ const SuccessPayment = () => {
     useEffect(() => {
         const verify = async () => {
             const items = JSON.parse(localStorage.getItem('body'))
-            
+
             try {
-                const response = await axiosClient.post('/order',items)
+                const response = await axiosClient.post('/order', items)
 
                 const body = {
                     authority: state.authority,
-                    amount: items.total_price,
-                    user_id:items.user_id,
-                    address_id:response.data.address_id
+                    amount: items.total_price * 10,
+                    user_id: items.user_id,
+                    address_id: response.data.address_id
                 }
-                const res = await axiosClient.post('/order/verify', body)
-                
-                localStorage.removeItem('body')
-                localStorage.removeItem('cart')
+                try {
+                    const res = await axiosClient.post('/order/verify', body)
 
-                console.log(res)
+                    if (res.status === 200) {
+                        setCart([]);
+                        localStorage.removeItem('body');
+                        console.log('Verification successful, body removed:', res.data);
+                    } else {
+                        console.error('Verification failed, response status:', res.status);
+                    }
+
+                    console.log(res)
+                } catch (error) {
+                    console.log(error)
+                }
+
             } catch (error) {
                 console.log(error)
             }
 
         }
+        console.log('State Status:', state?.status);
 
-        if (state.status === "OK") {
+        if (state?.status === "OK") {
             verify()
         }
     }, [])

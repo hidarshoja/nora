@@ -1,5 +1,7 @@
 import  { useState } from 'react';
 import axios from 'axios';
+import useGet from '../../hooks/useGet';
+
 
 export default function Profile() {
   const {data,isLoading} = useGet(['product'], '/product?limit=1000')

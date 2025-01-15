@@ -17,6 +17,7 @@ const CheckOut = () => {
   const { data, isLoading } = useGet(['province'], `/province`)
   // const { mutateAsync } = usePost(`/order`, ['orders'])
   const { mutateAsync } = usePost(`/order/payment`, ['payment'])
+  const { data:option } = useGet(['options'], '/setting/about-us/key/post_cost')
 
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const CheckOut = () => {
       formData: formData,
       cart,
       user_id: user?.id,
-      total_price: totalPrice
+      total_price: totalPrice + Number(option?.data?.value || 0)
     }
    
     localStorage.setItem('body',JSON.stringify(body))

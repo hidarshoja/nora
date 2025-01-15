@@ -51,7 +51,8 @@ export const router = createBrowserRouter([
       { path: '/blog/:slug/:id', element: <BlogDetail /> },
       { path: '/question', element: <Question /> },
       { path: '/blocking', element: <Blocking /> },
-      { path: '/check-out', element: <CheckOut /> },
+      { path: '/check-out', element: <CheckOut /> },,
+      { path: '/success',  element: <SuccessPayment />}
     ]
   },
   {
@@ -153,11 +154,7 @@ export const router = createBrowserRouter([
         path: 'profile',
         element: <ProfileUser />,
       },
-     
+
     ]
-  },
-  {
-    path: '/success',
-    element: <SuccessPayment />
   }
 ])

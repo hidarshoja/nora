@@ -6,8 +6,8 @@ import { handleToast } from "../utils/message";
 
 const Cart = () => {
   const { cart, setCart, removeFromCart, changeQuantity, totalPrice } = useCart()
-  const { data, isLoading, refetch } = useGet(['product'], '/product?all=true')
-  const { data:option } = useGet(['options'], '/setting/about-us/key/post_cost')
+  const { data, refetch } = useGet(['product'], '/product?all=true')
+  const { data: option, isLoading } = useGet(['options'], '/setting/about-us/key/post_cost')
 
 
   const navigate = useNavigate()
@@ -16,12 +16,12 @@ const Cart = () => {
   const status = search.get('Status')
   const authority = search.get('Authority')
 
- 
+
 
   useEffect(() => {
     if (status === "OK") {
-      navigate('/success',{state: {authority,status}})
-    }else if(status === "NOK"){
+      navigate('/success', { state: { authority, status } })
+    } else if (status === "NOK") {
       console.log("first")
       handleToast('error', 'پرداخت موفق آمیز نبود')
       setTimeout(() => {
@@ -50,7 +50,7 @@ const Cart = () => {
             acc.push(product);
           }
         } else {
-          acc.push(product); 
+          acc.push(product);
         }
         return acc;
       }, []);
@@ -59,19 +59,21 @@ const Cart = () => {
         setCart(updatedCart);
       }
     }
-  }, [data]); 
+  }, [data]);
 
   //! Refetch data every 30 seconds with proper cleanup
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if(cart.length === 0) return
+      if (cart.length === 0) return
       refetch();
     }, 30000);
 
-    return () => clearInterval(intervalId); 
+    return () => clearInterval(intervalId);
   }, [refetch]);
 
-
+  if (isLoading) {
+    return <div>Loading ...</div>
+  }
   return (
     <section className="my-14 mt-4 px-4">
       <div className="container mx-auto max-w-screen-xl">
@@ -130,7 +132,7 @@ const Cart = () => {
                     <div>
                       <img
                         className="w-32 border rounded-2xl"
-                        src={product?.image? `${import.meta.env.VITE_API_BASE_URL}${product.image}` : ''}
+                        src={product?.image ? `${import.meta.env.VITE_API_BASE_URL}${product.image}` : ''}
                         alt={product.image}
                       />
                     </div>
@@ -231,12 +233,12 @@ const Cart = () => {
                   </div>
                   <div className="flex items-center justify-between p-4 bg-yellow-100 rounded-lg">
                     <span>هزینه ارسال:</span>
-                    <span>{new Intl.NumberFormat("fa-IR").format(option?.data.value)}</span>
+                    <span>{new Intl.NumberFormat("fa-IR").format(option?.data?.value)}</span>
                   </div>
                   <div className="flex items-center justify-between p-4">
                     <span>مبلغ نهایی:</span>
                     <span>
-                      {new Intl.NumberFormat("fa-IR").format(totalPrice + Number(option?.data.value))}
+                      {new Intl.NumberFormat("fa-IR").format(totalPrice + Number(option?.data?.value))}
                     </span>
                   </div>
                   <Link to="/check-out">
