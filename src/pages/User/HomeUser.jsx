@@ -118,7 +118,7 @@ export default function HomeUser() {
                 </div>
                 <div className="bg-white border p-6 rounded-2xl">
                   {notification?.data?.length > 0 && notification?.data?.map(item => (
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4" key={item.id}>
                       <div className="leading-8 mr-2">
                         <p className="text-sm font-YekanBakh-Bold">عنوان اطلاعیه : {item.title}</p>
                         <span className="text-xs text-stone-500"> تاریخ انتشار: {new Intl.DateTimeFormat('fa-IR', { day: '2-digit', year: 'numeric', month: 'short' }).format(new Date(item.createdAt))} - تاریخ انقضا: {item.expired_at}</span>
