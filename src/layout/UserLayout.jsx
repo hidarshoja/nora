@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MobileSidbarUser from "../components/User/MobileSidbarUser";
 import DesktopSidebar from "../components/User/DesktopSidebarUser";
 import Header from "../components/User/HeaderUser";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { userProfile } from "../stores/store";
 import { Toaster } from "react-hot-toast";
+import { checkAuth } from "../utils/auth";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -14,11 +15,23 @@ function classNames(...classes) {
 export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
-  const profile = useAtomValue(userProfile)
 
-  if (!profile || profile?.role !== "user") {
-    return <Navigate to='/auth/login' />
-  }
+  
+    const profile = useAtomValue(userProfile)
+    const setUser = useSetAtom(userProfile);
+  
+    useEffect(() => {
+      const fetchAuth = async () => {
+        if (!profile) await checkAuth(setUser); // Call the checkAuth function
+      };
+      fetchAuth();
+    }, [profile]);
+  
+    const token = localStorage.getItem('ACCESS_TOKEN')
+  
+    if (!profile || profile?.role !== "user" || !token) {
+      return <Navigate to="/auth/login" replace />;
+    }
 
   return (
     <>

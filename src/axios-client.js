@@ -11,4 +11,16 @@ axiosClient.interceptors.request.use((config) => {
   return config;
 })
 
+axiosClient.interceptors.response.use(
+  response => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // در صورت دریافت خطای 401 توکن را پاک کرده و به صفحه ورود هدایت کنیم
+      localStorage.removeItem('ACCESS_TOKEN');
+      window.location.href = '/auth/login'; // می‌توانید از useNavigate برای هدایت استفاده کنید
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default axiosClient;

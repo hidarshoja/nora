@@ -3,12 +3,15 @@ import { Menu } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { logout } from "../../utils/logout";
+import { useAtomValue } from "jotai";
+import { userProfile } from "../../stores/store";
 
 export default function HeaderUser({
     setSidebarOpen,
     desktopSidebarOpen,
     setDesktopSidebarOpen,
   }) {
+    const user = useAtomValue(userProfile)
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 bg-[#070a06] border-b-2 border-gray-700 px-4 sm:gap-x-6 sm:px-6 lg:px-8">
       <button
@@ -53,11 +56,11 @@ export default function HeaderUser({
                   />
                 </div>
                 <div className="text-color3 text-sm md:text-[16px]">
-                  سام درخشانی 
+                  {user?.first_name +' '+ user?.last_name} 
                 </div>
               </div>
             </div>
-            <div className="w-[90px] flex overflow-hidden bg-[#FDCB44] h-7 rounded-[11px] border border-[#5B7380]">
+            <button className="w-[90px] flex overflow-hidden bg-[#FDCB44] h-7 rounded-[11px] border border-[#5B7380]" onClick={logout}>
               <div className="w-full flex items-center justify-center gap-1 cursor-pointer">
                 <div>
                   <img
@@ -66,12 +69,12 @@ export default function HeaderUser({
                     alt=""
                   />
                 </div>
-                <div className="text-white text-[12px]">
-                    <button onClick={logout}>خروج</button>
+                <div className="text-white text-[12px] my-1">
+                    خروج
                 </div>
               </div>
              
-            </div>
+            </button>
           </Menu>
         </div>
       </div>

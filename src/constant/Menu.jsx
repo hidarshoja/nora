@@ -12,5 +12,5 @@ export const navigation = [
   { name: "سوالات", href: "/admin/dashboard/questionsAdmin", current: false, },
   { name: "اطلاعیه ها", href: "/admin/dashboard/notification", current: false, },
   { name: "تنظیمات", href: "/admin/dashboard/settings", current: false, },
-  { name: "پرفایل", href: "/admin/dashboard/profile", current: false, },
+  { name: "پروفایل", href: "/admin/dashboard/profile", current: false, },
 ];
