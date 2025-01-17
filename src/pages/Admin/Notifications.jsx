@@ -1,158 +1,151 @@
 import React, { useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
-import DatePicker, { Calendar } from "react-multi-date-picker"
+import DatePicker, { DateObject } from "react-multi-date-picker"
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
+import useGet from './../../hooks/useGet';
+import useDelete from './../../hooks/useDelete';
+import { handleToast } from './../../utils/message';
+import { getFormData } from './../../utils/form-data';
+import usePost from "../../hooks/usePost";
+import { transformedErrors } from "../../utils";
+import useUpdate from './../../hooks/useUpdate';
 
 export default function Notifications() {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      priority: "تخفیف ۵٪",
-      duration: "5 روز",
-      text: "از امروز به مدت 5 روز لنت ها با تخفیف  است.",
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
-    },
-    {
-      id: 2,
-      priority: "تخفیف ۱۲٪",
-      duration: "3 روز",
-      text: "این اطلاعیه به مدت 3 روز معتبر است و دیسک ها تخفیف دارند.",
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
-    },
-  ]);
+  const { data: notification, isLoading } = useGet(['notification'], '/notification')
+  const { mutateAsync: mutateAsyncDelete } = useDelete('/notification', ['notification'])
+  const { mutateAsync: mutateAsyncAdd } = usePost('/notification', ['notification'])
+  const { mutateAsync: mutateAsyncUpdate } = useUpdate('/notification', ['notification'])
+
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [currentEditId, setCurrentEditId] = useState(null);
-  const [newNotification, setNewNotification] = useState({
-    priority: "",
-    duration: "",
-    text: "",
-  });
+  const [selectedNotif, setSelectedNotif] = useState(null);
+  const [error, setError] = useState(null);
+  const [date, setDate] = useState(new DateObject())
 
-  const handleOpenModal = (isEdit = false, notification = {}) => {
-    setIsEditMode(isEdit);
-    setIsModalOpen(true);
-    if (isEdit) {
-      setCurrentEditId(notification.id);
-      setNewNotification({
-        priority: notification.priority,
-        duration: notification.duration,
-        text: notification.text,
-      });
+  // ! Add new notification
+  const handleAddNotification = async(e) => {
+    e.preventDefault()
+    const persianToEnglishDigits = (str) => str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+    const expired_at = persianToEnglishDigits(date.format('YYYY-MM-DD'));
+
+    const body = {
+      ...getFormData(e.target),
+      expired_at
+    }
+
+    try {
+      await mutateAsyncAdd(body)
+      handleToast('success', 'اطلاعیه با موفقیت اضافه شد')
+      setIsModalOpen(false)
+    } catch (error) {
+      console.log(error)
+      setError(transformedErrors(error?.response?.data?.errors))
     }
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setNewNotification({ priority: "", duration: "", text: "" });
-    setIsEditMode(false);
-    setCurrentEditId(null);
+  // ! update a notification
+  const handleUpdateNotification = async(e) => {
+    e.preventDefault()
+    const persianToEnglishDigits = (str) => str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+    const expired_at = persianToEnglishDigits(date.format('YYYY-MM-DD'));
+
+    const body = {
+      ...getFormData(e.target),
+      expired_at
+    }
+
+    try {
+      await mutateAsyncUpdate({slug: selectedNotif.id, body})
+      handleToast('success', 'اطلاعیه با موفقیت ویرایش شد')
+      setIsModalOpen(false)
+    } catch (error) {
+      console.log(error)
+      setError(transformedErrors(error?.response?.data?.errors))
+    }
   };
 
-  const handleAddNotification = () => {
-    const newId = notifications.length
-      ? notifications[notifications.length - 1].id + 1
-      : 1;
-    setNotifications([
-      ...notifications,
-      {
-        id: newId,
-        ...newNotification,
-        date: new Date().toLocaleDateString(),
-        time: new Date().toLocaleTimeString(),
-      },
-    ]);
-    handleCloseModal();
+
+  // ! delete a notification
+  const handleDeleteNotification = async (id) => {
+    try {
+      await mutateAsyncDelete(id)
+      handleToast('success', 'اطلاعیه با موفقیت حذف شد')
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  const handleUpdateNotification = () => {
-    setNotifications(
-      notifications.map((notification) =>
-        notification.id === currentEditId
-          ? {
-            ...notification,
-            ...newNotification,
-            date: new Date().toLocaleDateString(),
-            time: new Date().toLocaleTimeString(),
-          }
-          : notification
-      )
-    );
-    handleCloseModal();
-  };
 
-  const handleDeleteNotification = (id) => {
-    setNotifications(notifications.filter((notification) => notification.id !== id));
-  };
-
-  const truncateText = (text, wordLimit) => {
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+  if (isLoading) {
+    return <div>Loading ...</div>
+  }
 
   return (
     <div className="p-4">
       <h2 className="text-lg font-bold mb-4">اطلاعیه‌ها</h2>
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-        onClick={() => handleOpenModal(false)}
+        onClick={() => {
+          setIsEditMode(false);
+          setIsModalOpen(true);
+        }}
       >
         اضافه کردن اطلاعیه
       </button>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/3">
+          <form onSubmit={isEditMode ? handleUpdateNotification : handleAddNotification} className="bg-white p-6 rounded shadow-lg w-[300px] md:w-1/3">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold">
                 {isEditMode ? "ویرایش اطلاعیه" : "اضافه کردن اطلاعیه"}
               </h3>
-              <button className="text-red-500 text-xl" onClick={handleCloseModal}>
+              <button className="text-red-500 text-xl" onClick={() => {
+                setIsModalOpen(false);
+                setIsEditMode(false);
+              }}>
                 &times;
               </button>
             </div>
             <input
               type="text"
               placeholder="موضوع اطلاعیه"
-              value={newNotification.priority}
-              onChange={(e) =>
-                setNewNotification({ ...newNotification, priority: e.target.value })
-              }
+              name="title"
+              defaultValue={isEditMode ? selectedNotif?.title : ''}
               className="w-full border p-2 rounded mb-4"
             />
             <DatePicker
+              name="expired_at"
+              format='YYYY-MM-DD'
+              inputMode="none"
+              className="rmdp-mobile"
+              inputClass='w-full p-2 border rounded my-4 border-gray-300'
               calendar={persian}
               locale={persian_fa}
-              inputClass="w-full border p-2 rounded mb-4"
-              placeholder="تاریخ اطلاعیه"
-              onChange={(e) => setNewNotification({ ...newNotification, date: e.toLocaleDateString() })}
+              onChange={(e) => setDate(e)}
+              value={isEditMode ? selectedNotif?.expired_at : date}
             />
-
 
             <textarea
               rows="4"
               placeholder="متن اطلاعیه"
-              value={newNotification.text}
-              onChange={(e) =>
-                setNewNotification({ ...newNotification, text: e.target.value })
-              }
+              name="description"
+              defaultValue={isEditMode ? selectedNotif?.description : ''}
               className="w-full border p-2 rounded mb-4"
-            ></textarea>
+            />
+
             <div className="flex justify-end">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={isEditMode ? handleUpdateNotification : handleAddNotification}
+                
               >
                 {isEditMode ? "ویرایش" : "ثبت"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
@@ -161,32 +154,34 @@ export default function Notifications() {
           <thead className="border-b bg-blue-700 text-white">
             <tr>
               <th className="py-3">آیدی</th>
+              <th>تاریخ</th>
               <th> موضوع</th>
               <th>مدت اطلاعیه</th>
               <th>متن اطلاعیه</th>
-              <th>تاریخ</th>
-              <th>ساعت</th>
               <th>عملیات</th>
             </tr>
           </thead>
           <tbody>
-            {notifications.map((notification) => (
+            {notification?.data?.map((notification) => (
               <tr
                 key={notification.id}
                 className="hover:bg-gray-200 text-sm lg:text-md"
               >
                 <td className="py-2">{notification.id}</td>
-                <td>{notification.priority}</td>
-                <td>{notification.duration}</td>
+                <td>{new Intl.DateTimeFormat("fa-IR").format(new Date(notification.createdAt))}</td>
+                <td>{notification.title}</td>
+                <td>{notification.expired_at}</td>
                 <td>
-                  {truncateText(notification.text, 5)}
+                  {(notification.description)}
                 </td>
-                <td>{notification.date}</td>
-                <td>{notification.time}</td>
                 <td className="flex justify-center space-x-2">
                   <button
                     className="text-blue-500 text-2xl"
-                    onClick={() => handleOpenModal(true, notification)}
+                    onClick={() => {
+                      setIsEditMode(true);
+                      setIsModalOpen(true);
+                      setSelectedNotif(notification);
+                    }}
                   >
                     <MdEdit />
                   </button>

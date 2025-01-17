@@ -2,10 +2,11 @@
 import React from "react";
 import { Menu } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { IoEarthOutline } from "react-icons/io5";
 import { useAtomValue } from "jotai";
 import { userProfile } from "../../stores/store";
 import { logout } from "../../utils/logout";
+import { Link } from "react-router-dom";
 
 
 export default function HeaderAdmin({
@@ -50,7 +51,19 @@ export default function HeaderAdmin({
             as="div"
             className="flex flex-wrap items-center justify-end gap-1"
           >
-            <div className="px-3 cursor-pointer flex overflow-hidden bg-white h-7 rounded-[11px] border border-[#5B7380]">
+            <Link to="/" className="w-[120px] flex overflow-hidden bg-green-500 h-7 rounded-[11px] border border-[#5B7380] ">
+              <div className="w-full flex items-center justify-center gap-1 cursor-pointer py-1">
+                <div>
+                  <IoEarthOutline className="size-[17px] text-white" />
+                </div>
+                <div className="text-white text-[12px]">
+                  مشاهده سایت
+                </div>
+              </div>
+
+            </Link>
+
+            <div className="px-3 cursor-pointer hidden sm:flex overflow-hidden bg-white h-7 rounded-[11px] border border-[#5B7380]">
               <div className="w-full flex items-center justify-center gap-1">
                 <div>
                   <img
@@ -64,8 +77,9 @@ export default function HeaderAdmin({
                 </div>
               </div>
             </div>
-            <div className="w-[90px] flex overflow-hidden bg-[#FDCB44] h-7 rounded-[11px] border border-[#5B7380]">
-              <div className="w-full flex items-center justify-center gap-1 cursor-pointer">
+
+            <button onClick={logout} className="w-[90px] flex overflow-hidden bg-[#FDCB44] h-7 rounded-[11px] border border-[#5B7380] ">
+              <div className="w-full flex items-center justify-center gap-1 cursor-pointer py-1">
                 <div>
                   <img
                     src="/assets/images/new-img/exitW.svg"
@@ -74,11 +88,11 @@ export default function HeaderAdmin({
                   />
                 </div>
                 <div className="text-white text-[12px]">
-                    <button onClick={logout}>خروج</button>
+                  خروج
                 </div>
               </div>
-             
-            </div>
+
+            </button>
           </Menu>
         </div>
       </div>

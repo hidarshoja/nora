@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 import { logout } from "../../utils/logout";
 import { useAtomValue } from "jotai";
 import { userProfile } from "../../stores/store";
+import { IoEarthOutline } from "react-icons/io5";
 
 export default function HeaderUser({
-    setSidebarOpen,
-    desktopSidebarOpen,
-    setDesktopSidebarOpen,
-  }) {
-    const user = useAtomValue(userProfile)
+  setSidebarOpen,
+  desktopSidebarOpen,
+  setDesktopSidebarOpen,
+}) {
+  const user = useAtomValue(userProfile)
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 bg-[#070a06] border-b-2 border-gray-700 px-4 sm:gap-x-6 sm:px-6 lg:px-8">
       <button
@@ -46,6 +47,17 @@ export default function HeaderUser({
             as="div"
             className="flex flex-wrap items-center justify-end gap-1"
           >
+            <Link to="/" className="w-[120px] hidden sm:flex overflow-hidden bg-green-500 h-7 rounded-[11px] border border-[#5B7380] ">
+              <div className="w-full flex items-center justify-center gap-1 cursor-pointer py-1">
+                <div>
+                  <IoEarthOutline className="size-[17px] text-white" />
+                </div>
+                <div className="text-white text-[12px]">
+                  مشاهده سایت
+                </div>
+              </div>
+
+            </Link>
             <div className="px-3 cursor-pointer flex overflow-hidden bg-white h-7 rounded-[11px] border border-[#5B7380]">
               <div className="w-full flex items-center justify-center gap-1">
                 <div>
@@ -56,7 +68,7 @@ export default function HeaderUser({
                   />
                 </div>
                 <div className="text-color3 text-sm md:text-[16px]">
-                  {user?.first_name +' '+ user?.last_name} 
+                  {user?.first_name + ' ' + user?.last_name}
                 </div>
               </div>
             </div>
@@ -70,10 +82,10 @@ export default function HeaderUser({
                   />
                 </div>
                 <div className="text-white text-[12px] my-1">
-                    خروج
+                  خروج
                 </div>
               </div>
-             
+
             </button>
           </Menu>
         </div>
