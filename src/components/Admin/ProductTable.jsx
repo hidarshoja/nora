@@ -6,47 +6,39 @@ import useGet from "../../hooks/useGet";
 import useDelete from "../../hooks/useDelete";
 import { handleToast } from "../../utils/message";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const ProductTable = () => {
-  const { data: products, isLoading } = useGet(['product'], '/product?limit=1000')
-  const { mutateAsync, isPending } = useDelete(['product'], '/product')
+  const [currentPage, setCurrentPage] = useState(0); 
 
+  const { data: products, isLoading } = useGet(
+    ["product", currentPage], 
+    "/product",
+    { page: currentPage + 1 } 
+  );
+
+  const { mutateAsync } = useDelete(["product"], "/product");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-
-
-  // ! delete a product
-  const handleDelete = async(slug) => {
+  // Handle product deletion
+  const handleDelete = async (slug) => {
     try {
-      await mutateAsync(slug)
-      handleToast('success', 'محصول با موفقیت حذف شد')
+      await mutateAsync(slug);
+      handleToast("success", "محصول با موفقیت حذف شد");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
+  // Handle edit button click
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
 
-
-
-
-
-
-  // const indexOfLastProduct = currentPage * itemsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  // const currentProducts = products.data.slice(indexOfFirstProduct, indexOfLastProduct);
-
-
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   if (isLoading) {
-    return <p>Loading...</p>
+    return <p>Loading...</p>;
   }
 
   return (
@@ -66,66 +58,77 @@ const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          {products?.data?.products && products?.data?.products.map((product, index) => (
-            <tr key={product.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
-              <td className="py-2">{index + 1}</td>
-              <td className="flex items-center justify-center w-full">
-              <img src={product?.images[0]?.image_url ? `${import.meta.env.VITE_API_BASE_URL}${product.images[0].image_url}` : ''} className="w-10 h-10" alt="" />
-               
-              </td>
-              <td>{product.name}</td>
-              <td>
-                {new Intl.NumberFormat("fa-IR").format(product.price)} تومان
-              </td>
-              <td>
-                {product.price_with_off ? new Intl.NumberFormat("fa-IR").format(product.price_with_off) : 0} تومان
-              </td>
-              <td>{product.brand}</td>
-              <td>{product.categories.name}</td>
-              <td>{product.amount}</td>
-              <td className="">
-                <button>
-                   <Link to={`/admin/dashboard/edit-product/${product.slug}`} onClick={() => handleEdit(product)}>
-                  <CiEdit />
-                </Link>
-                </button>
-               
-                <button onClick={() => handleDelete(product.slug)}>
-                  <MdDelete />
-                </button>
-              </td>
-            </tr>
-          ))}
+          {products?.data?.products &&
+            products?.data?.products.map((product, index) => (
+              <tr
+                key={product.id}
+                className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md"
+              >
+                <td className="py-2">{index + 1}</td>
+                <td className="flex items-center justify-center w-full">
+                  <img
+                    src={
+                      product?.images[0]?.image_url
+                        ? `${import.meta.env.VITE_API_BASE_URL}${product.images[0].image_url}`
+                        : ""
+                    }
+                    className="w-10 h-10"
+                    alt=""
+                  />
+                </td>
+                <td>{product.name}</td>
+                <td>
+                  {new Intl.NumberFormat("fa-IR").format(product.price)} تومان
+                </td>
+                <td>
+                  {product.price_with_off
+                    ? new Intl.NumberFormat("fa-IR").format(product.price_with_off)
+                    : 0}{" "}
+                  تومان
+                </td>
+                <td>{product.brand}</td>
+                <td>{product.categories.name}</td>
+                <td>{product.amount}</td>
+                <td className="">
+                  <button>
+                    <Link
+                      to={`/admin/dashboard/edit-product/${product.slug}`}
+                      onClick={() => handleEdit(product)}
+                    >
+                      <CiEdit />
+                    </Link>
+                  </button>
+                  <button onClick={() => handleDelete(product.slug)}>
+                    <MdDelete />
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
-
-
-      {products.data.totalPages > 0 && (
-        <div className="flex justify-center mt-4">
-          <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="mx-2">قبلی</button>
-          {Array.from({ length: products.data.totalPages }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => paginate(index + 1)}
-              className={`mx-2 px-3 rounded-sm py-1 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === Math.ceil(products.length / itemsPerPage)} className="mx-2">بعدی</button>
-        </div>
-      )}
+    
+      <ReactPaginate
+        previousLabel={"<"}
+        nextLabel={">"}
+        breakLabel={"..."}
+        pageCount={products?.data?.totalPages}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={(e) => setCurrentPage(e.selected)}
+        containerClassName="flex justify-center space-x-2 mt-4"
+        pageClassName="px-3 py-1 border rounded-md cursor-pointer"
+        activeClassName="bg-[#090580] text-white"
+        previousClassName="px-3 py-1 border rounded-md cursor-pointer"
+        nextClassName="px-3 py-1 border rounded-md cursor-pointer"
+        disabledClassName="opacity-50 cursor-not-allowed"
+      />
 
       {isModalOpen && (
         <EditProductModal
           product={selectedProduct}
           onClose={() => setIsModalOpen(false)}
           onSave={(updatedProduct) => {
-            setProducts((prevProducts) =>
-              prevProducts.map((p) =>
-                p.id === updatedProduct.id ? updatedProduct : p
-              )
-            );
+            setSelectedProduct(null);
             setIsModalOpen(false);
           }}
         />

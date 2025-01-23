@@ -15,9 +15,11 @@ axiosClient.interceptors.response.use(
   response => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // در صورت دریافت خطای 401 توکن را پاک کرده و به صفحه ورود هدایت کنیم
-      localStorage.removeItem('ACCESS_TOKEN');
-      window.location.href = '/auth/login'; // می‌توانید از useNavigate برای هدایت استفاده کنید
+      if (window.location.pathname.includes('admin/dashboard') || window.location.pathname.includes('user/home')) {
+        localStorage.removeItem('ACCESS_TOKEN');
+        window.location.href = '/auth/login'
+      }
+      
     }
     return Promise.reject(error);
   }

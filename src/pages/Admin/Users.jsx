@@ -6,12 +6,13 @@ import { FaUserSlash } from "react-icons/fa";
 import useGet from "../../hooks/useGet";
 import useUpdate from "../../hooks/useUpdate";
 import { handleToast } from "../../utils/message";
+import ReactPaginate from "react-paginate";
 
 export default function Users() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(0); 
 
-  const { data: users, isLoading } = useGet(['user'], '/user')
+
+  const { data: users, isLoading } = useGet(['user', currentPage], '/user',{ page: currentPage + 1 } )
   const { mutateAsync:mutateStatus, isPending } = useUpdate( '/user',['user'])
 
 
@@ -33,14 +34,6 @@ export default function Users() {
       console.log(error)
     }
   }
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // const currentUsers = users.data.data.slice(
-  //   (currentPage - 1) * itemsPerPage,
-  //   currentPage * itemsPerPage
-  // );
 
   if (isLoading) {
     return <div>Loading ...</div>
@@ -89,34 +82,21 @@ export default function Users() {
           </tbody>
         </table>
 
-        {users.length > itemsPerPage && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="mx-2"
-            >
-              قبلی
-            </button>
-            {[...Array(Math.ceil(users.length / itemsPerPage))].map((_, index) => (
-              <button
-                key={index}
-                onClick={() => paginate(index + 1)}
-                className={`mx-2 px-3 rounded-sm py-1 ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
-                  }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === Math.ceil(users.length / itemsPerPage)}
-              className="mx-2"
-            >
-              بعدی
-            </button>
-          </div>
-        )}
+      <ReactPaginate
+        previousLabel={"<"}
+        nextLabel={">"}
+        breakLabel={"..."}
+        pageCount={users?.data?.pagination?.totalPages}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={(e) => setCurrentPage(e.selected)}
+        containerClassName="flex justify-center space-x-2 mt-4"
+        pageClassName="px-3 py-1 border rounded-md cursor-pointer"
+        activeClassName="bg-[#090580] text-white"
+        previousClassName="px-3 py-1 border rounded-md cursor-pointer"
+        nextClassName="px-3 py-1 border rounded-md cursor-pointer"
+        disabledClassName="opacity-50 cursor-not-allowed"
+      />
 
 
       </div>

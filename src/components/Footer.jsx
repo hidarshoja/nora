@@ -7,8 +7,14 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import useGet from "../hooks/useGet";
 
 const Footer = () => {
+  const{data, isLoading} = useGet(['category'],'/category')
+
+  if(isLoading){
+    return <div>Loading ...</div>
+  }
     return (
       <footer style={{ backgroundColor: '#3E4095' }} className="p-10 text-white">
         <div className="container mx-auto max-w-screen-xl">
@@ -88,10 +94,10 @@ const Footer = () => {
             <div className="col-span-12 lg:col-span-2 text-right md:text-center">
               <h3 className="font-YekanBakh-Bold text-white mb-4 text-lg">صفحات</h3>
               <ul>
-                <li><Link to="/blocking">موتوری</Link></li>
-                <li><Link to="#">گیریبکس</Link></li>
-                <li><Link to="#">سیستم روشنایی</Link></li>
-                <li><Link to="#">تزیینات</Link></li>
+                {data.data.map(item=>(
+                  <li key={item.id}><Link to={`/shop?category=${item.id}`} >{item.name}</Link></li>
+                ))}
+                
               </ul>
             </div>
             <div className="col-span-12 lg:col-span-3">

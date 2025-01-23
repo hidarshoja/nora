@@ -30,15 +30,15 @@ export default function ProductComment({ comments, id , reviews }) {
                                         key={rating}
                                         aria-hidden="true"
                                         className={classNames(
-                                            reviews.average > rating ? 'text-yellow-400' : 'text-gray-300',
+                                            reviews?.average > rating ? 'text-yellow-400' : 'text-gray-300',
                                             'h-5 w-5 flex-shrink-0',
                                         )}
                                     />
                                 ))}
                             </div>
-                            <p className="sr-only">{reviews.average} out of 5 stars</p>
+                            <p className="sr-only">{reviews?.average || 0} out of 5 stars</p>
                         </div>
-                        <p className="ml-2 text-sm text-gray-900">بر اساس {reviews.totalCount} نظر</p>
+                        <p className="ml-2 text-sm text-gray-900">بر اساس {reviews?.totalCount} نظر</p>
                     </div>
 
                     <div className="mt-6">
