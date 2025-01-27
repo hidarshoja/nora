@@ -12,7 +12,12 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(0); 
 
 
-  const { data: users, isLoading } = useGet(['user', currentPage], '/user',{ page: currentPage + 1 } )
+  const { data: users, isLoading } = useGet(
+    ['user', currentPage], 
+    '/user',
+    { page: currentPage + 1 } 
+  )
+  
   const { mutateAsync:mutateStatus, isPending } = useUpdate( '/user',['user'])
 
 
@@ -82,21 +87,22 @@ export default function Users() {
           </tbody>
         </table>
 
-      <ReactPaginate
-        previousLabel={"<"}
-        nextLabel={">"}
-        breakLabel={"..."}
-        pageCount={users?.data?.pagination?.totalPages}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={(e) => setCurrentPage(e.selected)}
-        containerClassName="flex justify-center space-x-2 mt-4"
-        pageClassName="px-3 py-1 border rounded-md cursor-pointer"
-        activeClassName="bg-[#090580] text-white"
-        previousClassName="px-3 py-1 border rounded-md cursor-pointer"
-        nextClassName="px-3 py-1 border rounded-md cursor-pointer"
-        disabledClassName="opacity-50 cursor-not-allowed"
-      />
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          pageCount={users?.data?.pagination?.totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={(e) => setCurrentPage(e.selected)}
+          containerClassName="flex justify-center space-x-2 mt-4"
+          pageClassName="block px-3 py-1 border rounded-md cursor-pointer " 
+          activeClassName="bg-[#090580] text-white"
+          previousClassName="block px-3 py-1 border rounded-md cursor-pointer ml-2"
+          nextClassName="block px-3 py-1 border rounded-md cursor-pointer"
+          disabledClassName="opacity-50 cursor-not-allowed"
+        />
+
 
 
       </div>

@@ -4,8 +4,10 @@ import MobileShop from "../components/MobileShop";
 import DesktopShop from "../components/DesktopShop";
 import useGet from "../hooks/useGet";
 import useCart from "../hooks/useCart";
+import ReactPaginate from "react-paginate";
 
 const FilterComponent = () => {
+  const [currentPage, setCurrentPage] = useState(0); 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
   const [filters, setFilters] = useState({
     price: '',
@@ -16,7 +18,9 @@ const FilterComponent = () => {
 
   const categoryParam = Number(useSearchParams()[0].get('category'))
 
-  const { data: products, isLoading } = useGet(['product'], '/product?limit=1000')
+  const { data: products, isLoading } = useGet(['product'], '/product',{page: currentPage + 1})
+  console.log(products)
+
   const { data: categories } = useGet(['categories'], '/category')
 
   // ! filter by categories from url
@@ -146,6 +150,21 @@ const FilterComponent = () => {
             ))}
           </div>
         )} */}
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          pageCount={products?.data?.totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={(e) => setCurrentPage(e.selected)}
+          containerClassName="flex justify-center space-x-2 mt-4"
+          pageClassName="block px-3 py-1 border rounded-md cursor-pointer "
+          activeClassName="bg-[#090580] text-white"
+          previousClassName="block px-3 py-1 border rounded-md cursor-pointer ml-2"
+          nextClassName="block px-3 py-1 border rounded-md cursor-pointer"
+          disabledClassName="opacity-50 cursor-not-allowed"
+        />
       </div>
     </section>
   );
