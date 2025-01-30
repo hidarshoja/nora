@@ -4,24 +4,33 @@ import MobileShop from "../components/MobileShop";
 import DesktopShop from "../components/DesktopShop";
 import useGet from "../hooks/useGet";
 import useCart from "../hooks/useCart";
-import ReactPaginate from "react-paginate";
+import Paginate from "../components/Paginate";
 
 const FilterComponent = () => {
-  const [currentPage, setCurrentPage] = useState(0); 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [triggerFetch, setTriggerFetch] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
   const [filters, setFilters] = useState({
     price: '',
     category: 0,
     brand: '',
   });
-  const {addToCart} = useCart()
+  const { addToCart } = useCart()
 
   const categoryParam = Number(useSearchParams()[0].get('category'))
 
-  const { data: products, isLoading } = useGet(['product'], '/product',{page: currentPage + 1})
-  console.log(products)
+  const { data: products, isLoading, refetch } = useGet(['product'], '/product', { page: currentPage + 1, limit: 1 })
+ 
 
   const { data: categories } = useGet(['categories'], '/category')
+
+  //! Run API fetch AFTER state updates to prevent stale data
+  useEffect(() => {
+    if (triggerFetch) {
+      refetch();
+      setTriggerFetch(false);
+    }
+  }, [currentPage, triggerFetch]);
 
   // ! filter by categories from url
   let FilteredData = categoryParam !== 0 ? products?.data?.products?.filter((product) => product.categories.id === categoryParam) : products?.data?.products
@@ -50,7 +59,6 @@ const FilterComponent = () => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-
 
   return (
     <section className="my-14 mt-4 px-4">
@@ -150,20 +158,12 @@ const FilterComponent = () => {
             ))}
           </div>
         )} */}
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          breakLabel={"..."}
-          pageCount={products?.data?.totalPages}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={3}
-          onPageChange={(e) => setCurrentPage(e.selected)}
-          containerClassName="flex justify-center space-x-2 mt-4"
-          pageClassName="block px-3 py-1 border rounded-md cursor-pointer "
-          activeClassName="bg-[#090580] text-white"
-          previousClassName="block px-3 py-1 border rounded-md cursor-pointer ml-2"
-          nextClassName="block px-3 py-1 border rounded-md cursor-pointer"
-          disabledClassName="opacity-50 cursor-not-allowed"
+
+
+        <Paginate
+          products={products}
+          setCurrentPage={setCurrentPage}
+          setTriggerFetch={setTriggerFetch}
         />
       </div>
     </section>

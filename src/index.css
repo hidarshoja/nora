@@ -11,3 +11,15 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* Force horizontal scroll if needed */
+.overflow-x-auto {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure pagination container stays within the screen */
+.min-w-max {
+  min-width: max-content;
+}
