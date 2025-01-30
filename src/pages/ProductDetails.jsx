@@ -118,8 +118,8 @@ export default function ProductDetails() {
               <h2 className="text-2xl font-bold mb-2">{product?.data?.product?.name}</h2>
               <p className="text-gray-500 mb-4">دسته بندی: {product?.data?.product?.categories?.name}</p>
               <p className="text-gray-700 mb-4">نوع خودرو: {product?.data?.product?.machine}</p>
-              <p className="text-gray-700 mb-4">شرکت سازنده: {product?.data?.product?.brand}</p>
-              <p className="text-gray-700 mb-4">جنس محصول: {product?.data?.product?.material}</p>
+              <p className="text-gray-700 mb-4">گروه خودرویی: {product?.data?.product?.brand}</p>
+              <p className="text-gray-700 mb-4">برند محصول: {product?.data?.product?.material}</p>
               <p className="mb-4 text-green-500">{product?.data?.product?.amount > 0 && "موجود در انبار"} </p>
               <button className="text-blue-700 mb-4" onClick={() => {
                 setOpenModal(true)
