@@ -7,53 +7,44 @@ import useCart from "../hooks/useCart";
 import Paginate from "../components/Paginate";
 
 const FilterComponent = () => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1); // Start from page 1
   const [triggerFetch, setTriggerFetch] = useState(false);
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false)
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     price: '',
     category: 0,
     brand: '',
   });
-  const { addToCart } = useCart()
+  const { addToCart } = useCart();
 
-  const categoryParam = Number(useSearchParams()[0].get('category'))
+  // Get category from URL query params (e.g., ?category=1)
+  const categoryParam = Number(useSearchParams()[0].get('category'));
 
-  const { data: products, isLoading, refetch } = useGet(['product'], '/product', { page: currentPage + 1, limit: 9 })
- 
+  // Fetch products with filters applied
+  const { data: products, isLoading, refetch } = useGet(
+    ['product'],
+    '/product',
+    {
+      page: currentPage,
+      limit: 9,
+      priceFilter: filters.price, // Adding filters to the query
+      categoryId: filters.category,
+      brand: filters.brand,
+    }
+  );
 
-  const { data: categories } = useGet(['categories'], '/category')
+  const { data: categories } = useGet(['categories'], '/category');
 
-  //! Run API fetch AFTER state updates to prevent stale data
+  // Trigger API call when page or filters change
   useEffect(() => {
     if (triggerFetch) {
       refetch();
       setTriggerFetch(false);
     }
-  }, [currentPage, triggerFetch]);
+  }, [currentPage, filters, triggerFetch]);
 
-  // ! filter by categories from url
-  let FilteredData = categoryParam !== 0 ? products?.data?.products?.filter((product) => product.categories.id === categoryParam) : products?.data?.products
-
-  // ! filter by filters
-  FilteredData = FilteredData
-    ?.filter((product) => {
-      return (
-        (filters.category === 0 || product.categories.id === filters.category) &&
-        (filters.brand === '' || product.brand === filters.brand) || (categoryParam !== 0 ? product.categories.id === categoryParam : false)
-      )
-    })
-    .sort((a, b) => {
-      if (filters.price === 'cheap') {
-        return a.price - b.price;
-      } else if (filters.price === 'expensive') {
-        return b.price - a.price;
-      }
-      else if (filters.price === 'popular') {
-        return b.buy_count - a.buy_count;
-      }
-      return 0;
-    });
+  // Filter products based on selected filters
+  let FilteredData = categoryParam !== 0 ? products?.data?.products?.filter((product) => product.categories.id === categoryParam) : products?.data?.products;
 
 
   if (isLoading) {
@@ -104,8 +95,8 @@ const FilterComponent = () => {
             {(filters.brand !== '' || filters.category > 0 || filters.price !== '') && (
               <button
                 className='text-blue-600 w-full text-[14px] text-left py-3'
-                onClick={() => setFilters({ category: 0, price: '', brand: '' })
-                }>
+                onClick={() => setFilters({ category: 0, price: '', brand: '' })}
+              >
                 پاک کردن فیلتر
               </button>
             )}
@@ -126,40 +117,21 @@ const FilterComponent = () => {
             filters={filters}
             setFilters={setFilters}
             setIsFiltersOpen={setIsFiltersOpen}
+            refetch={refetch}
           />
         )}
 
         {/* Desktop Filters */}
-
         <DesktopShop
           data={FilteredData}
           categories={categories}
           filters={filters}
           setFilters={setFilters}
           addToCart={addToCart}
+          refetch={refetch}
         />
-        {/* {filteredProducts?.length > productsPerPage && (
-          <div className="flex justify-center mt-6">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  paginate(index + 1); // تغییر صفحه
-                  window.scrollTo({ top: 0, behavior: "smooth" }); // اسکرول به بالا
-                }}
-                className={`mx-1 px-3 py-1 rounded-lg ${
-                  currentPage === index + 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        )} */}
 
-
+        {/* Pagination */}
         <Paginate
           products={products}
           setCurrentPage={setCurrentPage}
