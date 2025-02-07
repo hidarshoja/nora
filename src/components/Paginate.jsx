@@ -18,6 +18,12 @@ const Paginate = ({ products, setCurrentPage, setTriggerFetch }) => {
 
         return () => window.removeEventListener("resize", updatePageRange);
     }, [])
+
+    const handlePageChange = (e) => {
+        const selectedPage = e.selected;
+        setCurrentPage(selectedPage); // Update page state
+        setTriggerFetch(true); // Trigger re-fetch for new page
+    };
   return (
       <ReactPaginate
           previousLabel={"<"}
@@ -26,10 +32,7 @@ const Paginate = ({ products, setCurrentPage, setTriggerFetch }) => {
           pageCount={products?.data?.totalPages}
           marginPagesDisplayed={1} 
           pageRangeDisplayed={pageRange}
-          onPageChange={(e) => {
-              setCurrentPage(e.selected)
-              setTriggerFetch(true);
-          }}
+          onPageChange={handlePageChange}
           containerClassName="flex justify-center space-x-2 mt-4"
           pageClassName="block px-3 py-1 border rounded-md cursor-pointer "
           activeClassName="bg-[#090580] text-white"

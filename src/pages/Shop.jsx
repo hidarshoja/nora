@@ -21,7 +21,7 @@ const FilterComponent = () => {
   const categoryParam = Number(useSearchParams()[0].get('category'));
 
   // Fetch products with filters applied
-  const { data: products, isLoading, refetch } = useGet(
+  const { data: products, isLoading, refetch, isFetching } = useGet(
     ['product'],
     '/product',
     {
@@ -47,7 +47,7 @@ const FilterComponent = () => {
   let FilteredData = categoryParam !== 0 ? products?.data?.products?.filter((product) => product.categories.id === categoryParam) : products?.data?.products;
 
 
-  if (isLoading) {
+  if (isLoading ) {
     return <p>Loading...</p>;
   }
 
@@ -129,6 +129,7 @@ const FilterComponent = () => {
           setFilters={setFilters}
           addToCart={addToCart}
           refetch={refetch}
+          isFetching={isFetching}
         />
 
         {/* Pagination */}

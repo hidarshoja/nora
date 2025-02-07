@@ -14,7 +14,7 @@ const ProductTable = () => {
   const { data: products, isLoading } = useGet(
     ["product", currentPage], 
     "/product",
-    { page: currentPage + 1 } 
+    { all:true } 
   );
 
   const { mutateAsync } = useDelete(["product"], "/product");
@@ -107,7 +107,7 @@ const ProductTable = () => {
         </tbody>
       </table>
     
-      <ReactPaginate
+      {/* <ReactPaginate
         previousLabel={"<"}
         nextLabel={">"}
         breakLabel={"..."}
@@ -121,7 +121,7 @@ const ProductTable = () => {
         previousClassName="px-3 py-1 border rounded-md cursor-pointer"
         nextClassName="px-3 py-1 border rounded-md cursor-pointer"
         disabledClassName="opacity-50 cursor-not-allowed"
-      />
+      /> */}
 
       {isModalOpen && (
         <EditProductModal

@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
-import { carManufacturers } from '../constant/cars-data';
+import React, { useState } from 'react'
+import { carManufacturers } from '../constant/cars-data'
 
 export default function MobileShop({ categories, filters, setFilters, setIsFiltersOpen }) {
-  const [activeFilter, setActiveFilter] = useState('priceFilters');
+  const [activeFilter, setActiveFilter] = useState('priceFilters')
+  const [localFilters, setLocalFilters] = useState(filters);
 
-  // Handle filter button click
-  const handleFilterChange = (filterType, value) => {
-    setFilters(prev => ({ ...prev, [filterType]: value }));
+  useEffect(() => {
+    setLocalFilters(filters);
+  }, [filters]);
+
+
+  const handleFilter = (e) => {
+    const { name, value } = e.target;
+    setLocalFilters((prev) => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setTimeout(() => {
+      refetch();
+    }, 300);
+  };
+
+  const deleteFilter = (name, value) => {
+    setLocalFilters((prev) => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setTimeout(() => {
+      refetch();
+    }, 300);
   };
 
   return (
@@ -22,22 +40,21 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
           </button>
         </div>
 
-        {/* Filter Tab Buttons */}
         <div className="flex justify-around border-b pb-2 mb-4">
           <button
-            className="text-blue-500 py-2 px-1 rounded hover:bg-blue-200"
+            className="text-blue-500 py-2 px-1 rounded  hover:bg-blue-200"
             onClick={() => setActiveFilter("priceFilters")}
           >
             بر اساس قیمت
           </button>
           <button
-            className="text-blue-500 py-2 px-1 rounded hover:bg-blue-200"
+            className="text-blue-500 py-2 px-1 rounded  hover:bg-blue-200"
             onClick={() => setActiveFilter("categoryFilters")}
           >
             دسته‌بندی‌ها
           </button>
           <button
-            className="text-blue-500 py-2 px-1 rounded hover:bg-blue-200"
+            className="text-blue-500 py-2 px-1 rounded  hover:bg-blue-200"
             onClick={() => setActiveFilter("brandFilters")}
           >
             بر اساس برند
@@ -47,7 +64,9 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
         {/* Price Filter */}
         {activeFilter === "priceFilters" && (
           <div>
-            <h4 className="font-bold mb-2 text-blue-600">فیلتر بر اساس قیمت</h4>
+            <h4 className="font-bold mb-2 text-blue-600">
+              فیلتر بر اساس قیمت
+            </h4>
             <div className="space-y-2">
               <label className="flex items-center justify-between">
                 <span>ارزان‌ترین</span>
@@ -57,7 +76,7 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                   value="cheap"
                   className="radio radio-warning"
                   checked={filters.price === 'cheap'}
-                  onChange={() => handleFilterChange('price', 'cheap')}
+                  onChange={(e) => handleFilter(e)}
                 />
               </label>
               <label className="flex items-center justify-between">
@@ -68,7 +87,7 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                   value="expensive"
                   className="radio radio-warning"
                   checked={filters.price === 'expensive'}
-                  onChange={() => handleFilterChange('price', 'expensive')}
+                  onChange={(e) => handleFilter(e)}
                 />
               </label>
               <label className="flex items-center justify-between">
@@ -79,14 +98,14 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                   value="popular"
                   className="radio radio-warning"
                   checked={filters.price === 'popular'}
-                  onChange={() => handleFilterChange('price', 'popular')}
+                  onChange={(e) => handleFilter(e)}
                 />
               </label>
+              
               {filters.price.length > 0 && (
                 <button
-                  className="text-blue-600 text-[14px] w-full text-left py-3"
-                  onClick={() => handleFilterChange('price', '')}
-                >
+                  className='text-blue-600 text-[14px] w-full text-left py-3'
+                  onClick={(e) => deleteFilter('price','')}>
                   پاک کردن فیلتر
                 </button>
               )}
@@ -97,27 +116,28 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
         {/* Category Filter */}
         {activeFilter === "categoryFilters" && (
           <div>
-            <h4 className="font-bold mb-2 text-green-600">دسته‌بندی‌ها</h4>
+            <h4 className="font-bold mb-2 text-green-600">
+              دسته‌بندی‌ها
+            </h4>
             <ul className="space-y-2">
-              {categories?.data?.map((category, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => handleFilterChange('category', category.id)}
-                    className={`${filters.category === category.id
-                      ? "text-blue-500 font-bold"
-                      : "text-gray-900"
-                      } hover:text-blue-500`}
-                  >
-                    {category.name}
-                  </button>
-                </li>
+              {categories?.data && categories?.data?.map((category, index) => (
+                <label className="flex items-center justify-between">
+                  <span>{category.name}</span>
+                  <input
+                    type="radio"
+                    name="category"
+                    value={category.id}
+                    className="radio radio-warning"
+                    checked={filters.category == category.id}
+                    onChange={(e) => handleFilter(e)}
+                  />
+                </label>
               ))}
             </ul>
             {filters.category > 0 && (
               <button
-                className="text-blue-600 w-full text-[14px] text-left py-3"
-                onClick={() => handleFilterChange('category', 0)}
-              >
+                className='text-blue-600 w-full text-[14px] text-left py-3'
+                onClick={() => deleteFilter('category',0)}>
                 پاک کردن فیلتر
               </button>
             )}
@@ -127,29 +147,31 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
         {/* Brand Filter */}
         {activeFilter === "brandFilters" && (
           <div>
-            <h4 className="font-bold mb-2 text-red-600">فیلتر بر اساس برند</h4>
+            <h4 className="font-bold mb-2 text-red-600">
+              فیلتر بر اساس برند
+            </h4>
             <div className="space-y-2">
               <div className="flex flex-col items-center gap-1 w-full justify-between">
                 {carManufacturers.map((brand, index) => (
                   <div key={index} className="flex w-full justify-between gap-1">
-                    <label htmlFor={brand}>{brand}</label>
+                    <label htmlFor="saipa">{brand}</label>
                     <input
                       type="radio"
-                      id={brand}
+                      id="saipa"
                       name="brand"
-                      value={brand}
+                      value="saipa"
                       className="radio radio-warning"
                       checked={filters.brand === brand}
-                      onChange={() => handleFilterChange('brand', brand)}
+                      onChange={(e) => handleFilter(e)}
                     />
                   </div>
                 ))}
+
               </div>
               {filters.brand.length > 0 && (
                 <button
-                  className="text-blue-600 w-full text-[14px] text-left py-3"
-                  onClick={() => handleFilterChange('brand', '')}
-                >
+                  className='text-blue-600 w-full text-[14px] text-left py-3'
+                  onClick={() => deleteFilter('brand', '')}>
                   پاک کردن فیلتر
                 </button>
               )}
@@ -165,5 +187,5 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
         </button>
       </div>
     </div>
-  );
+  )
 }

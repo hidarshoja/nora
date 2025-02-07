@@ -2,41 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { carManufacturers } from '../constant/cars-data';
 import { Link } from 'react-router-dom';
 
-export default function DesktopShop({ data, categories, filters, setFilters, addToCart, refetch }) {
-  const [localFilters, setLocalFilters] = useState(filters); // local state to avoid unnecessary re-renders
+export default function DesktopShop({ data, categories, filters, setFilters, addToCart, refetch, isFetching }) {
+  const [localFilters, setLocalFilters] = useState(filters); 
 
   useEffect(() => {
-    // Whenever filters are updated in parent, sync them to local state
     setLocalFilters(filters);
   }, [filters]);
 
   const handleFilter = (e) => {
     const { name, value } = e.target;
-
-    // Update the local filters state
     setLocalFilters((prev) => ({ ...prev, [name]: value }));
-
-    // Set the filters to the parent
     setFilters((prev) => ({ ...prev, [name]: value }));
-
-    // Refetch after some delay to avoid rapid refetching
     setTimeout(() => {
       refetch();
-    }, 300); // 300ms delay before triggering refetch
+    }, 300);
   };
 
   const deleteFilter = (name, value) => {
-    // Update the local filters state
     setLocalFilters((prev) => ({ ...prev, [name]: value }));
-
-    // Set the filters to the parent
     setFilters((prev) => ({ ...prev, [name]: value }));
-
-    // Refetch after some delay to avoid rapid refetching
     setTimeout(() => {
       refetch();
-    }, 300); // 300ms delay before triggering refetch
+    }, 300);
   };
+
+  // if (isFetching) {
+  //   return <p>Loading...</p>;
+  // }
+
+
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 lg:col-span-3 order-2 hidden lg:block lg:order-1">
@@ -152,7 +146,10 @@ export default function DesktopShop({ data, categories, filters, setFilters, add
       {/* Products */}
       <div className="col-span-12 lg:col-span-9 order-1 lg:order-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data?.length > 0 ? (
+          {isFetching ? 
+            <div>Loading ...</div>
+          
+          : data?.length > 0 ? (
             data.map((product, index) => (
               <div key={index} className="rounded-3xl leading-10 p-4" style={{ background: "gainsboro" }}>
                 <Link to={`/shop/${product.slug}`} className="flex flex-col items-center justify-center">
