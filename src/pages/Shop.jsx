@@ -25,11 +25,12 @@ const FilterComponent = () => {
     ['product'],
     '/product',
     {
-      page: currentPage,
-      limit: 9,
-      priceFilter: filters.price, // Adding filters to the query
-      categoryId: filters.category,
-      brand: filters.brand,
+      // page: currentPage,
+      // limit: 9,
+      // priceFilter: filters.price, // Adding filters to the query
+      // categoryId: filters.category,
+      // brand: filters.brand,
+      all:true
     }
   );
 
@@ -46,6 +47,25 @@ const FilterComponent = () => {
   // Filter products based on selected filters
   let FilteredData = categoryParam !== 0 ? products?.data?.products?.filter((product) => product.categories.id === categoryParam) : products?.data?.products;
 
+  // ! filter by filters
+  FilteredData = FilteredData
+    ?.filter((product) => {
+      return (
+        (filters.category === 0 || product.categories.id === filters.category) &&
+        (filters.brand === '' || product.brand === filters.brand) || (categoryParam !== 0 ? product.categories.id === categoryParam : false)
+      )
+    })
+    .sort((a, b) => {
+      if (filters.price === 'cheap') {
+        return a.price - b.price;
+      } else if (filters.price === 'expensive') {
+        return b.price - a.price;
+      }
+      else if (filters.price === 'popular') {
+        return b.buy_count - a.buy_count;
+      }
+      return 0;
+    });
 
   if (isLoading ) {
     return <p>Loading...</p>;
@@ -128,16 +148,16 @@ const FilterComponent = () => {
           filters={filters}
           setFilters={setFilters}
           addToCart={addToCart}
-          refetch={refetch}
-          isFetching={isFetching}
+          // refetch={refetch}
+          // isFetching={isFetching}
         />
 
         {/* Pagination */}
-        <Paginate
+        {/* <Paginate
           products={products}
           setCurrentPage={setCurrentPage}
           setTriggerFetch={setTriggerFetch}
-        />
+        /> */}
       </div>
     </section>
   );

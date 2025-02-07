@@ -3,30 +3,6 @@ import { carManufacturers } from '../constant/cars-data'
 
 export default function MobileShop({ categories, filters, setFilters, setIsFiltersOpen }) {
   const [activeFilter, setActiveFilter] = useState('priceFilters')
-  const [localFilters, setLocalFilters] = useState(filters);
-
-  useEffect(() => {
-    setLocalFilters(filters);
-  }, [filters]);
-
-
-  const handleFilter = (e) => {
-    const { name, value } = e.target;
-    setLocalFilters((prev) => ({ ...prev, [name]: value }));
-    setFilters((prev) => ({ ...prev, [name]: value }));
-    setTimeout(() => {
-      refetch();
-    }, 300);
-  };
-
-  const deleteFilter = (name, value) => {
-    setLocalFilters((prev) => ({ ...prev, [name]: value }));
-    setFilters((prev) => ({ ...prev, [name]: value }));
-    setTimeout(() => {
-      refetch();
-    }, 300);
-  };
-
   return (
     <div className="lg:hidden fixed inset-0 z-50 top-[120px] bg-white transform transition-transform ease-in-out duration-300">
       <div className="p-4">
@@ -76,7 +52,7 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                   value="cheap"
                   className="radio radio-warning"
                   checked={filters.price === 'cheap'}
-                  onChange={(e) => handleFilter(e)}
+                  onClick={() => setFilters(prev => ({ ...prev, price: 'cheap' }))}
                 />
               </label>
               <label className="flex items-center justify-between">
@@ -87,7 +63,7 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                   value="expensive"
                   className="radio radio-warning"
                   checked={filters.price === 'expensive'}
-                  onChange={(e) => handleFilter(e)}
+                  onClick={() => setFilters(prev => ({ ...prev, price: 'expensive' }))}
                 />
               </label>
               <label className="flex items-center justify-between">
@@ -98,14 +74,25 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                   value="popular"
                   className="radio radio-warning"
                   checked={filters.price === 'popular'}
-                  onChange={(e) => handleFilter(e)}
+                  onClick={() => setFilters(prev => ({ ...prev, price: 'popular' }))}
                 />
               </label>
-              
+              {/* <div className="flex items-center gap-1 w-full justify-between">
+                      <label htmlFor="popular2">محبوب ترین</label>
+                      <input
+                        type="radio"
+                        id="popular2"
+                        name="price"
+                        value="popular"
+                        className="radio radio-warning"
+                        onClick={() => handleFilterChange("popular")}
+                      />
+                    </div> */}
               {filters.price.length > 0 && (
                 <button
                   className='text-blue-600 text-[14px] w-full text-left py-3'
-                  onClick={(e) => deleteFilter('price','')}>
+                  onClick={() => setFilters(prev => ({ ...prev, price: "" }))
+                  }>
                   پاک کردن فیلتر
                 </button>
               )}
@@ -121,23 +108,24 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
             </h4>
             <ul className="space-y-2">
               {categories?.data && categories?.data?.map((category, index) => (
-                <label className="flex items-center justify-between">
-                  <span>{category.name}</span>
-                  <input
-                    type="radio"
-                    name="category"
-                    value={category.id}
-                    className="radio radio-warning"
-                    checked={filters.category == category.id}
-                    onChange={(e) => handleFilter(e)}
-                  />
-                </label>
+                <li key={index}>
+                  <button
+                    onClick={() => setFilters(prev => ({ ...prev, category: category.id }))}
+                    className={`${filters.category === category.id
+                      ? "text-blue-500 font-bold"
+                      : "text-gray-900"
+                      } hover:text-blue-500`}
+                  >
+                    {category.name}
+                  </button>
+                </li>
               ))}
             </ul>
             {filters.category > 0 && (
               <button
                 className='text-blue-600 w-full text-[14px] text-left py-3'
-                onClick={() => deleteFilter('category',0)}>
+                onClick={() => setFilters(prev => ({ ...prev, category: 0 }))
+                }>
                 پاک کردن فیلتر
               </button>
             )}
@@ -162,7 +150,7 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
                       value="saipa"
                       className="radio radio-warning"
                       checked={filters.brand === brand}
-                      onChange={(e) => handleFilter(e)}
+                      onClick={() => setFilters(prev => ({ ...prev, brand: brand }))}
                     />
                   </div>
                 ))}
@@ -171,7 +159,8 @@ export default function MobileShop({ categories, filters, setFilters, setIsFilte
               {filters.brand.length > 0 && (
                 <button
                   className='text-blue-600 w-full text-[14px] text-left py-3'
-                  onClick={() => deleteFilter('brand', '')}>
+                  onClick={() => setFilters(prev => ({ ...prev, brand: '' }))
+                  }>
                   پاک کردن فیلتر
                 </button>
               )}
