@@ -9,14 +9,14 @@ import { Toaster } from 'react-hot-toast';
 import { CartProvider } from '../hooks/useCart';
 
 const MainLayout = () => {
-  const { pathname } = useLocation();
+  //const { pathname } = useLocation();
   const profile = useAtomValue(userProfile)
   const setUser = useSetAtom(userProfile);
 
 
-  useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top of the page on route change
-  }, [pathname]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0); // Scroll to the top of the page on route change
+  // }, [pathname]);
 
 
 
