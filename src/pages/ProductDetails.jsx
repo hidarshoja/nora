@@ -4,6 +4,7 @@ import useGet from "../hooks/useGet";
 import useCart from "../hooks/useCart";
 import DescriptionModel from "../components/DescriptionModel";
 import ProductComment from "../components/ProductComment";
+import { Helmet } from "react-helmet-async";
 
 export default function ProductDetails() {
   const [openModal, setOpenModal] = useState(false)
@@ -82,6 +83,15 @@ export default function ProductDetails() {
   // }
   return (
     <>
+      <Helmet>
+        <title>{product?.data?.product?.name}</title>
+        <meta name="product_id" content={product?.data?.product?.id} />
+        <meta name="product_name" content={product?.data?.product?.name} />
+        <meta property="og:image" content={`${import.meta.env.VITE_API_BASE_URL}${product?.data?.product?.images[0].image_url}`} />
+        <meta name="product_price" content={product?.data?.product?.price_with_off ? product?.data?.product?.price_with_off : product?.data?.product?.price} />
+        <meta name="product_old_price" content={product?.data?.product?.price} />
+        <meta name="availability" content={product?.data?.product?.amount > 0 ? "موجود میباشد" : "موجود نمیباشد"} />
+      </Helmet>
       <div className="w-full flex flex-col md:flex-row mt-10 px-3">
         <div className="w-full lg:w-1/2">
           <div className="flex flex-col md:flex-row">
