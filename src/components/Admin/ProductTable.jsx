@@ -10,7 +10,9 @@ import ReactPaginate from "react-paginate";
 
 const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [searchTerm, setSearchTerm] = useState(""); // State برای جستجو
+  const [searchTerm, setSearchTerm] = useState("");
+  const [minPrice, setMinPrice] = useState(""); // حداقل قیمت
+  const [maxPrice, setMaxPrice] = useState(""); // حداکثر قیمت
   const { data: products, isLoading } = useGet(
     ["product", currentPage], 
     "/product",
@@ -21,13 +23,25 @@ const ProductTable = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // فیلتر کردن محصولات بر اساس نام
+  // فیلتر کردن محصولات بر اساس نام و بازه قیمت
   const filteredProducts = useMemo(() => {
     if (!products?.data?.products) return [];
-    return products.data.products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [products, searchTerm]);
+    
+    return products.data.products.filter(product => {
+      // فیلتر بر اساس نام
+      const nameMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      // تبدیل قیمت به عدد برای مقایسه
+      const price = parseInt(product.price);
+      const min = minPrice ? parseInt(minPrice) : 0;
+      const max = maxPrice ? parseInt(maxPrice) : Infinity;
+      
+      // فیلتر بر اساس بازه قیمت
+      const priceMatch = price >= min && price <= max;
+      
+      return nameMatch && priceMatch;
+    });
+  }, [products, searchTerm, minPrice, maxPrice]);
 
   const handleDelete = async (slug) => {
     try {
@@ -49,15 +63,40 @@ const ProductTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      {/* اینپوت جستجو */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="جستجو بر اساس نام محصول..."
-          className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#090580]"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      {/* فیلترهای جستجو */}
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4 px-[2px] py-2">
+        {/* جستجوی نام محصول */}
+        <div>
+          <input
+            type="text"
+            placeholder="جستجو بر اساس نام محصول..."
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#090580]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        
+        {/* فیلتر حداقل قیمت */}
+        <div>
+          <input
+            type="number"
+            placeholder="حداقل قیمت (تومان)"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#090580]"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+        </div>
+        
+        {/* فیلتر حداکثر قیمت */}
+        <div>
+          <input
+            type="number"
+            placeholder="حداکثر قیمت (تومان)"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#090580]"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+        </div>
       </div>
 
       <table className="table-auto w-full text-center border">
@@ -99,7 +138,7 @@ const ProductTable = () => {
                 </td>
                 <td>
                   {product.price_with_off
-                    ? new Intll.NumberFormat("fa-IR").format(product.price_with_off)
+                    ? new Intl.NumberFormat("fa-IR").format(product.price_with_off)
                     : 0}{" "}
                   تومان
                 </td>
@@ -124,29 +163,12 @@ const ProductTable = () => {
           ) : (
             <tr>
               <td colSpan="9" className="py-4 text-red-500">
-                محصولی با این نام یافت نشد!
+                محصولی با این مشخصات یافت نشد!
               </td>
             </tr>
           )}
         </tbody>
       </table>
-
-      {/* پagination (در صورت نیاز می‌توانید آن را فعال کنید) */}
-      {/* <ReactPaginate
-        previousLabel={"<"}
-        nextLabel={">"}
-        breakLabel={"..."}
-        pageCount={products?.data?.totalPages}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={(e) => setCurrentPage(e.selected)}
-        containerClassName="flex justify-center space-x-2 mt-4"
-        pageClassName="px-3 py-1 border rounded-md cursor-pointer"
-        activeClassName="bg-[#090580] text-white"
-        previousClassName="px-3 py-1 border rounded-md cursor-pointer"
-        nextClassName="px-3 py-1 border rounded-md cursor-pointer"
-        disabledClassName="opacity-50 cursor-not-allowed"
-      /> */}
 
       {isModalOpen && (
         <EditProductModal
