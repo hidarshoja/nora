@@ -11,8 +11,8 @@ import ReactPaginate from "react-paginate";
 const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [minPrice, setMinPrice] = useState(""); // حداقل قیمت
-  const [maxPrice, setMaxPrice] = useState(""); // حداکثر قیمت
+  const [minPrice, setMinPrice] = useState(""); 
+  const [maxPrice, setMaxPrice] = useState(""); 
   const { data: products, isLoading } = useGet(
     ["product", currentPage], 
     "/product",
@@ -23,22 +23,16 @@ const ProductTable = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // فیلتر کردن محصولات بر اساس نام و بازه قیمت
+ 
   const filteredProducts = useMemo(() => {
     if (!products?.data?.products) return [];
     
     return products.data.products.filter(product => {
-      // فیلتر بر اساس نام
       const nameMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // تبدیل قیمت به عدد برای مقایسه
       const price = parseInt(product.price);
       const min = minPrice ? parseInt(minPrice) : 0;
       const max = maxPrice ? parseInt(maxPrice) : Infinity;
-      
-      // فیلتر بر اساس بازه قیمت
       const priceMatch = price >= min && price <= max;
-      
       return nameMatch && priceMatch;
     });
   }, [products, searchTerm, minPrice, maxPrice]);
@@ -63,9 +57,7 @@ const ProductTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      {/* فیلترهای جستجو */}
       <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4 px-[2px] py-2">
-        {/* جستجوی نام محصول */}
         <div>
           <input
             type="text"
@@ -76,7 +68,7 @@ const ProductTable = () => {
           />
         </div>
         
-        {/* فیلتر حداقل قیمت */}
+      
         <div>
           <input
             type="number"
@@ -87,7 +79,7 @@ const ProductTable = () => {
           />
         </div>
         
-        {/* فیلتر حداکثر قیمت */}
+       
         <div>
           <input
             type="number"
