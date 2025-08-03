@@ -106,8 +106,8 @@ const OfferTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr key={offers.data.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
-                                <td className="py-2">{offers.data.id}</td>
+                            <tr key={offers?.data?.id} className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md">
+                                <td className="py-2">{offers?.data?.id}</td>
                                 <td>{offers?.data?.expired_at}</td>
                                 <td className="">
 
