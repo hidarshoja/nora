@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import EditProductModal from "./EditProductModal";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
 const ProductTable = () => {
-  const [currentPage, setCurrentPage] = useState(0); 
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(""); // State برای جستجو
   const { data: products, isLoading } = useGet(
     ["product", currentPage], 
     "/product",
@@ -21,7 +21,14 @@ const ProductTable = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Handle product deletion
+  // فیلتر کردن محصولات بر اساس نام
+  const filteredProducts = useMemo(() => {
+    if (!products?.data?.products) return [];
+    return products.data.products.filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [products, searchTerm]);
+
   const handleDelete = async (slug) => {
     try {
       await mutateAsync(slug);
@@ -31,7 +38,6 @@ const ProductTable = () => {
     }
   };
 
-  // Handle edit button click
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -43,7 +49,18 @@ const ProductTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="table-auto w-full text-center border ">
+      {/* اینپوت جستجو */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="جستجو بر اساس نام محصول..."
+          className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#090580]"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <table className="table-auto w-full text-center border">
         <thead className="border-b-2 bg-[#090580] text-white">
           <tr className="text-sm lg:text-md">
             <th className="py-3">ردیف</th>
@@ -58,8 +75,8 @@ const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          {products?.data?.products &&
-            products?.data?.products.map((product, index) => (
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product, index) => (
               <tr
                 key={product.id}
                 className="mt-1 hover:bg-green-500 hover:text-white text-sm lg:text-md"
@@ -82,7 +99,7 @@ const ProductTable = () => {
                 </td>
                 <td>
                   {product.price_with_off
-                    ? new Intl.NumberFormat("fa-IR").format(product.price_with_off)
+                    ? new Intll.NumberFormat("fa-IR").format(product.price_with_off)
                     : 0}{" "}
                   تومان
                 </td>
@@ -103,10 +120,18 @@ const ProductTable = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="9" className="py-4 text-red-500">
+                محصولی با این نام یافت نشد!
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-    
+
+      {/* پagination (در صورت نیاز می‌توانید آن را فعال کنید) */}
       {/* <ReactPaginate
         previousLabel={"<"}
         nextLabel={">"}
